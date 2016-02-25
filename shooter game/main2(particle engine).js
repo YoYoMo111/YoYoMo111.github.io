@@ -62,70 +62,40 @@ $(document).ready(function() {
 // Setup
 var fogEffect=-1;
 var rainEffect=-1;
-var snowEffect=-1;
-var duskEffect=-1;
-var sky;
-//particle varibles----------------------------------
-	// create the particle variables
-	var particleCount = 7000,
-		particles = new THREE.Geometry(),
-		pMap /*= THREE.ImageUtils.loadTexture(
-			  "images/raindrop.png"
-			)*/,
-		pMaterial = new THREE.ParticleBasicMaterial({
-		    color: 0xFFFFFF,
-			size: 5,
-			map: pMap,
-			blending: THREE.AdditiveBlending,
-			transparent: true
-		});
-	// create the particle system
-	var particleSystem = new THREE.ParticleSystem(
-				particles,
-				pMaterial);
-
-	// now create the individual particles
-		for (var p = 0; p < particleCount; p++) {
-
-		  // create a particle with random
-		  // position values, -250 -> 250
-		  var pX = Math.random() * 2200 - 1100,
-		      pY = Math.random() * 2200 - 1100,
-		      pZ = Math.random() * 2200 - 1100,
-		      particle = new THREE.Vector3(pX, pY, pZ);//function name changed!!!
-
-		      // create a velocity vector
-				particle.velocity = new THREE.Vector3(
-				  0,              // x
-				  -Math.random(), // y: random vel
-				  0);             // z
-
-		  // add it to the geometry
-		  particles.vertices.push(particle);
-		  //particles.rotateZ( 90*Math.PI / 180);
-		}
-//---------------------------------------------------				
-
 function init() {
 	clock = new t.Clock(); // Used in render() for controls.update()
 	projector = new t.Projector(); // Used in bullet projection
 	scene = new t.Scene(); // Holds all objects in the canvas
 
-	//set up particle--------------------------------------------
-	
+	//set up particle engine
+	var settings = {
+      positionStyle    : Type.CUBE,
+      positionBase     : new t.Vector3( 0, 0, 0 ),
+      positionSpread   : new t.Vector3( 200, 200, 500 ),
+ 
+      velocityStyle    : Type.CUBE,
+      velocityBase     : new t.Vector3( 0, 0, -400 ),
+      velocitySpread   : new t.Vector3( 10, 50, 10 ), 
+      accelerationBase : new t.Vector3( 0, -10, 0 ),
+       
+      particleTexture : t.ImageUtils.loadTexture( 'images/rain.png' ),
+ 
+      sizeBase    : 4.0,
+      sizeSpread  : 2.0,
+      colorBase   : new t.Vector3(0.66, 1.0, 0.7), // H,S,L
+      colorSpread : new t.Vector3(0.00, 0.0, 0.2),
+      opacityBase : 0.6,
+ 
+      particlesPerSecond : 3000,
+      particleDeathAge   : 1.0,  
+      emitterDeathAge    : 60
+     };
 
-		// also update the particle system to
-		// sort the particles which enables
-		// the behaviour we want
-		particleSystem.sortParticles = true;
+	engine = new ParticleEngine();
+	engine.setValues( settings );
+	engine.initialize();
 
-		//particleSystem.rotation.x = 1;
 
-		// add it to the scene
-		//scene.add(particleSystem);
-		
-
-	//------------------------------------------------------------------
 	// Set up camera
 	cam = new t.PerspectiveCamera(60, ASPECT, 1, 10000); // FOV, aspect, near, far
 	cam.position.y = UNITSIZE * .2;
@@ -152,7 +122,7 @@ function init() {
 	//var skyTexture = t.ImageUtils.loadTexture('images/sky.jpg');
 	var skyMaterial = new t.MeshBasicMaterial({map: t.ImageUtils.loadTexture('images/sky.jpg'), overdraw: true});
 
-	sky = new t.Mesh(skyGeo, skyMaterial);
+	var sky = new t.Mesh(skyGeo, skyMaterial);
 	sky.position.set(0,500,0);
 	//sky.skyMaterial= t.DoubleSide;
 	sky.doubleSided = true;
@@ -190,7 +160,7 @@ function init() {
 	$('body').append('<canvas id="radar" width="200" height="200"></canvas>');
 	$('body').append('<div id="hud"><p>Health: <span id="health">100</span><br />Score: <span id="score">0</span></p></div>');
 	$('body').append('<div id="credits"><p><br />WASD to move, mouse to look, click to shoot</p></div>');
-	$('body').append('<div class="buttons"><div id="fog">Fog</div><div id="rain">Rain</div><div id="snow">Snow</div><div id="dusk">Dusk</div></div>');
+	$('body').append('<div class="buttons"><div id="fog">Fog</div><div id="rain">Rain</div></div>');
 
 	// Set up "hurt" flash
 	$('body').append('<div id="hurt"></div>');
@@ -206,146 +176,32 @@ function animate() {
 }
 
 // Update and display !!!Set animation here!!!!!
-var pSpeed = 0;
-var rainFlag = -1;
-var snowFlag = -1;
-var duskFlag = -1;
 function render() {
 	var delta = clock.getDelta(), speed = delta * BULLETMOVESPEED;
 	var aispeed = delta * MOVESPEED;
 	controls.update(delta); // Move camera
 
 	//effects------------------------------------------------------
-
-//click events
-
-	$('#fog').unbind('click').click(function() {
+	$('#fog').click(function() {
 	 fogEffect=-fogEffect;
-	 console.log("fog="+fogEffect);
 	});
 
-	$('#rain').unbind('click').click(function(){
+	$('#rain').one('click', function() {
 	 rainEffect=-rainEffect;
-	 rainFlag=-rainFlag;
-	 snowEffect=-1;
-	 console.log("rain="+rainEffect+"snow="+snowEffect);
 	});
 
-	$('#snow').unbind('click').click(function(){
-	 snowEffect=-snowEffect;
-	 snowFlag=-snowFlag;
-	 rainEffect=-1;
-	 console.log("snow="+snowEffect+"rain="+rainEffect);
-	});
-
-	$('#dusk').unbind('click').click(function(){
-	 duskEffect=-duskEffect;
-	 duskFlag=-duskFlag;
-	 console.log("duskEffect="+duskEffect+"duskFlag="+duskFlag);
-	});
-
-//controls
 	if(fogEffect==1){
 	scene.fog = new t.FogExp2(0xD6F1FF, 0.002); // color, density
-	console.log("run fog");
 	}
-	else if (fogEffect==-1){
+	else{
 	scene.fog = new t.FogExp2(0xD6F1FF, 0.0000001); // color, density
-	console.log("run fog else");
 	}
 
-	if( rainEffect==1 && rainFlag==1 ){
-		//pMap = THREE.ImageUtils.loadTexture("images/raindrop.png");
-		particleSystem.material.map = THREE.ImageUtils.loadTexture('images/raindrop.png',{},function(){
-           //add callback here if you want
-        });
-		scene.add(particleSystem);
-		pSpeed=0.9;
-		console.log("run rain============================================cannot loop");
-		rainFlag=-1;
-	}
-	else if ( rainEffect==1 && rainFlag==-1 ){
-	console.log("run rain else, not loop rain");
-	}
-	else if ( rainEffect==-1 && snowEffect==-1 ){
-		scene.remove(particleSystem);
-		rainFlag=-1;
-		console.log("remove rain!!!!!!!!!!!!!!!!!!!");
-	}
+		//rain
+		engine.update( 0.01 * 0.5 );
 
-	if( snowEffect==1 && snowFlag==1 ){
-		//pMap = THREE.ImageUtils.loadTexture("images/snowflake.png");
-		particleSystem.material.map = THREE.ImageUtils.loadTexture('images/snowflake.png',{},function(){
-           //add callback here if you want
-        });
-		scene.add(particleSystem);
-		pSpeed=0.1;
-		console.log("run snow============================================");
-		snowFlag=-1;
-	}
-	else if ( snowEffect==1 && snowFlag==-1 ){
-	console.log("run snow else, not loop snow");
-	}
-	else if ( snowEffect==-1 && rainEffect==-1 ){
-		scene.remove(particleSystem);
-		snowFlag=-1;
-		console.log("remove snow!!!!!!!!!!!!!!!!!!!");
-	}
-
-	if(duskEffect == 1 && duskFlag==1){
-		sky.material.map = THREE.ImageUtils.loadTexture('images/dusk2.jpg',{},function(){
-	           //add callback here if you want
-	        });
-		duskFlag = -1;
-		console.log("run dusk=======================================");
-	}
-	else if(duskEffect == 1 && duskFlag == -1){
-		console.log("run dusk else, not loop dusk");
-	}
-	else if (duskEffect==-1 && duskFlag ==1){
-		sky.material.map = THREE.ImageUtils.loadTexture('images/sky.jpg',{},function(){
-	           //add callback here if you want
-	        });
-		duskFlag = -1;
-		console.log("run sky=======================================");
-		console.log("duskEffect="+duskEffect+"duskFlag="+duskFlag);
-	}
-	else if (duskEffect==-1 && duskFlag == -1){
-		duskFlag == -1;
-		console.log("run sky else, not loop sky");
-	}
-	
-//////Paticle animation://///
-
-	// rain add some rotation to the system
-  	particleSystem.rotation.y += 0.005;
-
-  	var pCount = particleCount;
-  while (pCount--) {
-
-    // get the particle
-    var particle =
-      particles.vertices[pCount];
-
-    // check if we need to reset
-    if (particle.y < -200) {
-      particle.y = 200;
-      particle.velocity.y = 0; //Vector3 porperty has changed!!!
-    }
-
-    // update the velocity with
-    // a splat of randomniz
-    particle.velocity.y -= Math.random() * pSpeed;
-
-    // and the position
-    particle.y+=particle.velocity.y;//particle.position.addSelf(particle.velocity); Change the function!!! not this one
-  }
-
-  // flag to the particle system
-  // that we've changed its vertices.
-  particleSystem.
-    geometry.
-    __dirtyVertices = true;
+		
+     
 
 	//---------------------------------------------------------------
 	
@@ -469,39 +325,12 @@ function render() {
 	}
 
 	renderer.render(scene, cam); // Repaint
-
-	//win
-
-	if(kills==4){
-		runAnim = false;
-		$(renderer.domElement).fadeOut();
-		$('#radar, #hud, #credits, #fog, #rain, #snow, #dusk').fadeOut();
-		$('#intro').fadeIn();
-		$('#intro').html('You Win!!! Click to restart...');
-		$('#intro').one('click', function() {
-			location = location;
-			/*
-			$(renderer.domElement).fadeIn();
-			$('#radar, #hud, #credits').fadeIn();
-			$(this).fadeOut();
-			runAnim = true;
-			animate();
-			health = 100;
-			$('#health').html(health);
-			kills--;
-			if (kills <= 0) kills = 0;
-			$('#score').html(kills * 100);
-			cam.translateX(-cam.position.x);
-			cam.translateZ(-cam.position.z);
-			*/
-		});
-	}
 	
 	// Death
 	if (health <= 0) {
 		runAnim = false;
 		$(renderer.domElement).fadeOut();
-		$('#radar, #hud, #credits, #fog, #rain, #snow, #dusk').fadeOut();
+		$('#radar, #hud, #credits').fadeOut();
 		$('#intro').fadeIn();
 		$('#intro').html('Ouch! Click to restart...');
 		$('#intro').one('click', function() {
@@ -531,7 +360,7 @@ function setupScene() {
 	// Geometry: floor
 	var floor = new t.Mesh(
 			new t.CubeGeometry(units * UNITSIZE, 10, units * UNITSIZE),
-			new t.MeshLambertMaterial({color: 0xEDCBA0,/*map: t.ImageUtils.loadTexture('images/snow-512.jpg')*/})
+			new t.MeshLambertMaterial({color: 0xEDCBA0,/*map: t.ImageUtils.loadTexture('images/floor-1.jpg')*/})
 	);
 	floor.receiveShadow = true;//shadow
 	scene.add(floor);
@@ -580,7 +409,7 @@ function setupScene() {
 	directionalLight1.shadowCameraTop = d;
 	directionalLight1.shadowCameraBottom = -d;
 	directionalLight1.shadowCameraFar = 2500;
-	directionalLight1.shaowCameraVisible = true;
+	//directionalLight1.shaowCameraVisible = true;
 	//-----------------------------------------------
 	scene.add( directionalLight1 );
 
@@ -595,7 +424,7 @@ function setupScene() {
 	directionalLight2.shadowCameraTop = d;
 	directionalLight2.shadowCameraBottom = -d;
 	directionalLight2.shadowCameraFar = 2500;
-	directionalLight2.shaowCameraVisible = true;
+	//directionalLight2.shaowCameraVisible = true;
 
 	scene.add( directionalLight2 );
 
@@ -762,7 +591,7 @@ function createBullet(obj) {
 		var vector = cam.position.clone();
 		sphere.ray = new t.Ray(
 				obj.position,
-				vector.subSelf(obj.position).normalize()//change
+				vector.subSelf(obj.position).normalize()
 		);
 	}
 	sphere.owner = obj;
