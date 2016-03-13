@@ -4,7 +4,8 @@
   <title>WebGL FPS - AngelHack SV 2012 - Isaac Sukin</title>
   <style>
     body {
-      background-image: url('images/screenshot.jpg');
+      background-image: url('images/screenshot.png');
+      background-size: 100%;
       cursor: crosshair;
       font-family: Georgia, Helvetica, sans-serif;
       font-weight: bold;
@@ -49,13 +50,21 @@
     }
     #intro {
       background-color: #000000;
+      
+      opacity: 0.7;
+      padding: 120px;
+      
+      z-index: 1001;
+    }
+    #intro-content{
       color: #FFFFFF;
       cursor: pointer;
       font-size: 32px;
-      opacity: 0.7;
-      padding: 120px;
       text-align: center;
-      z-index: 1001;
+    }
+    #intro-content:hover{
+      color:#F39E4A;
+      opacity: 0.7;
     }
     #hurt {
       background-color: red;
@@ -104,9 +113,11 @@
   <!-- <script src="Pathfinder.js"></script> -->
   <script src="Three.js"></script>
   <!--<script src="Three2.js"></script>-->
-  <!-- <script src="ColladaLoader.js"></script> -->
+  <script src="ColladaLoader.js"></script>
   <script src="Three.FirstPersonControls.js"></script>
   <script src="ParticleEngine.js"></script><!--add-->
+  <script src="AudioObject.js"></script><!--add-->
+  <script src="JSONLoader4.js"></script><!--add-->
   <!--<script src="Projector.js"></script>add-->
   <script src="main.js"></script>
 
@@ -118,5 +129,41 @@
     <div id="rain">Rain</div>
   </div>
 -->
+<audio id="bgmusic" autoplay loop style="display:none">
+<source src="audio/background.wav" type='audio/wav'>
+</audio>
+
+<audio id="winsound" style="display:none">
+<source src="audio/win.wav" type='audio/wav'>
+</audio>
+
+<audio id="losesound" style="display:none">
+<source src="audio/lose.wav" type='audio/wav'>
+</audio>
+
+<audio id="blast" style="display:none">
+<source src="audio/fins_laser.wav" type='audio/wav'>
+</audio>
+
+<audio id="scream" style="display:none">
+<source src="audio/male-scream.wav" type='audio/wav'>
+</audio>
+
+<audio id="rainsound" loop style="display:none">
+<source src="audio/rainsound.mp3" type='audio/mp3'>
+</audio>
+
+<audio id="windsound" loop style="display:none">
+<source src="audio/windsound.wav" type='audio/wav'>
+</audio>
+
+<audio id="pickhealth"  style="display:none">
+<source src="audio/pickhealth.wav" type='audio/wav'>
+</audio>
+
+<audio id="hurtwarn"  style="display:none">
+<source src="audio/hurtwarn.wav" type='audio/wav'>
+</audio>
+
 </body>
 </html>

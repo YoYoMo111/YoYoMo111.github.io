@@ -31,7 +31,12 @@ var WIDTH = window.innerWidth,
 // Global vars
 var t = THREE, scene, cam, renderer, controls, clock, projector, model, skin;
 var runAnim = true, mouse = { x: 0, y: 0 }, kills = 0, health = 100;
-var healthCube, lastHealthPickup = 0;
+var healthCube, lastHealthPickup = 0, pickuphealthPlay = 1;
+var bgmusic, winsound, losesound, blast, scream, rainsound, windsound, pickhealth, hurtwarn;//audio varibles
+var wingame, losegame;
+var jsonLoader, gun;
+var mouse3D;
+//var bgmusic = new THREE.AudioObject('audio/background.wav', 0, 1, false);//volume,playback rate,looping
 /*
 var finder = new PF.AStarFinder({ // Defaults to Manhattan heuristic
 	allowDiagonal: true,
@@ -40,10 +45,12 @@ var finder = new PF.AStarFinder({ // Defaults to Manhattan heuristic
 
 // Initialize and run on document ready
 $(document).ready(function() {
-	$('body').append('<div id="intro">Click to start</div>');
-	$('#intro').css({width: WIDTH, height: HEIGHT}).one('click', function(e) {
+	$('body').append('<div id="intro"><div id = "intro-content">Shoot 4 enemies, Click here to start</div></div>');
+	$('#intro').css({width: WIDTH, height: HEIGHT});
+	$('#intro-content').one('click', function(e) {
 		e.preventDefault();
 		$(this).fadeOut();
+		$('#intro').fadeOut();
 		init();
 		setInterval(drawRadar, 1000);
 		animate();
@@ -65,7 +72,7 @@ var rainEffect=-1;
 var snowEffect=-1;
 var duskEffect=-1;
 var sky;
-//particle varibles----------------------------------
+//----------------particle varibles----------------------------------
 	// create the particle variables
 	var particleCount = 7000,
 		particles = new THREE.Geometry(),
@@ -104,12 +111,29 @@ var sky;
 		  particles.vertices.push(particle);
 		  //particles.rotateZ( 90*Math.PI / 180);
 		}
-//---------------------------------------------------				
+//---------------particle varibles------------------------------------				
 
 function init() {
 	clock = new t.Clock(); // Used in render() for controls.update()
 	projector = new t.Projector(); // Used in bullet projection
 	scene = new t.Scene(); // Holds all objects in the canvas
+	wingame = false;
+	losegame = false;
+	//set up audio--------------------------------------------
+	bgmusic =  document.getElementById ('bgmusic');
+	winsound =  document.getElementById ('winsound');
+	losesound =  document.getElementById ('losesound');
+	blast =  document.getElementById ('blast');
+	scream =  document.getElementById ('scream');
+	rainsound =  document.getElementById ('rainsound');
+	windsound =  document.getElementById ('windsound');
+	pickhealth =  document.getElementById ('pickhealth');
+	hurtwarn = document.getElementById ('hurtwarn');
+	bgmusic.volume = 0.5;
+	bgmusic.play();
+	//scene.add(bgmusic);
+	//THREE.AudioObject.call(bgmusic, 'background.wav', 1, 1, true);
+
 
 	//set up particle--------------------------------------------
 	
@@ -126,6 +150,7 @@ function init() {
 		
 
 	//------------------------------------------------------------------
+
 	// Set up camera
 	cam = new t.PerspectiveCamera(60, ASPECT, 1, 10000); // FOV, aspect, near, far
 	cam.position.y = UNITSIZE * .2;
@@ -146,6 +171,60 @@ function init() {
 
 	//controls.lookVertical = true; // Temporary solution; play on flat surfaces only
 	controls.noFly = true;
+
+
+	//Set Up JsonLoader--------------------------------------------------
+	
+	//jsonLoader = new THREE.JSONLoader();
+	gun = new THREE.Mesh();
+	/*jsonLoader.load("models/misc_chair01.js", function( geometry , mat ) {
+		gun = new THREE.Mesh( geometry, mat[0]);
+		gun.scale.set( 1000, 1000, 1000);
+		scene.add( gun );
+		console.log("load gun");
+	}, "models");*/
+/*
+	jsonLoader.load("models/Handgun.json", function( geometry ) {
+		var gunMaterial = new THREE.MeshLambertMaterial({
+    				map: THREE.ImageUtils.loadTexture('models/handgun_C.jpg')});
+		gun = new THREE.Mesh( geometry, gunMaterial);
+		gun.scale.set( 30, 30, 30);
+		scene.add( gun );
+	});*/
+
+	var loader = new THREE.ColladaLoader();
+
+	loader.load(
+		// resource URL
+		'models/Handgun.dae',
+		// Function when resource is loaded
+		function ( geometry ) {
+			/*var rotMat = new THREE.Matrix4().makeRotationZ(Math.PI/2);
+			collada.applyMatrix4( rotMat );*/
+			//geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0,10,20));
+			gun = geometry.scene;
+
+			gun.children[0].material.map = THREE.ImageUtils.loadTexture('models/handgun_C.jpg');
+			//gun.children[0].material = new THREE.MeshBasicMaterial();
+			/*gun.children[0].material = new THREE.MeshBasicMaterial({
+    				map: THREE.ImageUtils.loadTexture('models/handgun_C.jpg')}
+    				);*/
+			gun.rotation.set(-Math.PI/2+Math.PI/6,0, Math.PI/2);
+			gun.scale.set( 7, 10, 7);
+			gun.position.set(0,-10,-20);
+			//gun.rotation.z = Math.PI/3;
+			cam.add( gun );
+		},
+		// Function called when download progresses
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		}
+	);
+	//mouseMove event
+		/*mouse3D = new THREE.Vector3(
+		 ( event.clientX / window.innerWidth ) * 2 - 1,
+		 - ( event.clientY / window.innerHeight ) * 2 + 1,
+		 0.5 );*/
 
 //sky dome---------------
 	var skyGeo = new t.SphereGeometry(2000, 50, 50);
@@ -180,8 +259,10 @@ function init() {
 	
 	// Shoot on click
 	$(document).click(function(e) {
-		e.preventDefault;
-		if (e.which === 1) { // Left click only
+		e.preventDefault;// 阻止浏览器默认动作
+		console.log("y="+mouse.y+"x="+mouse.x);
+		if (e.which === 1 && (mouse.y>=-0.88 || mouse.x<-0.59 || mouse.x>0.19) && wingame==false && losegame==false ) { // Left click only
+			console.log("win="+wingame+"lose="+losegame);
 			createBullet();
 		}
 	});
@@ -213,7 +294,17 @@ var duskFlag = -1;
 function render() {
 	var delta = clock.getDelta(), speed = delta * BULLETMOVESPEED;
 	var aispeed = delta * MOVESPEED;
+	if(mouse.y<-0.88){
+		controls.lookSpeed = 0;
+		//console.log("y="+mouse.y);
+		console.log("LOOKSPEED"+controls.lookSpeed);
+	}
+	else{
+		controls.lookSpeed = LOOKSPEED;
+	}
 	controls.update(delta); // Move camera
+
+	//gun.lookAt( mouse3D);
 
 	//effects------------------------------------------------------
 
@@ -246,53 +337,71 @@ function render() {
 
 //controls
 	if(fogEffect==1){
-	scene.fog = new t.FogExp2(0xD6F1FF, 0.002); // color, density
-	console.log("run fog");
+		document.getElementById ('fog').style.background="#F39E4A";
+		scene.fog = new t.FogExp2(0xD6F1FF, 0.002); // color, density
+		//console.log("run fog");
 	}
 	else if (fogEffect==-1){
-	scene.fog = new t.FogExp2(0xD6F1FF, 0.0000001); // color, density
-	console.log("run fog else");
+		document.getElementById ('fog').style.background="#EEEEEE";
+		scene.fog = new t.FogExp2(0xD6F1FF, 0.0000001); // color, density
+		//console.log("run fog else");
 	}
 
 	if( rainEffect==1 && rainFlag==1 ){
+		//$('#rain').css({background-color:#F39E4A});
+		document.getElementById ('rain').style.background="#F39E4A";
+		document.getElementById ('snow').style.background="#EEEEEE";
 		//pMap = THREE.ImageUtils.loadTexture("images/raindrop.png");
 		particleSystem.material.map = THREE.ImageUtils.loadTexture('images/raindrop.png',{},function(){
            //add callback here if you want
         });
 		scene.add(particleSystem);
+		rainsound.volume = 1;
+		rainsound.play();
+		windsound.pause();
 		pSpeed=0.9;
 		console.log("run rain============================================cannot loop");
 		rainFlag=-1;
 	}
 	else if ( rainEffect==1 && rainFlag==-1 ){
-	console.log("run rain else, not loop rain");
+	//console.log("run rain else, not loop rain");
 	}
 	else if ( rainEffect==-1 && snowEffect==-1 ){
+		//$('#rain').css({background-color:#EEEEEE});
+		document.getElementById ('rain').style.background="#EEEEEE";
 		scene.remove(particleSystem);
+		rainsound.pause();
 		rainFlag=-1;
-		console.log("remove rain!!!!!!!!!!!!!!!!!!!");
+		//console.log("remove rain!!!!!!!!!!!!!!!!!!!");
 	}
 
 	if( snowEffect==1 && snowFlag==1 ){
+		document.getElementById ('snow').style.background="#F39E4A";
+		document.getElementById ('rain').style.background="#EEEEEE";
 		//pMap = THREE.ImageUtils.loadTexture("images/snowflake.png");
 		particleSystem.material.map = THREE.ImageUtils.loadTexture('images/snowflake.png',{},function(){
            //add callback here if you want
         });
 		scene.add(particleSystem);
+		windsound.play();
+		rainsound.pause();
 		pSpeed=0.1;
 		console.log("run snow============================================");
 		snowFlag=-1;
 	}
 	else if ( snowEffect==1 && snowFlag==-1 ){
-	console.log("run snow else, not loop snow");
+	//console.log("run snow else, not loop snow");
 	}
 	else if ( snowEffect==-1 && rainEffect==-1 ){
+		document.getElementById ('snow').style.background="#EEEEEE";
 		scene.remove(particleSystem);
+		windsound.pause();
 		snowFlag=-1;
-		console.log("remove snow!!!!!!!!!!!!!!!!!!!");
+		//console.log("remove snow!!!!!!!!!!!!!!!!!!!");
 	}
 
 	if(duskEffect == 1 && duskFlag==1){
+		document.getElementById ('dusk').style.background="#F39E4A";
 		sky.material.map = THREE.ImageUtils.loadTexture('images/dusk2.jpg',{},function(){
 	           //add callback here if you want
 	        });
@@ -300,9 +409,10 @@ function render() {
 		console.log("run dusk=======================================");
 	}
 	else if(duskEffect == 1 && duskFlag == -1){
-		console.log("run dusk else, not loop dusk");
+		//console.log("run dusk else, not loop dusk");
 	}
 	else if (duskEffect==-1 && duskFlag ==1){
+		document.getElementById ('dusk').style.background="#EEEEEE";
 		sky.material.map = THREE.ImageUtils.loadTexture('images/sky.jpg',{},function(){
 	           //add callback here if you want
 	        });
@@ -312,7 +422,7 @@ function render() {
 	}
 	else if (duskEffect==-1 && duskFlag == -1){
 		duskFlag == -1;
-		console.log("run sky else, not loop sky");
+		//console.log("run sky else, not loop sky");
 	}
 	
 //////Paticle animation://///
@@ -330,7 +440,7 @@ function render() {
     // check if we need to reset
     if (particle.y < -200) {
       particle.y = 200;
-      particle.velocity.y = 0; //Vector3 porperty has changed!!!
+      particle.velocity.y = 0; //Vector3 porperty has changed!!!no particle.position.y
     }
 
     // update the velocity with
@@ -353,6 +463,7 @@ function render() {
 	healthcube.rotation.x += 0.004
 	healthcube.rotation.y += 0.008;
 	// Allow picking it up once per minute
+	
 	if (Date.now() > lastHealthPickup + 60000) {
 		if (distance(cam.position.x, cam.position.z, healthcube.position.x, healthcube.position.z) < 15 && health != 100) {
 			health = Math.min(health + 50, 100);
@@ -360,9 +471,14 @@ function render() {
 			lastHealthPickup = Date.now();
 		}
 		healthcube.material.wireframe = false;
+
 	}
 	else {
 		healthcube.material.wireframe = true;
+		if(pickuphealthPlay==1){
+		pickhealth.play();
+		pickuphealthPlay = -1;
+		}
 	}
 
 	// Update bullets. Walk backwards through the list so we can remove items.
@@ -399,6 +515,7 @@ function render() {
 		}
 		// Bullet hits player
 		if (distance(p.x, p.z, cam.position.x, cam.position.z) < 25 && b.owner != cam) {
+			hurtwarn.play();
 			$('#hurt').fadeIn(75);
 			health -= 10;
 			if (health < 0) health = 0;
@@ -421,6 +538,7 @@ function render() {
 		if (a.health <= 0) {
 			ai.splice(i, 1);
 			scene.remove(a);
+			scream.play();
 			kills++;
 			$('#score').html(kills * 100);
 			addAI();
@@ -472,14 +590,20 @@ function render() {
 
 	//win
 
-	if(kills==4){
+	if(kills==4){	
 		runAnim = false;
+		bgmusic.pause();
+		windsound.pause();
+		rainsound.pause();
+		winsound.play();
 		$(renderer.domElement).fadeOut();
 		$('#radar, #hud, #credits, #fog, #rain, #snow, #dusk').fadeOut();
 		$('#intro').fadeIn();
-		$('#intro').html('You Win!!! Click to restart...');
-		$('#intro').one('click', function() {
+		$('#intro-content').fadeIn();
+		$('#intro-content').html('You Win!!! Click here to restart...');
+		$('#intro-content').one('click', function() {
 			location = location;
+			wingame = true;
 			/*
 			$(renderer.domElement).fadeIn();
 			$('#radar, #hud, #credits').fadeIn();
@@ -495,17 +619,25 @@ function render() {
 			cam.translateZ(-cam.position.z);
 			*/
 		});
+		//wingame = false;
 	}
 	
 	// Death
 	if (health <= 0) {
 		runAnim = false;
+		bgmusic.pause();
+		windsound.pause();
+		rainsound.pause();
+		losesound.play();
 		$(renderer.domElement).fadeOut();
 		$('#radar, #hud, #credits, #fog, #rain, #snow, #dusk').fadeOut();
 		$('#intro').fadeIn();
-		$('#intro').html('Ouch! Click to restart...');
-		$('#intro').one('click', function() {
+		$('#intro-content').fadeIn();
+		$('#intro-content').html('Ouch! Click here to restart...');
+		console.log("lose2="+losegame);
+		$('#intro-content').one('click', function() {
 			location = location;
+			losegame = true;
 			/*
 			$(renderer.domElement).fadeIn();
 			$('#radar, #hud, #credits').fadeIn();
@@ -520,7 +652,9 @@ function render() {
 			cam.translateX(-cam.position.x);
 			cam.translateZ(-cam.position.z);
 			*/
+			console.log("lose3="+losegame);
 		});
+		//losegame = false;
 	}
 }
 
@@ -628,6 +762,8 @@ function addAI() {
 	o.lastRandomX = Math.random();
 	o.lastRandomZ = Math.random();
 	o.lastShot = Date.now(); // Higher-fidelity timers aren't a big deal here.
+	o.receiveShadow = true;//shadow
+	o.castShadow = true;
 	ai.push(o);
 	scene.add(o);
 }
@@ -770,7 +906,7 @@ function createBullet(obj) {
 	//sphere.add(fire);
 	bullets.push(sphere);
 	scene.add(sphere);
-	
+	blast.play(0);
 	return sphere;
 }
 

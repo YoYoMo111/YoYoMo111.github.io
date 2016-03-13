@@ -288,7 +288,7 @@ ParticleEngine.prototype.randomValue = function(base, spread)
 ParticleEngine.prototype.randomVector3 = function(base, spread)
 {
 	var rand3 = new t.Vector3( Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5 );
-	return new t.Vector3().addVectors( base, new t.Vector3().multiplyVectors( spread, rand3 ) );
+	return new t.Vector3().addVectors( base, new t.Vector3().multiplyVector3( spread, rand3 ) );//new THREE.Vector3().multiplyVectors( spread, rand3 )')
 }
 
 
