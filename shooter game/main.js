@@ -34,7 +34,7 @@ var runAnim = true, mouse = { x: 0, y: 0 }, kills = 0, health = 100;
 var healthCube, lastHealthPickup = 0, pickuphealthPlay = 1;
 var bgmusic, winsound, losesound, blast, scream, rainsound, windsound, pickhealth, hurtwarn;//audio varibles
 var wingame, losegame;
-var jsonLoader, gun;
+var jsonLoader, gun, rock1, rock2, rock3, house, tree;
 var mouse3D;
 //var bgmusic = new THREE.AudioObject('audio/background.wav', 0, 1, false);//volume,playback rate,looping
 /*
@@ -45,7 +45,7 @@ var finder = new PF.AStarFinder({ // Defaults to Manhattan heuristic
 
 // Initialize and run on document ready
 $(document).ready(function() {
-	$('body').append('<div id="intro"><div id = "intro-content">Shoot 4 enemies, Click here to start</div></div>');
+	$('body').append('<div id="intro"><div id = "intro-content">Kill 4 enemies, Click here to start</div></div>');
 	$('#intro').css({width: WIDTH, height: HEIGHT});
 	$('#intro-content').one('click', function(e) {
 		e.preventDefault();
@@ -111,7 +111,7 @@ var sky;
 		  particles.vertices.push(particle);
 		  //particles.rotateZ( 90*Math.PI / 180);
 		}
-//---------------particle varibles------------------------------------				
+//---------------particle varibles end------------------------------------				
 
 function init() {
 	clock = new t.Clock(); // Used in render() for controls.update()
@@ -134,8 +134,11 @@ function init() {
 	//scene.add(bgmusic);
 	//THREE.AudioObject.call(bgmusic, 'background.wav', 1, 1, true);
 
+	//set up axes
+	var axes = new THREE.AxisHelper(100);
+	scene.add(axes);
 
-	//set up particle--------------------------------------------
+	//set up particle (actually have done it before init())------------------------------
 	
 
 		// also update the particle system to
@@ -173,7 +176,7 @@ function init() {
 	controls.noFly = true;
 
 
-	//Set Up JsonLoader--------------------------------------------------
+   /////////Set Up ColladaLoader//////////////////--------------------------------------------------
 	
 	//jsonLoader = new THREE.JSONLoader();
 	gun = new THREE.Mesh();
@@ -183,7 +186,7 @@ function init() {
 		scene.add( gun );
 		console.log("load gun");
 	}, "models");*/
-/*
+   /*
 	jsonLoader.load("models/Handgun.json", function( geometry ) {
 		var gunMaterial = new THREE.MeshLambertMaterial({
     				map: THREE.ImageUtils.loadTexture('models/handgun_C.jpg')});
@@ -226,7 +229,125 @@ function init() {
 		 - ( event.clientY / window.innerHeight ) * 2 + 1,
 		 0.5 );*/
 
-//sky dome---------------
+
+	rock1 = new THREE.Mesh();
+	var loader2 = new THREE.ColladaLoader();
+
+	loader2.load(
+		// resource URL
+		'models/Rock1.dae',
+		// Function when resource is loaded
+		function ( geometry ) {
+			rock1 = geometry.scene;
+
+			//rock1.children[0].material.map = THREE.ImageUtils.loadTexture('models/house_wall.jpg');
+			rock1.children[0].material = new THREE.MeshBasicMaterial();
+			rock1.children[0].material = new THREE.MeshBasicMaterial({
+    				map: THREE.ImageUtils.loadTexture('models/Rock1.jpg')}
+    				);
+			rock1.rotation.set(-Math.PI/2,0, Math.PI/2);
+			rock1.scale.set( 50, 50, 50);
+			rock1.position.set(0,-10,-20);
+
+			//scene.add( rock1 );
+		},
+		// Function called when download progresses
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		}
+	);
+
+	rock2 = new THREE.Mesh();
+	var loader3 = new THREE.ColladaLoader();
+
+	loader3.load(
+		// resource URL
+		'models/Rock2.dae',
+		// Function when resource is loaded
+		function ( geometry ) {
+			rock2 = geometry.scene;
+
+			//rock1.children[0].material.map = THREE.ImageUtils.loadTexture('models/house_wall.jpg');
+			rock2.children[0].material = new THREE.MeshBasicMaterial();
+			rock2.children[0].material = new THREE.MeshBasicMaterial({
+    				map: THREE.ImageUtils.loadTexture('models/Rock2.jpg')}
+    				);
+			rock2.rotation.set(-Math.PI/2,0, Math.PI/2);
+			rock2.scale.set( 100, 100, 100);
+			rock2.position.set(0,-10,-20);
+
+			//scene.add( rock2 );
+		},
+		// Function called when download progresses
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		}
+	);
+
+	rock3 = new THREE.Mesh();
+	var loader4 = new THREE.ColladaLoader();
+
+	loader4.load(
+		// resource URL
+		'models/Rock3.dae',
+		// Function when resource is loaded
+		function ( geometry ) {
+			rock3 = geometry.scene;
+
+			//rock1.children[0].material.map = THREE.ImageUtils.loadTexture('models/house_wall.jpg');
+			rock3.children[0].material = new THREE.MeshBasicMaterial();
+			rock3.children[0].material = new THREE.MeshBasicMaterial({
+    				map: THREE.ImageUtils.loadTexture('models/Rock3.jpg')}
+    				);
+			rock3.rotation.set(-Math.PI/2,0, Math.PI/2);
+			rock3.scale.set( 100, 100, 100);
+			rock3.position.set(0,-10,-20);
+
+			//scene.add( rock3 );
+		},
+		// Function called when download progresses
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		}
+	);
+
+
+	house = new THREE.Mesh();
+	var loader5 = new THREE.ColladaLoader();
+
+	loader5.load(
+		// resource URL
+		'models/house.dae',
+		// Function when resource is loaded
+		function ( geometry ) {
+			house = geometry.scene;
+
+			//rock1.children[0].material.map = THREE.ImageUtils.loadTexture('models/house_wall.jpg');
+			house.children[0].material = new THREE.MeshBasicMaterial();
+			house.children[0].material = new THREE.MeshBasicMaterial({
+    				map: THREE.ImageUtils.loadTexture('models/house_wall.jpg')}
+    				);
+			house.children[1].material = new THREE.MeshBasicMaterial();
+			house.children[1].material = new THREE.MeshBasicMaterial({
+    				map: THREE.ImageUtils.loadTexture('models/house_wood.jpg')}
+    				);
+			house.rotation.set(-Math.PI/2,0, Math.PI/2);
+			house.scale.set( 100, 100, 100);
+			house.position.set(0,-10,-20);
+			house.receiveShadow = true;//shadow
+			house.castShadow = true;
+
+			scene.add( house );
+		},
+		// Function called when download progresses
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		}
+	);
+
+   ////////////Set Up ColladaLoader end////////////////------------------------------------------
+
+   ///////////sky dome/////////////////---------------
 	var skyGeo = new t.SphereGeometry(2000, 50, 50);
 	//var skyTexture = t.ImageUtils.loadTexture('images/sky.jpg');
 	var skyMaterial = new t.MeshBasicMaterial({map: t.ImageUtils.loadTexture('images/sky.jpg'), overdraw: true});
@@ -236,7 +357,7 @@ function init() {
 	//sky.skyMaterial= t.DoubleSide;
 	sky.doubleSided = true;
 	scene.add(sky);
-//---------------------------
+  /////////sky dome end///////////////-----------------
 
 	// World objects
 	setupScene();
@@ -247,7 +368,7 @@ function init() {
 	// Handle drawing as WebGL (faster than Canvas but less supported)
 	renderer = new t.WebGLRenderer();
 	renderer.setSize(WIDTH, HEIGHT);
-		//setup shadow-----------------------------
+	//setup shadow-----------------------------
 	renderer.shadowMapEnabled = true;
 	
 	// Add the canvas to the document
@@ -291,6 +412,7 @@ var pSpeed = 0;
 var rainFlag = -1;
 var snowFlag = -1;
 var duskFlag = -1;
+
 function render() {
 	var delta = clock.getDelta(), speed = delta * BULLETMOVESPEED;
 	var aispeed = delta * MOVESPEED;
@@ -306,9 +428,9 @@ function render() {
 
 	//gun.lookAt( mouse3D);
 
-	//effects------------------------------------------------------
+///////////////effects//////////////////------------------------------------
 
-//click events
+   //click events
 
 	$('#fog').unbind('click').click(function() {
 	 fogEffect=-fogEffect;
@@ -335,7 +457,7 @@ function render() {
 	 console.log("duskEffect="+duskEffect+"duskFlag="+duskFlag);
 	});
 
-//controls
+  //controls
 	if(fogEffect==1){
 		document.getElementById ('fog').style.background="#F39E4A";
 		scene.fog = new t.FogExp2(0xD6F1FF, 0.002); // color, density
@@ -346,6 +468,7 @@ function render() {
 		scene.fog = new t.FogExp2(0xD6F1FF, 0.0000001); // color, density
 		//console.log("run fog else");
 	}
+
 
 	if( rainEffect==1 && rainFlag==1 ){
 		//$('#rain').css({background-color:#F39E4A});
@@ -375,6 +498,7 @@ function render() {
 		//console.log("remove rain!!!!!!!!!!!!!!!!!!!");
 	}
 
+
 	if( snowEffect==1 && snowFlag==1 ){
 		document.getElementById ('snow').style.background="#F39E4A";
 		document.getElementById ('rain').style.background="#EEEEEE";
@@ -400,6 +524,7 @@ function render() {
 		//console.log("remove snow!!!!!!!!!!!!!!!!!!!");
 	}
 
+
 	if(duskEffect == 1 && duskFlag==1){
 		document.getElementById ('dusk').style.background="#F39E4A";
 		sky.material.map = THREE.ImageUtils.loadTexture('images/dusk2.jpg',{},function(){
@@ -424,8 +549,10 @@ function render() {
 		duskFlag == -1;
 		//console.log("run sky else, not loop sky");
 	}
+///////////////effects end//////////////////------------------------------------
 	
-//////Paticle animation://///
+
+///////////////////Paticle animation://///////////////////////
 
 	// rain add some rotation to the system
   	particleSystem.rotation.y += 0.005;
@@ -457,7 +584,8 @@ function render() {
     geometry.
     __dirtyVertices = true;
 
-	//---------------------------------------------------------------
+////////////Paticle animation end////////////////----------------------------
+	
 	
 	// Rotate the health cube
 	healthcube.rotation.x += 0.004
@@ -517,7 +645,7 @@ function render() {
 		if (distance(p.x, p.z, cam.position.x, cam.position.z) < 25 && b.owner != cam) {
 			hurtwarn.play();
 			$('#hurt').fadeIn(75);
-			health -= 10;
+			//health -= 10;//调试先注释
 			if (health < 0) health = 0;
 			val = health < 25 ? '<span style="color: darkRed">' + health + '</span>' : health;
 			$('#health').html(val);
@@ -538,6 +666,7 @@ function render() {
 		if (a.health <= 0) {
 			ai.splice(i, 1);
 			scene.remove(a);
+			scream.volume = 1;
 			scream.play();
 			kills++;
 			$('#score').html(kills * 100);
@@ -638,20 +767,7 @@ function render() {
 		$('#intro-content').one('click', function() {
 			location = location;
 			losegame = true;
-			/*
-			$(renderer.domElement).fadeIn();
-			$('#radar, #hud, #credits').fadeIn();
-			$(this).fadeOut();
-			runAnim = true;
-			animate();
-			health = 100;
-			$('#health').html(health);
-			kills--;
-			if (kills <= 0) kills = 0;
-			$('#score').html(kills * 100);
-			cam.translateX(-cam.position.x);
-			cam.translateZ(-cam.position.z);
-			*/
+			
 			console.log("lose3="+losegame);
 		});
 		//losegame = false;
@@ -665,16 +781,17 @@ function setupScene() {
 	// Geometry: floor
 	var floor = new t.Mesh(
 			new t.CubeGeometry(units * UNITSIZE, 10, units * UNITSIZE),
-			new t.MeshLambertMaterial({color: 0xEDCBA0,/*map: t.ImageUtils.loadTexture('images/snow-512.jpg')*/})
+			new t.MeshLambertMaterial({color: 0xEDCBA0,/*map: t.ImageUtils.loadTexture('images/snow-512.jpg')*/transparent: true})
 	);
+	//floor.material.opacity = 0.5;
 	floor.receiveShadow = true;//shadow
 	scene.add(floor);
 	
 	// Geometry: walls
 	var cube = new t.CubeGeometry(UNITSIZE, WALLHEIGHT, UNITSIZE);
 	var materials = [
-	                 new t.MeshLambertMaterial({/*color: 0x00CCAA,*/map: t.ImageUtils.loadTexture('images/wall-1.jpg')}),
-	                 new t.MeshLambertMaterial({/*color: 0xC5EDA0,*/map: t.ImageUtils.loadTexture('images/wall-2.jpg')}),
+	                 new t.MeshLambertMaterial({/*color: 0x00CCAA,*/map: t.ImageUtils.loadTexture('images/wall-1.jpg'), transparent: true}),
+	                 new t.MeshLambertMaterial({/*color: 0xC5EDA0,*/map: t.ImageUtils.loadTexture('images/wall-2.jpg'), transparent: true}),
 	                 new t.MeshLambertMaterial({color: 0xFBEBCD}),
 	                 ];
 	for (var i = 0; i < mapW; i++) {
@@ -686,6 +803,8 @@ function setupScene() {
 				wall.position.z = (j - units/2) * UNITSIZE;
 				wall.receiveShadow = true;//shadow
 				wall.castShadow = true;
+				//wall.material.wireframe = true;//frame
+				wall.material.opacity = 0.5;
 				scene.add(wall);
 			}
 		}
@@ -714,7 +833,7 @@ function setupScene() {
 	directionalLight1.shadowCameraTop = d;
 	directionalLight1.shadowCameraBottom = -d;
 	directionalLight1.shadowCameraFar = 2500;
-	directionalLight1.shaowCameraVisible = true;
+	//directionalLight1.shadowCameraVisible = true;
 	//-----------------------------------------------
 	scene.add( directionalLight1 );
 
