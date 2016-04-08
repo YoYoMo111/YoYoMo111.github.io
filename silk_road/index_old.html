@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html class="html" lang="en-GB">
+ <head>
+
+  <script type="text/javascript">
+   if(typeof Muse == "undefined") window.Muse = {}; window.Muse.assets = {"required":["jquery-1.8.3.min.js", "museutils.js", "jquery.watch.js", "index.css"], "outOfDate":[]};
+</script>
+  
+  <meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
+  <meta name="generator" content="2015.0.2.310"/>
+  <title>Home</title>
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="css/site_global.css?4052507572"/>
+  <link rel="stylesheet" type="text/css" href="css/master_a-master.css?3954792586"/>
+  <link rel="stylesheet" type="text/css" href="css/index.css?505620523" id="pagesheet"/>
+  <!-- Other scripts -->
+  <script type="text/javascript">
+   document.documentElement.className += ' js';
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBj_--p18PuOq5p8P94tdbzx8LeCKRM0Fg" type="text/javascript"></script>
+    <script>
+    
+        function load_maps()
+        {
+            
+        //The following lines create a map. All you need is: a div id, a location for the center of the map, and a zoom level.
+        var loc={lat: 38.436836, lng: 179.954636};
+      var ufmap = new google.maps.Map(document.getElementById('my_map'), {center: loc,zoom: 2});
+  
+        //The following lines create a marker on a map. All you need is a location for the marker and a map.
+        //var loc1={lat: 29.6448497, lng: -82.3605733};
+      //var marker1 = new google.maps.Marker({position: loc1,map: ufmap});
+            
+        //optionally you can also give a title for the marker:
+        //var loc1={lat: 29.6448497, lng: -82.3605733};
+      //var marker1 = new google.maps.Marker({position: loc1,map: ufmap, title: 'This is Baby Gator.'});     
+            
+        //optionally you can also give a single character label for the marker:
+        //var loc1={lat: 29.6448497, lng: -82.3605733};
+      //var marker1 = new google.maps.Marker({position: loc1,map: ufmap, title: 'This is Baby Gator.',label:'A'});
+            
+        //optionally you can also give an icon for the marker:
+        var loc1={lat: 23.11948, lng: 113.26198};
+      var marker1 = new google.maps.Marker({position: loc1,map: ufmap, title: 'This is my hometown.',label:'Guangzhou', icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'});
+        
+            
+        var loc2={lat: 41.81172, lng: 123.44631};
+      var marker2 = new google.maps.Marker({position: loc2,map: ufmap,title: 'This is my college.',label:'Shenyang', icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'});
+           
+        var loc3={lat: 35.16423, lng: 129.09328};
+      var marker3 = new google.maps.Marker({position: loc3,map: ufmap,title: 'This is my college.',label:'Korea', icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'});
+
+        var loc4={lat: 29.64923, lng: 277.66140};
+        var marker4 = new google.maps.Marker({position: loc4,map: ufmap,title: 'I am here.',label:'USA'});
+         
+        //The following lines create a pop up window that appears when you click on a marker. All you need is: a marker, a map, and content for the pop up window.
+        var infowindow = new google.maps.InfoWindow({content: '<div>This is my hometown.</div>'});  
+        marker1.addListener('click', function() {infowindow.open(ufmap, marker1);});
+            
+        var infowindow2 = new google.maps.InfoWindow({content: '<div>This was my college.</div>'});   
+        marker2.addListener('click', function() {infowindow2.open(ufmap, marker2);});
+            
+        var infowindow3 = new google.maps.InfoWindow({content: '<div>I studyed here as an exchange student in 2013.</div>'});   
+        marker3.addListener('click', function() {infowindow3.open(ufmap, marker3);});
+
+        var infowindow4 = new google.maps.InfoWindow({content: '<div>I am here.</div>'});   
+        marker4.addListener('click', function() {infowindow4.open(ufmap, marker4);});
+
+        }
+        
+    
+    </script>
+
+   </head>
+ <body>
+
+  <div class="clearfix" id="page"><!-- column -->
+   <div class="position_content" id="page_position_content">
+    <div class="clearfix colelem" id="u77"><!-- group -->
+     <img class="grpelem" id="u79-4" alt="Silk Road: Today and Yesterday" width="557" height="42" src="images/u79-4.png"/><!-- rasterized frame -->
+    </div>
+    <div class="clearfix colelem" id="pu81"><!-- group -->
+     <div class="grpelem" id="u81"><!-- simple frame --></div>
+     <div class="grpelem" id="my_map"><!-- simple frame --></div>
+    </div>
+    <div class="verticalspacer"></div>
+    <div class="colelem" id="u78"><!-- simple frame --></div>
+   </div>
+  </div>
+  <!-- JS includes -->
+  <script type="text/javascript">
+   if (document.location.protocol != 'https:') document.write('\x3Cscript src="http://musecdn.businesscatalyst.com/scripts/4.0/jquery-1.8.3.min.js" type="text/javascript">\x3C/script>');
+</script>
+  <script type="text/javascript">
+   window.jQuery || document.write('\x3Cscript src="scripts/jquery-1.8.3.min.js" type="text/javascript">\x3C/script>');
+</script>
+  <script src="scripts/museutils.js?275725342" type="text/javascript"></script>
+  <script src="scripts/jquery.watch.js?3999102769" type="text/javascript"></script>
+  <!-- Other scripts -->
+  <script type="text/javascript">
+   $(document).ready(function() { try {
+(function(){var a={},b=function(a){if(a.match(/^rgb/))return a=a.replace(/\s+/g,"").match(/([\d\,]+)/gi)[0].split(","),(parseInt(a[0])<<16)+(parseInt(a[1])<<8)+parseInt(a[2]);if(a.match(/^\#/))return parseInt(a.substr(1),16);return 0};(function(){$('link[type="text/css"]').each(function(){var b=($(this).attr("href")||"").match(/\/?css\/([\w\-]+\.css)\?(\d+)/);b&&b[1]&&b[2]&&(a[b[1]]=b[2])})})();(function(){$("body").append('<div class="version" style="display:none; width:1px; height:1px;"></div>');
+for(var c=$(".version"),d=0;d<Muse.assets.required.length;){var f=Muse.assets.required[d],g=f.match(/([\w\-\.]+)\.(\w+)$/),k=g&&g[1]?g[1]:null,g=g&&g[2]?g[2]:null;switch(g.toLowerCase()){case "css":k=k.replace(/\W/gi,"_").replace(/^([^a-z])/gi,"_$1");c.addClass(k);var g=b(c.css("color")),h=b(c.css("background-color"));g!=0||h!=0?(Muse.assets.required.splice(d,1),"undefined"!=typeof a[f]&&(g!=a[f]>>>24||h!=(a[f]&16777215))&&Muse.assets.outOfDate.push(f)):d++;c.removeClass(k);break;case "js":k.match(/^jquery-[\d\.]+/gi)&&
+typeof $!="undefined"?Muse.assets.required.splice(d,1):d++;break;default:throw Error("Unsupported file type: "+g);}}c.remove();if(Muse.assets.outOfDate.length||Muse.assets.required.length)c="Some files on the server may be missing or incorrect. Clear browser cache and try again. If the problem persists please contact website author.",(d=location&&location.search&&location.search.match&&location.search.match(/muse_debug/gi))&&Muse.assets.outOfDate.length&&(c+="\nOut of date: "+Muse.assets.outOfDate.join(",")),d&&Muse.assets.required.length&&(c+="\nMissing: "+Muse.assets.required.join(",")),alert(c)})()})();
+/* body */
+Muse.Utils.transformMarkupToFixBrowserProblemsPreInit();/* body */
+Muse.Utils.prepHyperlinks(true);/* body */
+Muse.Utils.fullPage('#page');/* 100% height page */
+Muse.Utils.showWidgetsWhenReady();/* body */
+Muse.Utils.transformMarkupToFixBrowserProblems();/* body */
+} catch(e) { if (e && 'function' == typeof e.notify) e.notify(); else Muse.Assert.fail('Error calling selector function:' + e); }});
+</script>
+   </body>
+</html>

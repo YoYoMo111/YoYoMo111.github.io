@@ -1,0 +1,16 @@
+<manifest alg="2" build="2015.0.2.310" opt="false" iceEnabled="true" iceMarkupVersion="2" exportTarget="other" domain="silkroadtodayandyesterday.com" resolutions="1x" timestamp="1460091735358">
+  <folder name="css">
+    <file name="site_global.css" crc="4052507572"/>
+    <file name="master_a-master.css" crc="3954792586" ref="index"/>
+    <file name="index.css" crc="505620523" ref="index"/>
+  </folder>
+  <folder name="scripts">
+    <file name="jquery-1.8.3.min.js" crc="196614522" ref="index"/>
+    <file name="museutils.js" crc="275725342" ref="index"/>
+    <file name="jquery.watch.js" crc="3999102769" ref="index"/>
+  </folder>
+  <folder name="images">
+    <file name="u79-4.png" crc="160412347" ref="index"/>
+  </folder>
+  <file name="index.html" crc="104595577" seo="true" mt="1460091698800" redirect="true"/>
+</manifest>

@@ -1,0 +1,181 @@
+<html>
+<head>
+
+    <title>Silk Road</title>
+
+    <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="css/site_global.css?4052507572"/>
+  <link rel="stylesheet" type="text/css" href="css/master_a-master.css?3954792586"/>
+  <link rel="stylesheet" type="text/css" href="css/index.css?505620523" id="pagesheet"/>
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="scripts/jquery-1.7.2.min.js"></script>
+    <script>
+    
+        function load_maps()
+        {
+            
+        //The following lines create a map. All you need is: a div id, a location for the center of the map, and a zoom level.
+        var loc={lat: 38.436836, lng: 179.954636};
+	    var ufmap = new google.maps.Map(document.getElementById('my_map'), {center: loc,zoom: 2});
+	
+        //The following lines create a marker on a map. All you need is a location for the marker and a map.
+        //var loc1={lat: 29.6448497, lng: -82.3605733};
+	    //var marker1 = new google.maps.Marker({position: loc1,map: ufmap});
+            
+        //optionally you can also give a title for the marker:
+        //var loc1={lat: 29.6448497, lng: -82.3605733};
+	    //var marker1 = new google.maps.Marker({position: loc1,map: ufmap, title: 'This is Baby Gator.'});     
+            
+        //optionally you can also give a single character label for the marker:
+        //var loc1={lat: 29.6448497, lng: -82.3605733};
+	    //var marker1 = new google.maps.Marker({position: loc1,map: ufmap, title: 'This is Baby Gator.',label:'A'});
+            
+        //optionally you can also give an icon for the marker:
+        var loc1={lat: 23.11948, lng: 113.26198};
+	    var marker1 = new google.maps.Marker({position: loc1,map: ufmap, title: 'This is my hometown.',label:'Guangzhou'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+        
+            
+        var loc2={lat: 41.81172, lng: 123.44631};
+	    var marker2 = new google.maps.Marker({position: loc2,map: ufmap,title: 'This is my college.',label:'Shenyang'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+           
+        var loc3={lat: 35.16423, lng: 129.09328};
+	    var marker3 = new google.maps.Marker({position: loc3,map: ufmap,title: 'This is my college.',label:'Korea'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+
+        var loc4={lat: 29.64923, lng: 277.66140};
+        var marker4 = new google.maps.Marker({position: loc4,map: ufmap,title: 'I am here.',label:'USA'});
+        
+
+
+        //The following lines create a pop up window that appears when you click on a marker. All you need is: a marker, a map, and content for the pop up window.
+        var infowindow = new google.maps.InfoWindow({content: '<div>This is my hometown.</div>'});  
+        marker1.addListener('click', function() {
+            //infowindow.open(ufmap, marker1);
+
+           /* $('#u81').append('<table id="T1" style="width:354px;"><tbody><tr><td><img src="images/mockup.png" style="width:100px; height:100px;"></td></tr><tr><td>title</td></tr><tr id="yesterday-row"><td class="day-type">Yesterday:</td><td>something~~~~~~~~~~~~~~~~~~~~~~ <br> something</td></tr><tr id="today-row"><td class="day-type">Today:</td><td>something ~~~~~~~~~~~~~~~~~~~~~~~~~~<br> something</td></tr></tbody></table>');*/
+           for(var i=1; i<=4;i++){
+            var ID= '#T'+i;
+            $(ID).fadeOut();
+            console.log("run fadeOut");
+           }
+
+            $('#T1').fadeIn();
+        });
+            
+        var infowindow2 = new google.maps.InfoWindow({content: '<div>This was my college.</div>'});   
+        marker2.addListener('click', function() {
+            //infowindow2.open(ufmap, marker2);
+
+            for(var i=1; i<=4;i++){
+            var ID= '#T'+i;
+            $(ID).fadeOut();
+            console.log("run fadeOut");
+           }
+
+            $('#T2').fadeIn();
+            console.log("t2 in");
+        });
+            
+        var infowindow3 = new google.maps.InfoWindow({content: '<div>I studyed here as an exchange student in 2013.</div>'});   
+        marker3.addListener('click', function() {
+            //infowindow3.open(ufmap, marker3);
+
+            for(var i=1; i<=4;i++){
+            var ID= '#T'+i;
+            $(ID).fadeOut();
+            console.log("run fadeOut");
+           }
+
+            $('#T3').fadeIn();
+        });
+
+        var infowindow4 = new google.maps.InfoWindow({content: '<div>I am here.</div>'});   
+        marker4.addListener('click', function() {
+            //infowindow4.open(ufmap, marker4);
+
+            for(var i=1; i<=4;i++){
+            var ID= '#T'+i;
+            $(ID).fadeOut();
+            console.log("run fadeOut");
+           }
+
+            $('#T4').fadeIn();
+        });
+
+        //routes
+          var flightPlanCoordinates = [
+            {lat: 23.11948, lng: 113.26198},
+            {lat: 41.81172, lng: 123.44631},
+            {lat: 35.16423, lng: 129.09328},
+            {lat: 29.64923, lng: 277.66140}
+          ];
+          var flightPath = new google.maps.Polyline({
+            path: flightPlanCoordinates,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+          });
+
+          flightPath.setMap(ufmap);
+
+        }
+        
+    
+    </script>
+    
+</head>
+<body onload="load_maps();" style="background-color: pink; background-image: url(http://2.bp.blogspot.com/-6Unz0GdPIPE/Ti_XYAe8okI/AAAAAAAABd0/FY4zKhSy6g4/s1600/Opera-Background-Blue-Bubbles.png); background-repeat: no-repeat; background-size: 100%;">
+
+   <div class="clearfix" id="page"><!-- column -->
+   <div class="position_content" id="page_position_content">
+    <div class="clearfix colelem" id="u77"><!-- group -->
+     <img class="grpelem" id="u79-4" alt="Silk Road: Today and Yesterday" width="557" height="42" src="images/u79-4.png"/><!-- rasterized frame -->
+    </div>
+    <div class="clearfix colelem" id="pu81"><!-- group -->
+     <div class="grpelem" id="u81">
+        <table id="T1" class="tables" style="width:364px; display:none;">
+        <tbody>
+            <tr><td colspan="2" style="padding-top: 10px;"><center><img src="images/mockup.png" style="width:300px;"></center></td></tr>
+            <tr><td id="title" colspan="2"><center>my home town</center></td></tr>
+            <tr id="yesterday-row"><td class="day-type">Yesterday:</td><td style="padding:10px;">my home town <br> something</td></tr>
+            <tr id="today-row"><td class="day-type">Today:</td><td style="padding:10px;">my home town bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla<br> something</td></tr>
+        </tbody>
+        </table>
+
+        <table id="T2" class="tables" style="width:364px; display:none;">
+        <tbody>
+            <tr><td colspan="2" style="padding-top: 10px;"><center><img src="images/mockup.png" style="width:300px;"></center></td></tr>
+            <tr><td id="title" colspan="2"><center>my college</center></td></tr>
+            <tr id="yesterday-row"><td class="day-type">Yesterday:</td><td style="padding:10px;">my college <br> something</td></tr>
+            <tr id="today-row"><td class="day-type">Today:</td><td style="padding:10px;">my home town bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla<br> something</td></tr>
+        </tbody>
+        </table>
+
+        <table id="T3" class="tables" style="width:364px; display:none;">
+        <tbody>
+            <tr><td colspan="2" style="padding-top: 10px;"><center><img src="images/mockup.png" style="width:300px;"></center></td></tr>
+            <tr><td id="title" colspan="2"><center>south korea</center></td></tr>
+            <tr id="yesterday-row"><td class="day-type">Yesterday:</td><td style="padding:10px;">south korea<br> something</td></tr>
+            <tr id="today-row"><td class="day-type">Today:</td><td style="padding:10px;">my home town bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla<br> something</td></tr>
+        </tbody>
+        </table>
+
+        <table id="T4" class="tables" style="width:364px; display:none;">
+        <tbody>
+            <tr><td colspan="2" style="padding-top: 10px;"><center><img src="images/mockup.png" style="width:300px;"></center></td></tr>
+            <tr><td id="title" colspan="2"><center>Gainesville</center></td></tr>
+            <tr id="yesterday-row"><td class="day-type">Yesterday:</td><td style="padding:10px;">I'm here! <br> something</td></tr>
+            <tr id="today-row"><td class="day-type">Today:</td><td style="padding:10px;">my home town bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla<br> something</td></tr>
+        </tbody>
+        </table>
+
+     </div>
+     <div class="grpelem" id="my_map"><!-- simple frame --></div>
+    </div>
+    <div class="verticalspacer"></div>
+    <div class="colelem" id="u78"><!-- simple frame --></div>
+   </div>
+  </div>
+
+</body>
+</html>
