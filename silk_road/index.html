@@ -102,21 +102,131 @@
         });
 
         //routes
-          var flightPlanCoordinates = [
+          var route1Coordinates = [
             {lat: 23.11948, lng: 113.26198},
             {lat: 41.81172, lng: 123.44631},
             {lat: 35.16423, lng: 129.09328},
             {lat: 29.64923, lng: 277.66140}
           ];
-          var flightPath = new google.maps.Polyline({
-            path: flightPlanCoordinates,
+          var routePath1 = new google.maps.Polyline({
+            path: route1Coordinates,
             geodesic: true,
             strokeColor: '#FF0000',
             strokeOpacity: 1.0,
             strokeWeight: 2
           });
 
-          flightPath.setMap(ufmap);
+          //route2
+          var route2Coordinates = [
+            {lat: 37.772, lng: -122.214},
+            {lat: 21.291, lng: -157.821},
+            {lat: -18.142, lng: 178.431},
+            {lat: -27.467, lng: 153.027}
+          ];
+          var routePath2 = new google.maps.Polyline({
+            path: route2Coordinates,
+            geodesic: true,
+            strokeColor: '#3f0aff',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+          });
+
+          //route3
+          var route3Coordinates = [
+            {lat: 57.772, lng: -102.214},
+            {lat: 21.291, lng: -137.821},
+            {lat: -10.142, lng: 170.431},
+            {lat: -20.467, lng: 150.027}
+          ];
+          var routePath3 = new google.maps.Polyline({
+            path: route3Coordinates,
+            geodesic: true,
+            strokeColor: '#04cc1e',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+          });
+
+          $('#route1').unbind('click').click(function() {
+            //infowindow4.open(ufmap, marker4);
+
+            for(var i=0; i<4;i++){
+            var ID= '#T'+i;
+            $(ID).fadeOut();
+            console.log("run fadeOut");
+           }
+
+            $('#T1').fadeIn();
+
+            routePath2.setMap(null);
+            routePath3.setMap(null);
+            routePath1.setMap(ufmap);
+        });
+          
+          $('#route2').unbind('click').click(function() {
+            //infowindow4.open(ufmap, marker4);
+
+            for(var i=0; i<4;i++){
+            var ID= '#T'+i;
+            $(ID).fadeOut();
+            console.log("run fadeOut");
+           }
+
+            $('#T2').fadeIn();
+
+            routePath1.setMap(null);
+            routePath3.setMap(null);
+            routePath2.setMap(ufmap);
+        });
+
+          $('#route3').unbind('click').click(function() {
+            //infowindow4.open(ufmap, marker4);
+
+            for(var i=0; i<4;i++){
+            var ID= '#T'+i;
+            $(ID).fadeOut();
+            console.log("run fadeOut");
+           }
+
+            $('#T3').fadeIn();
+
+            routePath1.setMap(null);
+            routePath2.setMap(null);
+            routePath3.setMap(ufmap);
+        });
+
+          var flag=-1;
+          $('#clean').unbind('click').click(function() {
+            //infowindow4.open(ufmap, marker4);
+            if(flag==1){
+                for(var i=0; i<4;i++){
+                var ID= '#T'+i;
+                $(ID).fadeOut();
+                console.log("run fadeOut");
+               }
+
+               $('#T0').fadeIn();
+
+                routePath1.setMap(null);
+                routePath2.setMap(null);
+                routePath3.setMap(null);
+                $('#u163-4').html('<p>All Routs</P>');
+                flag=-flag;
+            }
+            else if(flag==-1){
+                for(var i=1; i<4;i++){
+                var ID= '#T'+i;
+                $(ID).fadeIn();
+                //console.log("run fadeOut");
+               }
+               $('#T0').fadeOut();
+                routePath1.setMap(ufmap);
+                routePath2.setMap(ufmap);
+                routePath3.setMap(ufmap);
+                $('#u163-4').html('<p>Clean</P>');
+                flag=-flag;
+               
+            }
+        });
 
         }
         
@@ -124,7 +234,7 @@
     </script>
     
 </head>
-<body onload="load_maps();" style="background-color: pink; background-image: url(http://2.bp.blogspot.com/-6Unz0GdPIPE/Ti_XYAe8okI/AAAAAAAABd0/FY4zKhSy6g4/s1600/Opera-Background-Blue-Bubbles.png); background-repeat: no-repeat; background-size: 100%;">
+<body onload="load_maps();" style="background-color: pink; background-image: url(images/background.jpg); background-repeat: no-repeat; background-size: 100% 100%;">
 
    <div class="clearfix" id="page"><!-- column -->
    <div class="position_content" id="page_position_content">
@@ -133,10 +243,18 @@
     </div>
     <div class="clearfix colelem" id="pu81"><!-- group -->
      <div class="grpelem" id="u81">
+
+        <table id="T0" class="tables" style="width:364px; display:block;">
+        <tbody>
+            <tr><td style="padding: 10px;">intro content</td></tr>
+        </tbody>
+        </table>
+
+
         <table id="T1" class="tables" style="width:364px; display:none;">
         <tbody>
             <tr><td colspan="2" style="padding-top: 10px;"><center><img src="images/mockup.png" style="width:300px;"></center></td></tr>
-            <tr><td id="title" colspan="2"><center>my home town</center></td></tr>
+            <tr><td id="title" colspan="2"><center>ROUTE 1</center></td></tr>
             <tr id="yesterday-row"><td class="day-type">Yesterday:</td><td style="padding:10px;">my home town <br> something</td></tr>
             <tr id="today-row"><td class="day-type">Today:</td><td style="padding:10px;">my home town bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla<br> something</td></tr>
         </tbody>
@@ -145,7 +263,7 @@
         <table id="T2" class="tables" style="width:364px; display:none;">
         <tbody>
             <tr><td colspan="2" style="padding-top: 10px;"><center><img src="images/mockup.png" style="width:300px;"></center></td></tr>
-            <tr><td id="title" colspan="2"><center>my college</center></td></tr>
+            <tr><td id="title" colspan="2"><center>ROUTE 2</center></td></tr>
             <tr id="yesterday-row"><td class="day-type">Yesterday:</td><td style="padding:10px;">my college <br> something</td></tr>
             <tr id="today-row"><td class="day-type">Today:</td><td style="padding:10px;">my home town bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla<br> something</td></tr>
         </tbody>
@@ -154,7 +272,7 @@
         <table id="T3" class="tables" style="width:364px; display:none;">
         <tbody>
             <tr><td colspan="2" style="padding-top: 10px;"><center><img src="images/mockup.png" style="width:300px;"></center></td></tr>
-            <tr><td id="title" colspan="2"><center>south korea</center></td></tr>
+            <tr><td id="title" colspan="2"><center>ROUTE 3</center></td></tr>
             <tr id="yesterday-row"><td class="day-type">Yesterday:</td><td style="padding:10px;">south korea<br> something</td></tr>
             <tr id="today-row"><td class="day-type">Today:</td><td style="padding:10px;">my home town bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla<br> something</td></tr>
         </tbody>
@@ -170,7 +288,43 @@
         </table>
 
      </div>
-     <div class="grpelem" id="my_map"><!-- simple frame --></div>
+     <!--
+     <div class="grpelem" id="container">
+        <div id="my_map"></div>
+    </div>
+    -->
+    <div class="clearfix grpelem" id="u83"><!-- column -->
+      <div class="position_content" id="u83_position_content">
+       <nav class="MenuBar clearfix colelem" id="menuu139"><!-- horizontal box -->
+
+        <div class="MenuItemContainer clearfix grpelem" id="u147"><!-- vertical box -->
+         <a class="nonblock nontext MenuItem MenuItemWithSubMenu MuseMenuActive clearfix colelem" id="route1"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u152-4"><!-- content --><p>route1</p></div></a>
+        </div>
+
+        <div class="MenuItemContainer clearfix grpelem" id="u140"><!-- vertical box -->
+         <a class="nonblock nontext MenuItem MenuItemWithSubMenu clearfix colelem" id="route2"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u146-4"><!-- content --><p>route2</p></div></a>
+        </div>
+
+        <div class="MenuItemContainer clearfix grpelem" id="u154"><!-- vertical box -->
+         <a class="nonblock nontext MenuItem MenuItemWithSubMenu clearfix colelem" id="route3"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u158-4"><!-- content --><p>route3</p></div></a>
+        </div>
+
+        <div class="MenuItemContainer clearfix grpelem" id="u161"><!-- vertical box -->
+         <a class="nonblock nontext MenuItem MenuItemWithSubMenu clearfix colelem" id="clean"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u163-4"><!-- content --><p>All Routes</p></div></a>
+        </div>
+
+        <div class="MenuItemContainer clearfix grpelem" id="u168"><!-- vertical box -->
+         <a class="nonblock nontext MenuItem MenuItemWithSubMenu clearfix colelem" id="timeline"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u170-4"><!-- content --><p>timeline word cloud</p></div></a>
+        </div>
+
+       </nav>
+
+
+       <div class="colelem" id="my_map"><!-- simple frame --></div>
+
+      </div>
+     </div>
+
     </div>
     <div class="verticalspacer"></div>
     <div class="colelem" id="u78"><!-- simple frame --></div>

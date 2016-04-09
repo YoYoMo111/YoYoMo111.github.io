@@ -7,6 +7,7 @@
 .html
 {
 	background-color: #FFFFFF;
+	background: #FFFFFF url("../images/background.jpg") repeat left top scroll;
 }
 
 #page
@@ -52,7 +53,7 @@
 	margin-right: -10000px;
 	overflow: auto;
 }
-
+/*
 #my_map
 {
 	z-index: 9;
@@ -62,7 +63,375 @@
 	position: relative;
 	margin-right: -10000px;
 	left: 364px;
+}*/
+
+/*add*/
+#u83
+{
+	z-index: 9;
+	width: 686px;
+	background-color: #DCE3FF;
+	padding-bottom: 0px;
+	position: relative;
+	margin-right: -10000px;
+	left: 364px;
 }
+
+#menuu139
+{
+	z-index: 10;
+	width: 686px;
+	border-style: none;
+	border-color: transparent;
+	background-color: transparent;
+	position: relative;
+}
+
+#u147
+{
+	width: 135px;
+	min-height: 45px;
+	background-color: transparent;
+	position: relative;
+	margin-right: -10000px;
+}
+
+#route1
+{
+	width: 135px;
+	background-color: #C4C4C4;
+	padding-bottom: 28px;
+	position: relative;
+}
+
+#u152-4
+{
+	width: 135px;
+	min-height: 17px;
+	border-style: none;
+	border-color: transparent;
+	background-color: transparent;
+	text-align: center;
+	color: #FFFFFF;
+	font-family: Verdana, Tahoma, Geneva, sans-serif;
+	position: relative;
+	margin-right: -10000px;
+	top: 14px;
+	left: 0px;
+}
+
+#route1:hover #u152-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	width: 135px;
+	margin: 0px -10000px 0px 0px;
+}
+
+#route1:active #u152-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	width: 135px;
+	margin: 0px -10000px 0px 0px;
+}
+
+#route1.MuseMenuActive #u152-4 p
+{
+	font-family: Verdana, Tahoma, Geneva, sans-serif;
+}
+
+#u140
+{
+	width: 135px;
+	min-height: 45px;
+	background-color: transparent;
+	position: relative;
+	margin-right: -10000px;
+	left: 137px;
+}
+
+#route2
+{
+	width: 135px;
+	background-color: #C4C4C4;
+	padding-bottom: 28px;
+	position: relative;
+}
+
+#route1.MuseMenuActive,#route2:hover
+{
+	background-color: #999999;
+	width: 135px;
+	min-height: 0px;
+	margin: 0px;
+}
+
+#route2:active
+{
+	background-color: #6B6B6B;
+	width: 135px;
+	min-height: 0px;
+	margin: 0px;
+}
+
+#u146-4
+{
+	width: 135px;
+	min-height: 17px;
+	border-style: none;
+	border-color: transparent;
+	background-color: transparent;
+	text-align: center;
+	color: #FFFFFF;
+	font-family: Verdana, Tahoma, Geneva, sans-serif;
+	position: relative;
+	margin-right: -10000px;
+	top: 14px;
+}
+
+#route1.MuseMenuActive #u152-4,#route2:hover #u146-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	width: 135px;
+	margin: 0px -10000px 0px 0px;
+}
+
+#route2:active #u146-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	width: 135px;
+	margin: 0px -10000px 0px 0px;
+}
+
+#route2.MuseMenuActive #u146-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	width: 135px;
+	margin: 0px -10000px 0px 0px;
+}
+
+#u154
+{
+	width: 136px;
+	min-height: 45px;
+	background-color: transparent;
+	position: relative;
+	margin-right: -10000px;
+	left: 274px;
+}
+
+#route3
+{
+	width: 136px;
+	background-color: #C4C4C4;
+	padding-bottom: 28px;
+	position: relative;
+}
+
+#route3:hover
+{
+	background-color: #999999;
+	width: 136px;
+	min-height: 0px;
+	margin: 0px;
+}
+
+#u158-4
+{
+	width: 136px;
+	min-height: 17px;
+	border-style: none;
+	border-color: transparent;
+	background-color: transparent;
+	text-align: center;
+	color: #FFFFFF;
+	font-family: Verdana, Tahoma, Geneva, sans-serif;
+	position: relative;
+	margin-right: -10000px;
+	top: 14px;
+}
+
+#route3:hover #u158-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	width: 136px;
+	margin: 0px -10000px 0px 0px;
+}
+
+#route3:active #u158-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	width: 136px;
+	margin: 0px -10000px 0px 0px;
+}
+
+#u161
+{
+	width: 136px;
+	min-height: 45px;
+	background-color: transparent;
+	position: relative;
+	margin-right: -10000px;
+	left: 412px;
+}
+
+#clean
+{
+	width: 136px;
+	background-color: #C4C4C4;
+	padding-bottom: 28px;
+	position: relative;
+}
+
+#clean:hover
+{
+	background-color: #999999;
+	width: 136px;
+	min-height: 0px;
+	margin: 0px;
+}
+
+#u163-4
+{
+	width: 136px;
+	min-height: 17px;
+	border-style: none;
+	border-color: transparent;
+	background-color: transparent;
+	text-align: center;
+	color: #FFFFFF;
+	font-family: Verdana, Tahoma, Geneva, sans-serif;
+	position: relative;
+	margin-right: -10000px;
+	top: 14px;
+}
+
+#route3.MuseMenuActive #u158-4,#clean:hover #u163-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	width: 136px;
+	margin: 0px -10000px 0px 0px;
+}
+
+#clean:active #u163-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	width: 136px;
+	margin: 0px -10000px 0px 0px;
+}
+
+#u168
+{
+	width: 136px;
+	min-height: 45px;
+	background-color: transparent;
+	position: relative;
+	margin-right: -10000px;
+	left: 550px;
+}
+
+#timeline
+{
+	width: 136px;
+	background-color: #C4C4C4;
+	padding-bottom: 28px;
+	position: relative;
+}
+
+#timeline:hover
+{
+	background-color: #999999;
+	width: 136px;
+	min-height: 0px;
+	margin: 0px;
+}
+
+#route3:active,#clean:active,#timeline:active
+{
+	background-color: #6B6B6B;
+	width: 136px;
+	min-height: 0px;
+	margin: 0px;
+}
+
+#u170-4
+{
+	width: 136px;
+	min-height: 17px;
+	border-style: none;
+	border-color: transparent;
+	background-color: transparent;
+	text-align: center;
+	color: #FFFFFF;
+	font-family: Verdana, Tahoma, Geneva, sans-serif;
+	position: relative;
+	margin-right: -10000px;
+	top: 14px;
+}
+
+#clean.MuseMenuActive #u163-4,#timeline:hover #u170-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	width: 136px;
+	margin: 0px -10000px 0px 0px;
+}
+
+#timeline:active #u170-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	width: 136px;
+	margin: 0px -10000px 0px 0px;
+}
+
+#timeline.MuseMenuActive #u170-4
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-height: 17px;
+	width: 136px;
+	margin: 0px -10000px 0px 0px;
+}
+
+#route2.MuseMenuActive #u146-4 p,#route3.MuseMenuActive #u158-4 p,#clean.MuseMenuActive #u163-4 p,#timeline.MuseMenuActive #u170-4 p
+{
+	font-family: Lucida Sans, Lucida Grande, Lucida Sans Unicode, sans-serif;
+}
+
+.MenuItem /* unifiedNavBar */
+{
+	cursor: pointer;
+}
+
+#my_map
+{
+	z-index: 41;
+	width: 686px;
+	height: 490px;
+	background-color: #D7FFE1;
+	position: relative;
+}
+/*add*/
 
 #u78
 {
