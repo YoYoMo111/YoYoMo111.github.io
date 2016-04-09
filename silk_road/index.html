@@ -215,16 +215,18 @@
                $('#wordCloud').fadeOut();
 
                $('#my_map').fadeIn();
-               
-               $('#T0').fadeIn();
 
                 routePath1.setMap(null);
                 routePath2.setMap(null);
                 routePath3.setMap(null);
-                $('#u163-4').html('<p>All Routs</P>');
+
+                $('#T0').fadeIn();
+                $('#u163-4').html('<p>All Routes</P>');
                 flag=-flag;
             }
             else if(flag==-1){
+                $('#T0').fadeOut();
+
                 for(var i=1; i<4;i++){
                 var ID= '#T'+i;
                 $(ID).fadeIn();
@@ -234,7 +236,7 @@
 
                $('#my_map').fadeIn();
                
-               $('#T0').fadeOut();
+               
                 routePath1.setMap(ufmap);
                 routePath2.setMap(ufmap);
                 routePath3.setMap(ufmap);
@@ -296,14 +298,14 @@
     <div class="clearfix colelem" id="pu81"><!-- group -->
      <div class="grpelem" id="u81">
 
-        <table id="T0" class="tables" style="width:364px; display:block;">
+        <table id="T0" class="tables" style="width:364px;height:535px; display:block;">
         <tbody>
             <tr><td style="padding: 10px;">intro content</td></tr>
         </tbody>
         </table>
 
 
-        <table id="T1" class="tables" style="width:364px; display:none;">
+        <table id="T1" class="tables" style="width:364px; height:200px; display:none;">
         <tbody>
             <tr><td colspan="2" style="padding-top: 10px;"><center><img src="images/mockup.png" style="width:300px;"></center></td></tr>
             <tr><td id="title" colspan="2"><center>ROUTE 1</center></td></tr>
