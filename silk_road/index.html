@@ -149,11 +149,14 @@
           $('#route1').unbind('click').click(function() {
             //infowindow4.open(ufmap, marker4);
 
-            for(var i=0; i<4;i++){
+            for(var i=0; i<=4;i++){
             var ID= '#T'+i;
             $(ID).fadeOut();
             console.log("run fadeOut");
            }
+           $('#wordCloud').fadeOut();
+
+           $('#my_map').fadeIn();
 
             $('#T1').fadeIn();
 
@@ -165,12 +168,15 @@
           $('#route2').unbind('click').click(function() {
             //infowindow4.open(ufmap, marker4);
 
-            for(var i=0; i<4;i++){
+            for(var i=0; i<=4;i++){
             var ID= '#T'+i;
             $(ID).fadeOut();
             console.log("run fadeOut");
            }
+           $('#wordCloud').fadeOut();
 
+           $('#my_map').fadeIn();
+           
             $('#T2').fadeIn();
 
             routePath1.setMap(null);
@@ -181,12 +187,15 @@
           $('#route3').unbind('click').click(function() {
             //infowindow4.open(ufmap, marker4);
 
-            for(var i=0; i<4;i++){
+            for(var i=0; i<=4;i++){
             var ID= '#T'+i;
             $(ID).fadeOut();
             console.log("run fadeOut");
            }
+           $('#wordCloud').fadeOut();
 
+           $('#my_map').fadeIn();
+           
             $('#T3').fadeIn();
 
             routePath1.setMap(null);
@@ -198,12 +207,15 @@
           $('#clean').unbind('click').click(function() {
             //infowindow4.open(ufmap, marker4);
             if(flag==1){
-                for(var i=0; i<4;i++){
+                for(var i=0; i<=4;i++){
                 var ID= '#T'+i;
                 $(ID).fadeOut();
                 console.log("run fadeOut");
                }
+               $('#wordCloud').fadeOut();
 
+               $('#my_map').fadeIn();
+               
                $('#T0').fadeIn();
 
                 routePath1.setMap(null);
@@ -218,6 +230,10 @@
                 $(ID).fadeIn();
                 //console.log("run fadeOut");
                }
+               $('#wordCloud').fadeOut();
+
+               $('#my_map').fadeIn();
+               
                $('#T0').fadeOut();
                 routePath1.setMap(ufmap);
                 routePath2.setMap(ufmap);
@@ -226,6 +242,42 @@
                 flag=-flag;
                
             }
+        });
+
+          $('#timeline').unbind('click').click(function() {
+            //infowindow4.open(ufmap, marker4);
+
+            for(var i=0; i<=4;i++){
+            var ID= '#T'+i;
+            $(ID).fadeOut();
+            console.log("run fadeOut");
+           }
+
+            $('#T4').fadeIn();
+            $('#wordCloud').fadeIn();
+            $('#wordCloud').html('<img src="images/image1.jpg" style="width:686px;height:490px;">');
+            
+        });
+
+          //timeline year btn section
+          $('#year1').unbind('click').click(function() {
+            $('#wordCloud').html('<img src="images/wordcloud1.png" style="width:686px;height:490px;">');
+            
+        });
+
+          $('#year2').unbind('click').click(function() {
+            $('#wordCloud').html('<img src="images/wordcloud2.jpg" style="width:686px;height:490px;">');
+            
+        });
+
+          $('#year3').unbind('click').click(function() {
+            $('#wordCloud').html('<img src="images/wordcloud3.png" style="width:686px;height:490px;">');
+            
+        });
+
+          $('#year4').unbind('click').click(function() {
+            $('#wordCloud').html('<img src="images/wordcloud4.jpg" style="width:686px;height:490px;">');
+            
         });
 
         }
@@ -278,12 +330,12 @@
         </tbody>
         </table>
 
-        <table id="T4" class="tables" style="width:364px; display:none;">
+        <table id="T4" class="tables" style="width: 364px; height:200px; margin-top:100px; display: none;">
         <tbody>
-            <tr><td colspan="2" style="padding-top: 10px;"><center><img src="images/mockup.png" style="width:300px;"></center></td></tr>
-            <tr><td id="title" colspan="2"><center>Gainesville</center></td></tr>
-            <tr id="yesterday-row"><td class="day-type">Yesterday:</td><td style="padding:10px;">I'm here! <br> something</td></tr>
-            <tr id="today-row"><td class="day-type">Today:</td><td style="padding:10px;">my home town bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla<br> something</td></tr>
+            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><a id="year1">year 1</a></center></td></tr>
+            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><a id="year2">year 2</a></center></td></tr>
+            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><a id="year3">year 3</a></center></td></tr>
+            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><a id="year4">year 4</a></center></td></tr>
         </tbody>
         </table>
 
@@ -321,7 +373,7 @@
 
 
        <div class="colelem" id="my_map"><!-- simple frame --></div>
-
+       <div class="colelem" id="wordCloud"></div>
       </div>
      </div>
 

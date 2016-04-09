@@ -428,8 +428,17 @@
 	z-index: 41;
 	width: 686px;
 	height: 490px;
-	background-color: #D7FFE1;
+	
 	position: relative;
+}
+
+#wordCloud{
+	z-index: 41;
+	width: 686px;
+	height: 490px;
+	right:0px;
+	top:45px;
+	position: absolute;
 }
 /*add*/
 
