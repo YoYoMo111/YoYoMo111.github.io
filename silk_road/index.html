@@ -47,58 +47,29 @@
 
 
         //The following lines create a pop up window that appears when you click on a marker. All you need is: a marker, a map, and content for the pop up window.
-        var infowindow = new google.maps.InfoWindow({content: '<div>This is my hometown.</div>'});  
+        var infowindow = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1>City Name</h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});  
         marker1.addListener('click', function() {
-            //infowindow.open(ufmap, marker1);
+            infowindow.open(ufmap, marker1);
 
-           /* $('#u81').append('<table id="T1" style="width:354px;"><tbody><tr><td><img src="images/mockup.png" style="width:100px; height:100px;"></td></tr><tr><td>title</td></tr><tr id="yesterday-row"><td class="day-type">Yesterday:</td><td>something~~~~~~~~~~~~~~~~~~~~~~ <br> something</td></tr><tr id="today-row"><td class="day-type">Today:</td><td>something ~~~~~~~~~~~~~~~~~~~~~~~~~~<br> something</td></tr></tbody></table>');*/
-           for(var i=1; i<=4;i++){
-            var ID= '#T'+i;
-            $(ID).fadeOut();
-            console.log("run fadeOut");
-           }
-
-            $('#T1').fadeIn();
         });
             
-        var infowindow2 = new google.maps.InfoWindow({content: '<div>This was my college.</div>'});   
+        var infowindow2 = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1>City Name</h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
         marker2.addListener('click', function() {
-            //infowindow2.open(ufmap, marker2);
+            infowindow2.open(ufmap, marker2);
 
-            for(var i=1; i<=4;i++){
-            var ID= '#T'+i;
-            $(ID).fadeOut();
-            console.log("run fadeOut");
-           }
 
-            $('#T2').fadeIn();
-            console.log("t2 in");
         });
             
-        var infowindow3 = new google.maps.InfoWindow({content: '<div>I studyed here as an exchange student in 2013.</div>'});   
+        var infowindow3 = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1>City Name</h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
         marker3.addListener('click', function() {
-            //infowindow3.open(ufmap, marker3);
+            infowindow3.open(ufmap, marker3);
 
-            for(var i=1; i<=4;i++){
-            var ID= '#T'+i;
-            $(ID).fadeOut();
-            console.log("run fadeOut");
-           }
-
-            $('#T3').fadeIn();
         });
 
-        var infowindow4 = new google.maps.InfoWindow({content: '<div>I am here.</div>'});   
+        var infowindow4 = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1>City Name</h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
         marker4.addListener('click', function() {
-            //infowindow4.open(ufmap, marker4);
+            infowindow4.open(ufmap, marker4);
 
-            for(var i=1; i<=4;i++){
-            var ID= '#T'+i;
-            $(ID).fadeOut();
-            console.log("run fadeOut");
-           }
-
-            $('#T4').fadeIn();
         });
 
         //routes
@@ -179,6 +150,8 @@
            
             $('#T2').fadeIn();
 
+            marker1.setMap(null);
+
             routePath1.setMap(null);
             routePath3.setMap(null);
             routePath2.setMap(ufmap);
@@ -221,7 +194,7 @@
                 routePath3.setMap(null);
 
                 $('#T0').fadeIn();
-                $('#u163-4').html('<p>All Routes</P>');
+                $('#u163-4').html('<p>Show All Routes</P>');
                 flag=-flag;
             }
             else if(flag==-1){
@@ -240,7 +213,7 @@
                 routePath1.setMap(ufmap);
                 routePath2.setMap(ufmap);
                 routePath3.setMap(ufmap);
-                $('#u163-4').html('<p>Clean</P>');
+                $('#u163-4').html('<p>Clean Up</P>');
                 flag=-flag;
                
             }
