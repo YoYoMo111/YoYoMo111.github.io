@@ -31,54 +31,100 @@
 	    //var marker1 = new google.maps.Marker({position: loc1,map: ufmap, title: 'This is Baby Gator.',label:'A'});
             
         //optionally you can also give an icon for the marker:
-        var loc1={lat: 23.11948, lng: 113.26198};
-	    var marker1 = new google.maps.Marker({position: loc1,map: ufmap, title: 'This is my hometown.',label:'Guangzhou'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
-        
-            
-        var loc2={lat: 41.81172, lng: 123.44631};
-	    var marker2 = new google.maps.Marker({position: loc2,map: ufmap,title: 'This is my college.',label:'Shenyang'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
-           
-        var loc3={lat: 35.16423, lng: 129.09328};
-	    var marker3 = new google.maps.Marker({position: loc3,map: ufmap,title: 'This is my college.',label:'Korea'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
-
-        var loc4={lat: 29.64923, lng: 277.66140};
-        var marker4 = new google.maps.Marker({position: loc4,map: ufmap,title: 'I am here.',label:'USA'});
-        
-
-
-        //The following lines create a pop up window that appears when you click on a marker. All you need is: a marker, a map, and content for the pop up window.
-        var infowindow = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1>City Name</h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});  
-        marker1.addListener('click', function() {
-            infowindow.open(ufmap, marker1);
-
-        });
-            
-        var infowindow2 = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1>City Name</h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
-        marker2.addListener('click', function() {
-            infowindow2.open(ufmap, marker2);
-
-
-        });
-            
-        var infowindow3 = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1>City Name</h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
-        marker3.addListener('click', function() {
-            infowindow3.open(ufmap, marker3);
-
-        });
-
-        var infowindow4 = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1>City Name</h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
-        marker4.addListener('click', function() {
-            infowindow4.open(ufmap, marker4);
-
-        });
-
-        //routes
-          var route1Coordinates = [
+        var route1Coordinates = [
             {lat: 23.11948, lng: 113.26198},
             {lat: 41.81172, lng: 123.44631},
             {lat: 35.16423, lng: 129.09328},
             {lat: 29.64923, lng: 277.66140}
           ];
+
+          var route2Coordinates = [
+            {lat: 37.772, lng: -122.214},
+            {lat: 21.291, lng: -157.821},
+            {lat: -18.142, lng: 178.431},
+            {lat: -27.467, lng: 153.027}
+          ];
+
+          var route3Coordinates = [
+            {lat: 57.772, lng: -102.214},
+            {lat: 21.291, lng: -137.821},
+            {lat: -10.142, lng: 170.431},
+            {lat: -20.467, lng: 150.027}
+          ];
+
+          var route1Markers = [];
+          var route2Markers = [];
+          var route3Markers = [];
+
+
+	     route1Markers[0] = new google.maps.Marker({position: route1Coordinates[0],map: null, title: 'This is my hometown.',label:'Guangzhou'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+        
+            
+
+	     route1Markers[1] = new google.maps.Marker({position: route1Coordinates[1],map: null,title: 'This is my college.',label:'Shenyang'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+           
+
+	     route1Markers[2] = new google.maps.Marker({position: route1Coordinates[2],map: null,title: 'This is my college.',label:'Korea'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+
+
+       route1Markers[3] = new google.maps.Marker({position: route1Coordinates[3],map: null,title: 'I am here.',label:'USA'});
+
+      //route2 marker
+      route2Markers[0] = new google.maps.Marker({position: route2Coordinates[0],map: null, title: 'This is my hometown.',label:'Guangzhou'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+        
+            
+
+      route2Markers[1] = new google.maps.Marker({position: route2Coordinates[1],map: null,title: 'This is my college.',label:'Shenyang'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+           
+
+      route2Markers[2] = new google.maps.Marker({position: route2Coordinates[2],map: null,title: 'This is my college.',label:'Korea'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+
+
+      route2Markers[3] = new google.maps.Marker({position: route2Coordinates[3],map: null,title: 'I am here.',label:'USA'});
+
+      //route3 marker
+      route3Markers[0] = new google.maps.Marker({position: route3Coordinates[0],map: null, title: 'This is my hometown.',label:'Guangzhou'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+        
+            
+
+      route3Markers[1] = new google.maps.Marker({position: route3Coordinates[1],map: null,title: 'This is my college.',label:'Shenyang'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+           
+
+      route3Markers[2] = new google.maps.Marker({position: route3Coordinates[2],map: null,title: 'This is my college.',label:'Korea'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+
+
+      route3Markers[3] = new google.maps.Marker({position: route3Coordinates[3],map: null,title: 'I am here.',label:'USA'});
+        
+
+
+        //The following lines create a pop up window that appears when you click on a marker. All you need is: a marker, a map, and content for the pop up window.
+        var infowindow = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1>City Name</h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});  
+        route1Markers[0].addListener('click', function() {
+            infowindow.open(ufmap, route1Markers[0]);
+
+        });
+            
+        var infowindow2 = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1>City Name</h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
+        route1Markers[1].addListener('click', function() {
+            infowindow2.open(ufmap, route1Markers[1]);
+
+
+        });
+            
+        var infowindow3 = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1>City Name</h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
+        route1Markers[2].addListener('click', function() {
+            infowindow3.open(ufmap, route1Markers[2]);
+
+        });
+
+        var infowindow4 = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1>City Name</h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
+        route1Markers[3].addListener('click', function() {
+            infowindow4.open(ufmap, route1Markers[3]);
+
+        });
+
+        //routes
+
           var routePath1 = new google.maps.Polyline({
             path: route1Coordinates,
             geodesic: true,
@@ -88,12 +134,7 @@
           });
 
           //route2
-          var route2Coordinates = [
-            {lat: 37.772, lng: -122.214},
-            {lat: 21.291, lng: -157.821},
-            {lat: -18.142, lng: 178.431},
-            {lat: -27.467, lng: 153.027}
-          ];
+          
           var routePath2 = new google.maps.Polyline({
             path: route2Coordinates,
             geodesic: true,
@@ -103,12 +144,7 @@
           });
 
           //route3
-          var route3Coordinates = [
-            {lat: 57.772, lng: -102.214},
-            {lat: 21.291, lng: -137.821},
-            {lat: -10.142, lng: 170.431},
-            {lat: -20.467, lng: 150.027}
-          ];
+          
           var routePath3 = new google.maps.Polyline({
             path: route3Coordinates,
             geodesic: true,
@@ -131,6 +167,13 @@
 
             $('#T1').fadeIn();
 
+            for(var i=0; i<4;i++){
+            route2Markers[i].setMap(null);}
+            for(var i=0; i<4;i++){
+            route3Markers[i].setMap(null);}
+            for(var i=0; i<4;i++){
+            route1Markers[i].setMap(ufmap);}
+
             routePath2.setMap(null);
             routePath3.setMap(null);
             routePath1.setMap(ufmap);
@@ -150,7 +193,13 @@
            
             $('#T2').fadeIn();
 
-            marker1.setMap(null);
+            for(var i=0; i<4;i++){
+            route1Markers[i].setMap(null);}
+            for(var i=0; i<4;i++){
+            route3Markers[i].setMap(null);}
+            for(var i=0; i<4;i++){
+            route2Markers[i].setMap(ufmap);}
+
 
             routePath1.setMap(null);
             routePath3.setMap(null);
@@ -171,6 +220,13 @@
            
             $('#T3').fadeIn();
 
+            for(var i=0; i<4;i++){
+            route1Markers[i].setMap(null);}
+            for(var i=0; i<4;i++){
+            route2Markers[i].setMap(null);}
+            for(var i=0; i<4;i++){
+            route3Markers[i].setMap(ufmap);}
+
             routePath1.setMap(null);
             routePath2.setMap(null);
             routePath3.setMap(ufmap);
@@ -188,6 +244,13 @@
                $('#wordCloud').fadeOut();
 
                $('#my_map').fadeIn();
+
+               for(var i=0; i<4;i++){
+              route1Markers[i].setMap(null);}
+              for(var i=0; i<4;i++){
+              route2Markers[i].setMap(null);}
+              for(var i=0; i<4;i++){
+              route3Markers[i].setMap(null);}
 
                 routePath1.setMap(null);
                 routePath2.setMap(null);
@@ -209,6 +272,12 @@
 
                $('#my_map').fadeIn();
                
+               for(var i=0; i<4;i++){
+              route1Markers[i].setMap(ufmap);}
+              for(var i=0; i<4;i++){
+              route2Markers[i].setMap(ufmap);}
+              for(var i=0; i<4;i++){
+              route3Markers[i].setMap(ufmap);}
                
                 routePath1.setMap(ufmap);
                 routePath2.setMap(ufmap);
