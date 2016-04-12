@@ -57,73 +57,119 @@
           var route3Markers = [];
 
 
-	     route1Markers[0] = new google.maps.Marker({position: route1Coordinates[0],map: null, title: 'This is my hometown.',label:'Guangzhou'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
-        
-            
+	     route1Markers[0] = new google.maps.Marker({position: route1Coordinates[0],map: null, title: 'This is my hometown.',label:'Guangzhou'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});           
 
 	     route1Markers[1] = new google.maps.Marker({position: route1Coordinates[1],map: null,title: 'This is my college.',label:'Shenyang'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
-           
 
 	     route1Markers[2] = new google.maps.Marker({position: route1Coordinates[2],map: null,title: 'This is my college.',label:'Korea'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
 
-
        route1Markers[3] = new google.maps.Marker({position: route1Coordinates[3],map: null,title: 'I am here.',label:'USA'});
+
 
       //route2 marker
       route2Markers[0] = new google.maps.Marker({position: route2Coordinates[0],map: null, title: 'This is my hometown.',label:'Guangzhou'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
         
-            
-
       route2Markers[1] = new google.maps.Marker({position: route2Coordinates[1],map: null,title: 'This is my college.',label:'Shenyang'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
            
-
       route2Markers[2] = new google.maps.Marker({position: route2Coordinates[2],map: null,title: 'This is my college.',label:'Korea'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
-
 
       route2Markers[3] = new google.maps.Marker({position: route2Coordinates[3],map: null,title: 'I am here.',label:'USA'});
 
+
       //route3 marker
       route3Markers[0] = new google.maps.Marker({position: route3Coordinates[0],map: null, title: 'This is my hometown.',label:'Guangzhou'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
-        
-            
-
-      route3Markers[1] = new google.maps.Marker({position: route3Coordinates[1],map: null,title: 'This is my college.',label:'Shenyang'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
-           
+                  
+      route3Markers[1] = new google.maps.Marker({position: route3Coordinates[1],map: null,title: 'This is my college.',label:'Shenyang'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});        
 
       route3Markers[2] = new google.maps.Marker({position: route3Coordinates[2],map: null,title: 'This is my college.',label:'Korea'/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
-
 
       route3Markers[3] = new google.maps.Marker({position: route3Coordinates[3],map: null,title: 'I am here.',label:'USA'});
         
 
 
         //The following lines create a pop up window that appears when you click on a marker. All you need is: a marker, a map, and content for the pop up window.
-        var infowindow = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1>City Name</h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});  
-        route1Markers[0].addListener('click', function() {
-            infowindow.open(ufmap, route1Markers[0]);
+        var route1Infowindow = [];
+        var route2Infowindow = [];
+        var route3Infowindow = [];
 
-        });
-            
-        var infowindow2 = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1>City Name</h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
-        route1Markers[1].addListener('click', function() {
-            infowindow2.open(ufmap, route1Markers[1]);
+        route1Infowindow[0] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1><b>City Name</b></h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});  
+        route1Infowindow[1] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1><b>City Name</b></h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
+        route1Infowindow[2] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1><b>City Name</b></h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
+        route1Infowindow[3] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1><b>City Name</b></h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});  
+
+        route2Infowindow[0] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1><b>City Name</b></h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});  
+        route2Infowindow[1] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1><b>City Name</b></h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
+        route2Infowindow[2] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1><b>City Name</b></h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
+        route2Infowindow[3] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1><b>City Name</b></h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});  
+
+        route3Infowindow[0] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1><b>City Name</b></h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});  
+        route3Infowindow[1] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1><b>City Name</b></h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
+        route3Infowindow[2] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1><b>City Name</b></h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
+        route3Infowindow[3] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1><b>City Name</b></h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});  
+
+            route1Markers[0].addListener('click', function() {
+                route1Infowindow[0].open(ufmap, route1Markers[0]);
+            });
+            route1Markers[1].addListener('click', function() {
+                route1Infowindow[1].open(ufmap, route1Markers[1]);
+            });
+            route1Markers[2].addListener('click', function() {
+                route1Infowindow[2].open(ufmap, route1Markers[2]);
+            });
+            route1Markers[3].addListener('click', function() {
+                route1Infowindow[3].open(ufmap, route1Markers[3]);
+            });
 
 
-        });
-            
-        var infowindow3 = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1>City Name</h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
-        route1Markers[2].addListener('click', function() {
-            infowindow3.open(ufmap, route1Markers[2]);
+            route2Markers[0].addListener('click', function() {
+                route2Infowindow[0].open(ufmap, route2Markers[0]);
+            });
+            route2Markers[1].addListener('click', function() {
+                route1Infowindow[1].open(ufmap, route2Markers[1]);
+            });
+            route2Markers[2].addListener('click', function() {
+                route2Infowindow[2].open(ufmap, route2Markers[2]);
+            });
+            route2Markers[3].addListener('click', function() {
+                route2Infowindow[3].open(ufmap, route2Markers[3]);
+            });
 
-        });
 
-        var infowindow4 = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1>City Name</h1> Brief introduction of the city bla bla bla bla  <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
-        route1Markers[3].addListener('click', function() {
-            infowindow4.open(ufmap, route1Markers[3]);
+            route3Markers[0].addListener('click', function() {
+                route3Infowindow[0].open(ufmap, route3Markers[0]);
+            });
+            route3Markers[1].addListener('click', function() {
+                route3Infowindow[1].open(ufmap, route3Markers[1]);
+            });
+            route3Markers[2].addListener('click', function() {
+                route3Infowindow[2].open(ufmap, route3Markers[2]);
+            });
+            route3Markers[3].addListener('click', function() {
+                route3Infowindow[3].open(ufmap, route3Markers[3]);
+            });
 
-        });
+     /*   
 
-        //routes
+        for(var i=0; i<4; i++){ 
+            route1Markers[i].addListener('click', function() {
+                route1Infowindow[i].open(ufmap, route1Markers[i]);
+            });
+        }
+
+        for(var i=0; i<4; i++){ 
+            route2Markers[i].addListener('click', function() {
+                route2Infowindow[i].open(ufmap, route2Markers[i]);
+            });
+        }
+
+        for(var i=0; i<4; i++){ 
+            route3Markers[i].addListener('click', function() {
+                route3Infowindow[i].open(ufmap, route3Markers[i]);
+            });
+        }
+        */
+
+        //draw routes
 
           var routePath1 = new google.maps.Polyline({
             path: route1Coordinates,
