@@ -8,8 +8,8 @@ var map = [ // 1  2  3  4  5  6  7  8  9
            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1,], // 0
            [1, 1, 0, 0, 0, 0, 0, 1, 1, 1,], // 1
            [1, 1, 0, 0, 2, 0, 0, 0, 0, 1,], // 2
-           [1, 0, 0, 0, 0, 2, 0, 0, 0, 1,], // 3
-           [1, 0, 0, 2, 0, 0, 2, 0, 0, 1,], // 4
+           [1, 0, 0, 0, 0, 0, 0, 0, 0, 1,], // 3
+           [1, 0, 0, 2, 0, 0, 0, 0, 0, 1,], // 4
            [1, 0, 0, 0, 2, 0, 0, 0, 1, 1,], // 5
            [1, 1, 1, 0, 0, 0, 0, 1, 1, 1,], // 6
            [1, 1, 1, 0, 0, 1, 0, 0, 1, 1,], // 7
@@ -216,7 +216,7 @@ function init() {
 			gun.scale.set( 7, 10, 7);
 			gun.position.set(0,-10,-20);
 			//gun.rotation.z = Math.PI/3;
-			cam.add( gun );
+			//cam.add( gun );
 		},
 		// Function called when download progresses
 		function ( xhr ) {
@@ -317,7 +317,7 @@ function init() {
 
 	loader5.load(
 		// resource URL
-		'models/house.dae',
+		'models/house2.dae',
 		// Function when resource is loaded
 		function ( geometry ) {
 			house = geometry.scene;
@@ -332,12 +332,38 @@ function init() {
     				map: THREE.ImageUtils.loadTexture('models/house_wood.jpg')}
     				);
 			house.rotation.set(-Math.PI/2,0, Math.PI/2);
-			house.scale.set( 100, 100, 100);
-			house.position.set(0,-10,-20);
+			house.scale.set( 75, 75, 75);
+			house.position.set(-500,0,80);
 			house.receiveShadow = true;//shadow
 			house.castShadow = true;
 
 			scene.add( house );
+		},
+		// Function called when download progresses
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		}
+	);
+
+
+	tree = new THREE.Mesh();
+	var loader6 = new THREE.ColladaLoader();
+
+	loader6.load(
+		// resource URL
+		'models/birch_tree.dae',
+		// Function when resource is loaded
+		function ( geometry ) {
+			tree = geometry.scene;
+
+			//rock1.children[0].material.map = THREE.ImageUtils.loadTexture('models/house_wall.jpg');
+			tree.rotation.set(-Math.PI/2,0, Math.PI/2);
+			tree.scale.set( 50, 50, 50);
+			tree.position.set(-500,0,80);
+			tree.receiveShadow = true;//shadow
+			tree.castShadow = true;
+
+			scene.add( tree );
 		},
 		// Function called when download progresses
 		function ( xhr ) {
@@ -565,8 +591,8 @@ function render() {
       particles.vertices[pCount];
 
     // check if we need to reset
-    if (particle.y < -200) {
-      particle.y = 200;
+    if (particle.y < 0) {
+      particle.y = 1000;
       particle.velocity.y = 0; //Vector3 porperty has changed!!!no particle.position.y
     }
 
@@ -804,7 +830,7 @@ function setupScene() {
 				wall.receiveShadow = true;//shadow
 				wall.castShadow = true;
 				//wall.material.wireframe = true;//frame
-				wall.material.opacity = 0.5;
+				//wall.material.opacity = 0.5;
 				scene.add(wall);
 			}
 		}
@@ -940,7 +966,7 @@ function getMapSector(v) {
  * @returns {Boolean}
  *   true if the vector is inside a wall; false otherwise.
  */
-function checkWallCollision(v) {
+function checkWallCollision(v) { //!!!
 	var c = getMapSector(v);
 	return map[c.x][c.z] > 0;
 }
