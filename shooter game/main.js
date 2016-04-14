@@ -34,7 +34,7 @@ var runAnim = true, mouse = { x: 0, y: 0 }, kills = 0, health = 100;
 var healthCube, lastHealthPickup = 0, pickuphealthPlay = 1;
 var bgmusic, winsound, losesound, blast, scream, rainsound, windsound, pickhealth, hurtwarn;//audio varibles
 var wingame, losegame;
-var jsonLoader, gun, rock1, rock2, rock3, house, tree, trees=[];
+var jsonLoader, gun, rock1, rock2, rock3, house, tree;
 var mouse3D;
 //var bgmusic = new THREE.AudioObject('audio/background.wav', 0, 1, false);//volume,playback rate,looping
 /*
@@ -347,8 +347,6 @@ function init() {
 
 
 	tree = new THREE.Mesh();
-	//trees = new THREE.Mesh();
-	var treeGeo = new THREE.Geometry();
 	var loader6 = new THREE.ColladaLoader();
 
 	loader6.load(
@@ -356,26 +354,16 @@ function init() {
 		'models/birch_tree.dae',
 		// Function when resource is loaded
 		function ( geometry ) {
-			for(var i=0; i<2;i++){
-			trees[i] = new THREE.Mesh();
-			trees[i] = geometry.scene;
-			
+			tree = geometry.scene;
 
 			//rock1.children[0].material.map = THREE.ImageUtils.loadTexture('models/house_wall.jpg');
-			trees[i].rotation.set(-Math.PI/2,0, Math.PI/2);
-			trees[i].scale.set( 50, 50, 50);
-			trees[i].receiveShadow = true;//shadow
-			trees[i].castShadow = true;
-		}
-			trees[0].position.set(-500,0,80);
-			trees[1].position.set(-250,0,100);
-			
-			//THREE.GeometryUtils.merge(treeGeo, trees[0]);
-			//THREE.GeometryUtils.merge(treeGeo, trees[1]);
-			//tree = new THREE.Mesh(treeGeo);
+			tree.rotation.set(-Math.PI/2,0, Math.PI/2);
+			tree.scale.set( 50, 50, 50);
+			tree.position.set(-500,0,80);
+			tree.receiveShadow = true;//shadow
+			tree.castShadow = true;
 
-			scene.add( trees[0] );
-			scene.add( trees[1] );
+			scene.add( tree );
 		},
 		// Function called when download progresses
 		function ( xhr ) {
