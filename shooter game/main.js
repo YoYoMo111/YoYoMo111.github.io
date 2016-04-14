@@ -8,7 +8,7 @@ var map = [ // 1  2  3  4  5  6  7  8  9
            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1,], // 0
            [1, 1, 0, 0, 0, 0, 0, 1, 1, 1,], // 1
            [1, 1, 0, 0, 2, 0, 0, 0, 0, 1,], // 2
-           [1, 0, 0, 0, 0, 0, 0, 0, 0, 1,], // 3
+           [1, 0, 0, 0, 0, 2, 2, 0, 0, 1,], // 3
            [1, 0, 0, 2, 0, 0, 0, 0, 0, 1,], // 4
            [1, 0, 0, 0, 2, 0, 0, 0, 1, 1,], // 5
            [1, 1, 1, 0, 0, 0, 0, 1, 1, 1,], // 6
@@ -16,6 +16,19 @@ var map = [ // 1  2  3  4  5  6  7  8  9
            [1, 1, 1, 1, 1, 1, 0, 0, 1, 1,], // 8
            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1,], // 9
            ], mapW = map.length, mapH = map[0].length;
+
+var map2 = [ // 1  2  3  4  5  6  7  8  9
+           [1, 1, 1, 1, 1, 1, 1, 1, 1, 1,], // 0
+           [1, 1, 0, 0, 0, 0, 0, 1, 1, 1,], // 1
+           [1, 1, 0, 0, 2, 0, 0, 0, 0, 1,], // 2
+           [1, 0, 0, 0, 0, 0, 0, 0, 0, 1,], // 3
+           [1, 0, 0, 2, 0, 0, 0, 0, 0, 1,], // 4    this only used for create walls
+           [1, 0, 0, 0, 2, 0, 0, 0, 1, 1,], // 5
+           [1, 1, 1, 0, 0, 0, 0, 1, 1, 1,], // 6
+           [1, 1, 1, 0, 0, 1, 0, 0, 1, 1,], // 7
+           [1, 1, 1, 1, 1, 1, 0, 0, 1, 1,], // 8
+           [1, 1, 1, 1, 1, 1, 1, 1, 1, 1,], // 9
+           ];
 
 // Semi-constants
 var WIDTH = window.innerWidth,
@@ -34,7 +47,7 @@ var runAnim = true, mouse = { x: 0, y: 0 }, kills = 0, health = 100;
 var healthCube, lastHealthPickup = 0, pickuphealthPlay = 1;
 var bgmusic, winsound, losesound, blast, scream, rainsound, windsound, pickhealth, hurtwarn;//audio varibles
 var wingame, losegame;
-var jsonLoader, gun, rock1, rock2, rock3, house, tree;
+var jsonLoader, gun, rock1, rock2, rock3, house, tree,tree2,tree3,tree4;
 var mouse3D;
 //var bgmusic = new THREE.AudioObject('audio/background.wav', 0, 1, false);//volume,playback rate,looping
 /*
@@ -49,8 +62,8 @@ $(document).ready(function() {
 	$('#intro').css({width: WIDTH, height: HEIGHT});
 	$('#intro-content').one('click', function(e) {
 		e.preventDefault();
-		$(this).fadeOut();
-		$('#intro').fadeOut();
+		//$(this).fadeOut();
+		//$('#intro').fadeOut();
 		init();
 		setInterval(drawRadar, 1000);
 		animate();
@@ -246,10 +259,12 @@ function init() {
     				map: THREE.ImageUtils.loadTexture('models/Rock1.jpg')}
     				);
 			rock1.rotation.set(-Math.PI/2,0, Math.PI/2);
-			rock1.scale.set( 50, 50, 50);
-			rock1.position.set(0,-10,-20);
+			rock1.scale.set( 25, 25, 25);
+			rock1.position.set(-570,0,-95);
+			rock1.children[0].receiveShadow = true;//shadow
+			rock1.children[0].castShadow = true;
 
-			//scene.add( rock1 );
+			scene.add( rock1 );
 		},
 		// Function called when download progresses
 		function ( xhr ) {
@@ -273,8 +288,11 @@ function init() {
     				map: THREE.ImageUtils.loadTexture('models/Rock2.jpg')}
     				);
 			rock2.rotation.set(-Math.PI/2,0, Math.PI/2);
-			rock2.scale.set( 100, 100, 100);
-			rock2.position.set(0,-10,-20);
+			rock2.scale.set( 40, 40, 40);
+			rock2.position.set(-570,0,-70);
+			rock2.children[0].receiveShadow = true;//shadow
+			rock2.children[0].castShadow = true;
+
 
 			//scene.add( rock2 );
 		},
@@ -333,9 +351,11 @@ function init() {
     				);
 			house.rotation.set(-Math.PI/2,0, Math.PI/2);
 			house.scale.set( 75, 75, 75);
-			house.position.set(-500,0,80);
-			house.receiveShadow = true;//shadow
-			house.castShadow = true;
+			house.position.set(-510,-4,80);
+			house.children[0].receiveShadow = true;//shadow
+			house.children[0].castShadow = true;
+			house.children[1].receiveShadow = true;//shadow
+			house.children[1].castShadow = true;
 
 			scene.add( house );
 		},
@@ -360,8 +380,8 @@ function init() {
 			tree.rotation.set(-Math.PI/2,0, Math.PI/2);
 			tree.scale.set( 50, 50, 50);
 			tree.position.set(-500,0,80);
-			tree.receiveShadow = true;//shadow
-			tree.castShadow = true;
+			tree.children[0].receiveShadow = true;//shadow
+			tree.children[0].castShadow = true;
 
 			scene.add( tree );
 		},
@@ -370,6 +390,66 @@ function init() {
 			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
 		}
 	);
+
+	tree2 = new THREE.Mesh();
+	var loader6 = new THREE.ColladaLoader();
+
+	loader6.load(
+		// resource URL
+		'models/birch_tree.dae',
+		// Function when resource is loaded
+		function ( geometry ) {
+			tree2 = geometry.scene;
+
+			//rock1.children[0].material.map = THREE.ImageUtils.loadTexture('models/house_wall.jpg');
+			tree2.rotation.set(-Math.PI/2,0, Math.PI/2);
+			tree2.scale.set( 50, 50, 50);
+			tree2.position.set(-550,0,320);
+			tree2.children[0].receiveShadow = true;//shadow
+			tree2.children[0].castShadow = true;
+
+			scene.add( tree2 );
+		},
+		// Function called when download progresses
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		}
+	);
+
+	tree3 = new THREE.Mesh();
+	var loader6 = new THREE.ColladaLoader();
+
+	loader6.load(
+		// resource URL
+		'models/birch_tree.dae',
+		// Function when resource is loaded
+		function ( geometry ) {
+			tree3 = geometry.scene;
+
+			//rock1.children[0].material.map = THREE.ImageUtils.loadTexture('models/house_wall.jpg');
+			tree3.rotation.set(-Math.PI/2,0, Math.PI/2);
+			tree3.scale.set( 30, 30, 30);
+			tree3.position.set(-170,0,-280);
+			tree3.children[0].receiveShadow = true;//shadow
+			tree3.children[0].castShadow = true;
+
+			scene.add( tree3 );
+		},
+		// Function called when download progresses
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+			$('#intro-content').html(Math.round(xhr.loaded / xhr.total * 100) + '% loaded');//loading screen
+			if((xhr.loaded / xhr.total)==1){
+				$('#intro-content').fadeOut();
+				$('#intro').fadeOut();
+				$('#radar, #hud, #credits, #fog, #rain, #snow, #dusk').fadeIn();
+				// Artificial Intelligence
+				setupAI();
+			}
+		}
+	);
+
+	
 
    ////////////Set Up ColladaLoader end////////////////------------------------------------------
 
@@ -386,10 +466,10 @@ function init() {
   /////////sky dome end///////////////-----------------
 
 	// World objects
+  
 	setupScene();
 	
-	// Artificial Intelligence
-	setupAI();
+
 	
 	// Handle drawing as WebGL (faster than Canvas but less supported)
 	renderer = new t.WebGLRenderer();
@@ -415,14 +495,15 @@ function init() {
 	});
 	
 	// Display HUD
-	$('body').append('<canvas id="radar" width="200" height="200"></canvas>');
-	$('body').append('<div id="hud"><p>Health: <span id="health">100</span><br />Score: <span id="score">0</span></p></div>');
-	$('body').append('<div id="credits"><p><br />WASD to move, mouse to look, click to shoot</p></div>');
-	$('body').append('<div class="buttons"><div id="fog">Fog</div><div id="rain">Rain</div><div id="snow">Snow</div><div id="dusk">Dusk</div></div>');
+	$('body').append('<canvas id="radar" width="200" height="200" style="display: none;" ></canvas>');
+	$('body').append('<div id="hud" style="display: none;"><p>Health: <span id="health">100</span><br />Score: <span id="score">0</span></p></div>');
+	$('body').append('<div id="credits" style="display: none;"><p><br />WASD to move, mouse to look, click to shoot</p></div>');
+	$('body').append('<div class="buttons" ><div id="fog" style="display: none;">Fog</div><div id="rain" style="display: none;">Rain</div><div id="snow" style="display: none;">Snow</div><div id="dusk" style="display: none;">Dusk</div></div>');
 
 	// Set up "hurt" flash
 	$('body').append('<div id="hurt"></div>');
 	$('#hurt').css({width: WIDTH, height: HEIGHT,});
+  
 }
 
 // Helper function for browser frames
@@ -821,9 +902,9 @@ function setupScene() {
 	                 new t.MeshLambertMaterial({color: 0xFBEBCD}),
 	                 ];
 	for (var i = 0; i < mapW; i++) {
-		for (var j = 0, m = map[i].length; j < m; j++) {
-			if (map[i][j]) {
-				var wall = new t.Mesh(cube, materials[map[i][j]-1]);
+		for (var j = 0, m = map2[i].length; j < m; j++) {
+			if (map2[i][j]) {
+				var wall = new t.Mesh(cube, materials[map2[i][j]-1]);
 				wall.position.x = (i - units/2) * UNITSIZE;
 				wall.position.y = WALLHEIGHT/2;
 				wall.position.z = (j - units/2) * UNITSIZE;
