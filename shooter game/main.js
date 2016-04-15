@@ -149,7 +149,7 @@ function init() {
 
 	//set up axes
 	var axes = new THREE.AxisHelper(100);
-	scene.add(axes);
+	//scene.add(axes);
 
 	//set up particle (actually have done it before init())------------------------------
 	
