@@ -50,7 +50,7 @@
 	z-index: 8;
 	width: 363px;
 	height: 535px;
-	background-color: white;
+	background-color: rgba(255, 255, 255, 0.72);
 	position: relative;
 	margin-right: -10000px;
 	overflow: auto;
@@ -466,10 +466,10 @@ td.day-type{
 	padding:10px 0px 0px 10px;
 }
 tr#yesterday-row{
-	background: rgba(181, 202, 245, 0.42);
+	background: rgba(231, 207, 169, 0.26);
 }
 tr#today-row{
-	background: rgba(74, 100, 245, 0.04);
+	/*background: rgba(74, 100, 245, 0.04);*/
 }
 /*
 tr:first-child td:first-child { border-top-left-radius: 10px; }
