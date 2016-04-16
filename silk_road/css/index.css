@@ -82,12 +82,12 @@
 
 #menuu139
 {
-	z-index: 10;
+	z-index: 42;
 	width: 686px;
 	border-style: none;
 	border-color: transparent;
 	background-color: transparent;
-	position: relative;
+	position: absolute;
 }
 
 #u147
@@ -435,7 +435,7 @@
 {
 	z-index: 41;
 	width: 686px;
-	height: 490px;
+	height: 535px;
 	
 	position: relative;
 }
@@ -443,9 +443,9 @@
 #wordCloud{
 	z-index: 41;
 	width: 686px;
-	height: 490px;
+	height: 535px;/*490*/
 	right:0px;
-	top:45px;
+	top:0px;/*45*/
 	position: absolute;
 }
 /*add*/
