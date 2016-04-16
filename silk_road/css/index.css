@@ -82,12 +82,19 @@
 
 #menuu139
 {
-	z-index: 10;
+	/*z-index: 10;
+	width: 686px;
+	border-style: none;
+	border-color: transparent;
+	background-color: transparent;
+	position: relative;*/
+	z-index: 11;
 	width: 686px;
 	border-style: none;
 	border-color: transparent;
 	background-color: transparent;
 	position: relative;
+	margin-right: -10000px;
 }
 
 #u147
@@ -433,11 +440,17 @@
 
 #my_map
 {
-	z-index: 41;
+	/*z-index: 41;
 	width: 686px;
 	height: 490px;
 	
+	position: relative;*/
+	z-index: 10;
+	width: 686px;
+	background-color: #D7FFE1;
+	padding-bottom: 490px;
 	position: relative;
+	margin-right: -10000px;
 }
 
 #wordCloud{
