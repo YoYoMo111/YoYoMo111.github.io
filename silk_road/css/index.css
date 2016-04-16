@@ -48,12 +48,13 @@
 #u81
 {
 	z-index: 8;
-	width: 364px;
+	width: 363px;
 	height: 535px;
 	background-color: white;
 	position: relative;
 	margin-right: -10000px;
 	overflow: auto;
+	border-right: rgba(243, 169, 81, 0.28) solid 1px;
 }
 /*
 #my_map
@@ -457,7 +458,7 @@ td#title{
 
 td.day-type{
 	vertical-align: top;
-	padding:10px;
+	padding:10px 0px 0px 10px;
 }
 tr#yesterday-row{
 	background: rgba(181, 202, 245, 0.42);
