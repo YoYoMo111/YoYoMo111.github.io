@@ -73,7 +73,7 @@
 {
 	z-index: 9;
 	width: 686px;
-	background-color: #DCE3FF;
+	background-color: #FFFFFF;
 	padding-bottom: 0px;
 	position: relative;
 	margin-right: -10000px;
@@ -102,9 +102,10 @@
 #route1
 {
 	width: 135px;
-	background-color: #C4C4C4;
+	background-color: #e7cfa9;
 	padding-bottom: 28px;
 	position: relative;
+	border-radius: 0px 0px 7px 7px;
 }
 
 #u152-4
@@ -115,7 +116,7 @@
 	border-color: transparent;
 	background-color: transparent;
 	text-align: center;
-	color: #FFFFFF;
+	color: #6a3906;
 	font-family: Verdana, Tahoma, Geneva, sans-serif;
 	position: relative;
 	margin-right: -10000px;
@@ -159,14 +160,15 @@
 #route2
 {
 	width: 135px;
-	background-color: #C4C4C4;
+	background-color: #e7cfa9;
 	padding-bottom: 28px;
 	position: relative;
+	border-radius: 0px 0px 7px 7px;
 }
 
 #route1.MuseMenuActive,#route2:hover
 {
-	background-color: #999999;
+	/*background-color: #999999;*/
 	width: 135px;
 	min-height: 0px;
 	margin: 0px;
@@ -174,7 +176,7 @@
 
 #route2:active
 {
-	background-color: #6B6B6B;
+	/*background-color: #6B6B6B;*/
 	width: 135px;
 	min-height: 0px;
 	margin: 0px;
@@ -188,7 +190,7 @@
 	border-color: transparent;
 	background-color: transparent;
 	text-align: center;
-	color: #FFFFFF;
+	color: #6a3906;
 	font-family: Verdana, Tahoma, Geneva, sans-serif;
 	position: relative;
 	margin-right: -10000px;
@@ -235,14 +237,15 @@
 #route3
 {
 	width: 136px;
-	background-color: #C4C4C4;
+	background-color: #e7cfa9;
 	padding-bottom: 28px;
 	position: relative;
+	border-radius: 0px 0px 7px 7px;
 }
 
 #route3:hover
 {
-	background-color: #999999;
+	/*background-color: #999999;*/
 	width: 136px;
 	min-height: 0px;
 	margin: 0px;
@@ -256,7 +259,7 @@
 	border-color: transparent;
 	background-color: transparent;
 	text-align: center;
-	color: #FFFFFF;
+	color: #6a3906;
 	font-family: Verdana, Tahoma, Geneva, sans-serif;
 	position: relative;
 	margin-right: -10000px;
@@ -294,14 +297,15 @@
 #clean
 {
 	width: 136px;
-	background-color: #C4C4C4;
+	background-color: #e7cfa9;
 	padding-bottom: 28px;
 	position: relative;
+	border-radius: 0px 0px 7px 7px;
 }
 
 #clean:hover
 {
-	background-color: #999999;
+	/*background-color: #999999;*/
 	width: 136px;
 	min-height: 0px;
 	margin: 0px;
@@ -315,7 +319,7 @@
 	border-color: transparent;
 	background-color: transparent;
 	text-align: center;
-	color: #FFFFFF;
+	color: #6a3906;
 	font-family: Verdana, Tahoma, Geneva, sans-serif;
 	position: relative;
 	margin-right: -10000px;
@@ -353,14 +357,15 @@
 #timeline
 {
 	width: 136px;
-	background-color: #C4C4C4;
+	background-color: #e7cfa9;
 	padding-bottom: 28px;
 	position: relative;
+	border-radius: 0px 0px 7px 7px;
 }
 
 #timeline:hover
 {
-	background-color: #999999;
+	/*background-color: #999999;*/
 	width: 136px;
 	min-height: 0px;
 	margin: 0px;
@@ -368,7 +373,7 @@
 
 #route3:active,#clean:active,#timeline:active
 {
-	background-color: #6B6B6B;
+	/*background-color: #6B6B6B;*/
 	width: 136px;
 	min-height: 0px;
 	margin: 0px;
@@ -382,7 +387,7 @@
 	border-color: transparent;
 	background-color: transparent;
 	text-align: center;
-	color: #FFFFFF;
+	color: #6a3906;
 	font-family: Verdana, Tahoma, Geneva, sans-serif;
 	position: relative;
 	margin-right: -10000px;

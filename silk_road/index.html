@@ -15,8 +15,9 @@
         {
             
         //The following lines create a map. All you need is: a div id, a location for the center of the map, and a zoom level.
-      var loc={lat: 35.039730, lng: 78.993104};
-	    var ufmap = new google.maps.Map(document.getElementById('my_map'), {center: loc,zoom: 2});
+      var loc={lat: 31.201298,  lng: 68.486586};
+	    var ufmap = new google.maps.Map(document.getElementById('my_map'), {center: loc,zoom: 3});
+      ufmap.setOptions({ scrollwheel: false });
 	
         //The following lines create a marker on a map. All you need is a location for the marker and a map.
         //var loc1={lat: 29.6448497, lng: -82.3605733};
@@ -206,13 +207,18 @@
           var routePath3 = new google.maps.Polyline({
             path: route3Coordinates,
             geodesic: true,
-            strokeColor: '#04cc1e',
+            strokeColor: '#ff5ef8',
             strokeOpacity: 1.0,
             strokeWeight: 2
           });
 
           $('#route1').unbind('click').click(function() {
             //infowindow4.open(ufmap, marker4);
+            document.getElementById("route1").style.background="#ddbd80";
+            document.getElementById("route2").style.background="#e7cfa9";
+            document.getElementById("route3").style.background="#e7cfa9";
+            document.getElementById("clean").style.background="#e7cfa9";
+            document.getElementById("timeline").style.background="#e7cfa9";
 
             for(var i=0; i<=4;i++){
             var ID= '#T'+i;
@@ -239,6 +245,11 @@
           
           $('#route2').unbind('click').click(function() {
             //infowindow4.open(ufmap, marker4);
+            document.getElementById("route2").style.background="#ddbd80";
+            document.getElementById("route1").style.background="#e7cfa9";
+            document.getElementById("route3").style.background="#e7cfa9";
+            document.getElementById("clean").style.background="#e7cfa9";
+            document.getElementById("timeline").style.background="#e7cfa9";
 
             for(var i=0; i<=4;i++){
             var ID= '#T'+i;
@@ -266,6 +277,11 @@
 
           $('#route3').unbind('click').click(function() {
             //infowindow4.open(ufmap, marker4);
+            document.getElementById("route3").style.background="#ddbd80";
+            document.getElementById("route2").style.background="#e7cfa9";
+            document.getElementById("route1").style.background="#e7cfa9";
+            document.getElementById("clean").style.background="#e7cfa9";
+            document.getElementById("timeline").style.background="#e7cfa9";
 
             for(var i=0; i<=4;i++){
             var ID= '#T'+i;
@@ -293,6 +309,12 @@
           var flag=-1;
           $('#clean').unbind('click').click(function() {
             //infowindow4.open(ufmap, marker4);
+            document.getElementById("clean").style.background="#ddbd80";
+            document.getElementById("route2").style.background="#e7cfa9";
+            document.getElementById("route3").style.background="#e7cfa9";
+            document.getElementById("route1").style.background="#e7cfa9";
+            document.getElementById("timeline").style.background="#e7cfa9";
+
             if(flag==1){
                 for(var i=0; i<=4;i++){
                 var ID= '#T'+i;
@@ -348,6 +370,11 @@
 
           $('#timeline').unbind('click').click(function() {
             //infowindow4.open(ufmap, marker4);
+            document.getElementById("timeline").style.background="#ddbd80";
+            document.getElementById("route2").style.background="#e7cfa9";
+            document.getElementById("route3").style.background="#e7cfa9";
+            document.getElementById("clean").style.background="#e7cfa9";
+            document.getElementById("route1").style.background="#e7cfa9";
 
             for(var i=0; i<=4;i++){
             var ID= '#T'+i;
