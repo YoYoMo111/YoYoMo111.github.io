@@ -457,6 +457,99 @@
 	height: 152px;
 }
 
+/*footer add*/
+#pu178-4
+{
+	width: 0.01px;
+	margin-right: -10000px;
+	margin-top: 28px;
+	margin-left: 99px;
+}
+
+#u178-4
+{
+	z-index: 42;
+	display: block;
+	vertical-align: top;
+	position: relative;
+}
+
+#u183-7
+{
+	z-index: 50;
+	width: 89px;
+	min-height: 52px;
+	background-color: transparent;
+	position: relative;
+	margin-right: -10000px;
+}
+
+#u193-7
+{
+	z-index: 57;
+	width: 131px;
+	min-height: 48px;
+	background-color: transparent;
+	position: relative;
+	margin-right: -10000px;
+	left: 98px;
+}
+
+#u183-2,#u183-4,#u193-2,#u193-4
+{
+	line-height: 21px;
+	color: #8B4A16;
+}
+
+#u183-5,#u193-5
+{
+	color: #6A3906;
+}
+
+#pu182-4
+{
+	width: 0.01px;
+	margin-right: -10000px;
+	margin-top: 28px;
+	margin-left: 676px;
+}
+
+#u182-4
+{
+	z-index: 46;
+	display: block;
+	vertical-align: top;
+	position: relative;
+}
+
+#pu183-7,#pu196
+{
+	width: 0.01px;
+	margin-top: 11px;
+}
+
+#u196
+{
+	z-index: 64;
+	width: 79px;
+	height: 29px;
+	background-color: #FFFFFF;
+	position: relative;
+	margin-right: -10000px;
+}
+
+#u197
+{
+	z-index: 65;
+	width: 79px;
+	height: 29px;
+	background-color: #FFFFFF;
+	position: relative;
+	margin-right: -10000px;
+	left: 117px;
+}
+/*footer end*/
+
 td#title{
 	padding:10px;
 }
