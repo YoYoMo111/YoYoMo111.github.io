@@ -533,7 +533,7 @@
 	z-index: 64;
 	width: 79px;
 	height: 29px;
-	background-color: #FFFFFF;
+	/*background-color: #FFFFFF;*/
 	position: relative;
 	margin-right: -10000px;
 }
@@ -543,10 +543,20 @@
 	z-index: 65;
 	width: 79px;
 	height: 29px;
-	background-color: #FFFFFF;
+	/*background-color: #FFFFFF;*/
 	position: relative;
 	margin-right: -10000px;
 	left: 117px;
+}
+#u198
+{
+	z-index: 66;
+	width: 79px;
+	height: 29px;
+	/*background-color: #FFFFFF;*/
+	position: relative;
+	margin-right: -10000px;
+	margin-top: 30px;
 }
 /*footer end*/
 
