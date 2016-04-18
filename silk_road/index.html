@@ -153,7 +153,7 @@
 
        <div class="grpelem" id="u196"><!-- simple frame -->
         <!--<iframe src="https://www.facebook.com/plugins/share_button.php?href=http%3A%2F%2Fyoyomo111.github.io%2Fsilk_road%2Findex.html&layout=button_count&mobile_iframe=false&width=80&height=20&appId" width="80" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>-->
-        <div class="fb-share-button" data-href="http://yoyomo111.github.io/silk_road/index.html" data-layout="button_count" data-mobile-iframe="true"></div>
+        <div class="fb-share-button" data-href="http://yoyomo111.github.io/silk_road/index.html" data-layout="button_count" data-mobile-iframe="false"></div>
        </div>
 
        <div class="grpelem" id="u197"><!-- simple frame -->
@@ -281,43 +281,103 @@
         route3Infowindow[3] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/refugeeRoute/Budapest.jpg" width="200px"></td><td><h1><b>Budapest</b></h1> Tens of thousands of migrants and refugees, mostly fleeing unrest in the Middle East and Afghanistan, are pushing their way through the Balkans to Hungary. From there, many are continuing their desperate trip to Germany and other countries in northern Europe.<br> <a href="http://www.nytimes.com/interactive/projects/cp/reporters-notebook/migrants/syrian-refugees-austria">See More</a></td></tr></table>'});  
 
             route1Markers[0].addListener('click', function() {
+              for (var i=0;i<4;i++){
+                route1Infowindow[i].close(ufmap, route1Markers[i]);
+                route2Infowindow[i].close(ufmap, route2Markers[i]);
+                route3Infowindow[i].close(ufmap, route3Markers[i]);
+              }
                 route1Infowindow[0].open(ufmap, route1Markers[0]);
             });
             route1Markers[1].addListener('click', function() {
+              for (var i=0;i<4;i++){
+                route1Infowindow[i].close(ufmap, route1Markers[i]);
+                route2Infowindow[i].close(ufmap, route2Markers[i]);
+                route3Infowindow[i].close(ufmap, route3Markers[i]);
+              }
                 route1Infowindow[1].open(ufmap, route1Markers[1]);
             });
             route1Markers[2].addListener('click', function() {
+              for (var i=0;i<4;i++){
+                route1Infowindow[i].close(ufmap, route1Markers[i]);
+                route2Infowindow[i].close(ufmap, route2Markers[i]);
+                route3Infowindow[i].close(ufmap, route3Markers[i]);
+              }
                 route1Infowindow[2].open(ufmap, route1Markers[2]);
             });
             route1Markers[3].addListener('click', function() {
+              for (var i=0;i<4;i++){
+                route1Infowindow[i].close(ufmap, route1Markers[i]);
+                route2Infowindow[i].close(ufmap, route2Markers[i]);
+                route3Infowindow[i].close(ufmap, route3Markers[i]);
+              }
                 route1Infowindow[3].open(ufmap, route1Markers[3]);
             });
 
 
             route2Markers[0].addListener('click', function() {
+              for (var i=0;i<4;i++){
+                route1Infowindow[i].close(ufmap, route1Markers[i]);
+                route2Infowindow[i].close(ufmap, route2Markers[i]);
+                route3Infowindow[i].close(ufmap, route3Markers[i]);
+              }
                 route2Infowindow[0].open(ufmap, route2Markers[0]);
             });
             route2Markers[1].addListener('click', function() {
+              for (var i=0;i<4;i++){
+                route1Infowindow[i].close(ufmap, route1Markers[i]);
+                route2Infowindow[i].close(ufmap, route2Markers[i]);
+                route3Infowindow[i].close(ufmap, route3Markers[i]);
+              }
                 route2Infowindow[1].open(ufmap, route2Markers[1]);
             });
             route2Markers[2].addListener('click', function() {
+              for (var i=0;i<4;i++){
+                route1Infowindow[i].close(ufmap, route1Markers[i]);
+                route2Infowindow[i].close(ufmap, route2Markers[i]);
+                route3Infowindow[i].close(ufmap, route3Markers[i]);
+              }
                 route2Infowindow[2].open(ufmap, route2Markers[2]);
             });
             route2Markers[3].addListener('click', function() {
+              for (var i=0;i<4;i++){
+                route1Infowindow[i].close(ufmap, route1Markers[i]);
+                route2Infowindow[i].close(ufmap, route2Markers[i]);
+                route3Infowindow[i].close(ufmap, route3Markers[i]);
+              }
                 route2Infowindow[3].open(ufmap, route2Markers[3]);
             });
 
 
             route3Markers[0].addListener('click', function() {
+              for (var i=0;i<4;i++){
+                route1Infowindow[i].close(ufmap, route1Markers[i]);
+                route2Infowindow[i].close(ufmap, route2Markers[i]);
+                route3Infowindow[i].close(ufmap, route3Markers[i]);
+              }
                 route3Infowindow[0].open(ufmap, route3Markers[0]);
             });
             route3Markers[1].addListener('click', function() {
+              for (var i=0;i<4;i++){
+                route1Infowindow[i].close(ufmap, route1Markers[i]);
+                route2Infowindow[i].close(ufmap, route2Markers[i]);
+                route3Infowindow[i].close(ufmap, route3Markers[i]);
+              }
                 route3Infowindow[1].open(ufmap, route3Markers[1]);
             });
             route3Markers[2].addListener('click', function() {
+              for (var i=0;i<4;i++){
+                route1Infowindow[i].close(ufmap, route1Markers[i]);
+                route2Infowindow[i].close(ufmap, route2Markers[i]);
+                route3Infowindow[i].close(ufmap, route3Markers[i]);
+              }
                 route3Infowindow[2].open(ufmap, route3Markers[2]);
             });
             route3Markers[3].addListener('click', function() {
+              for (var i=0;i<4;i++){
+                route1Infowindow[i].close(ufmap, route1Markers[i]);
+                route2Infowindow[i].close(ufmap, route2Markers[i]);
+                route3Infowindow[i].close(ufmap, route3Markers[i]);
+              }
                 route3Infowindow[3].open(ufmap, route3Markers[3]);
             });
 
