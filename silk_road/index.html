@@ -40,6 +40,8 @@
     <div class="clearfix colelem" id="pu81"><!-- group -->
      <div class="grpelem" id="u81">
 
+      <!-- Dynamic information window contents -->
+
         <table id="T0" class="tables" style="width:354px; display:block;">
         <tbody>
             <tr><td style="padding: 0px;"><center><img src="images/intro-content.png" style="width:350px;;"></center></td></tr>
@@ -91,11 +93,9 @@
         </table>
 
      </div>
-     <!--
-     <div class="grpelem" id="container">
-        <div id="my_map"></div>
-    </div>
-    -->
+
+     <!--Create Menu Contents-->
+
     <div class="clearfix grpelem" id="u83"><!-- column -->
       <div class="position_content" id="u83_position_content">
        <nav class="MenuBar clearfix colelem" id="menuu139"><!-- horizontal box -->
@@ -113,7 +113,7 @@
         </div>
 
         <div class="MenuItemContainer clearfix grpelem" id="u161"><!-- vertical box -->
-         <a class="nonblock nontext MenuItem MenuItemWithSubMenu clearfix colelem" id="clean"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u163-4"><!-- content --><p>All Routes</p></div></a>
+         <a class="nonblock nontext MenuItem MenuItemWithSubMenu clearfix colelem" id="clean"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u163-4"><!-- content --><p>Show All Routes</p></div></a>
         </div>
 
         <div class="MenuItemContainer clearfix grpelem" id="u168"><!-- vertical box -->
@@ -122,6 +122,7 @@
 
        </nav>
 
+       <!--interactive map area-->
 
        <div class="colelem" id="my_map"><!-- simple frame --></div>
        <div class="colelem" id="wordCloud"></div>
@@ -130,6 +131,9 @@
 
     </div>
     <div class="verticalspacer"></div>
+
+    <!--footer area-->
+
     <div class="colelem" id="u78"><!-- simple frame -->
 
       <div class="clearfix grpelem" id="pu178-4"><!-- column -->
@@ -151,16 +155,16 @@
       <img class="colelem" id="u182-4" alt="Social" width="196" height="22" src="images/social.png"/><!-- rasterized frame -->
       <div class="clearfix colelem" id="pu196"><!-- group -->
 
-       <div class="grpelem" id="u196"><!-- simple frame -->
+       <div class="grpelem" id="u196"><!-- facebook share button -->
         <!--<iframe src="https://www.facebook.com/plugins/share_button.php?href=http%3A%2F%2Fyoyomo111.github.io%2Fsilk_road%2Findex.html&layout=button_count&mobile_iframe=false&width=80&height=20&appId" width="80" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>-->
         <div class="fb-share-button" data-href="http://yoyomo111.github.io/silk_road/index.html" data-layout="button_count" data-mobile-iframe="false"></div>
        </div>
 
-       <div class="grpelem" id="u197"><!-- simple frame -->
+       <div class="grpelem" id="u197"><!-- facebook like button -->
        <iframe src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fyoyomo111.github.io%2Fsilk_road%2Findex.html&width=450&layout=standard&action=like&show_faces=true&share=false&height=80&appId" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
      </div>
 
-       <div class="grpelem" id="u198"><!-- simple frame -->
+       <div class="grpelem" id="u198"><!-- twitter share button -->
         <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://yoyomo111.github.io/silk_road/index.html" data-text="This is a wonderful website! Silk Road - Yesterday and Today" data-via="YoYoMo_111" data-related="YoYoMo_111" data-hashtags="SilkRoadProject">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
        </div>
       </div>
@@ -230,33 +234,33 @@
           var route3Markers = [];
 
 
-       route1Markers[0] = new google.maps.Marker({position: route1Coordinates[0],map: null, title: 'Xi'+"'"+'an',label:''/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});           
+       route1Markers[0] = new google.maps.Marker({position: route1Coordinates[0],map: null, title: 'Xi'+"'"+'an',label:'', icon:'images/marker-red.png'});           
 
-       route1Markers[1] = new google.maps.Marker({position: route1Coordinates[1],map: null,title: 'Lanzhou',label:''/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+       route1Markers[1] = new google.maps.Marker({position: route1Coordinates[1],map: null,title: 'Lanzhou',label:'', icon:'images/marker-red.png'});
 
-       route1Markers[2] = new google.maps.Marker({position: route1Coordinates[2],map: null,title: 'Dunhuang',label:''/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+       route1Markers[2] = new google.maps.Marker({position: route1Coordinates[2],map: null,title: 'Dunhuang',label:'', icon:'images/marker-red.png'});
 
-       route1Markers[3] = new google.maps.Marker({position: route1Coordinates[3],map: null,title: 'Kashgar',label:''});
+       route1Markers[3] = new google.maps.Marker({position: route1Coordinates[3],map: null,title: 'Kashgar',label:'', icon:'images/marker-red.png'});
 
 
       //route2 marker
-      route2Markers[0] = new google.maps.Marker({position: route2Coordinates[4],map: null, title: 'Kochi',label:''/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+      route2Markers[0] = new google.maps.Marker({position: route2Coordinates[4],map: null, title: 'Kochi',label:'', icon:'images/marker-blue.png'});
         
-      route2Markers[1] = new google.maps.Marker({position: route2Coordinates[8],map: null,title: 'Baghdad',label:''/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+      route2Markers[1] = new google.maps.Marker({position: route2Coordinates[8],map: null,title: 'Baghdad',label:'', icon:'images/marker-blue.png'});
            
-      route2Markers[2] = new google.maps.Marker({position: route2Coordinates[10],map: null,title: 'Istanbul',label:''/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+      route2Markers[2] = new google.maps.Marker({position: route2Coordinates[10],map: null,title: 'Istanbul',label:'', icon:'images/marker-blue.png'});
 
-      route2Markers[3] = new google.maps.Marker({position: route2Coordinates[14],map: null,title: 'Venice',label:''});
+      route2Markers[3] = new google.maps.Marker({position: route2Coordinates[14],map: null,title: 'Venice',label:'', icon:'images/marker-blue.png'});
 
 
       //route3 marker
-      route3Markers[0] = new google.maps.Marker({position: route3Coordinates[0],map: null, title: 'Budapest',label:''/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+      route3Markers[0] = new google.maps.Marker({position: route3Coordinates[0],map: null, title: 'Budapest',label:'', icon:'images/marker-pink.png'});
                   
-      route3Markers[1] = new google.maps.Marker({position: route3Coordinates[1],map: null,title: 'Lesbos',label:''/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});        
+      route3Markers[1] = new google.maps.Marker({position: route3Coordinates[1],map: null,title: 'Lesbos',label:'', icon:'images/marker-pink.png'});        
 
-      route3Markers[2] = new google.maps.Marker({position: route3Coordinates[2],map: null,title: 'Ankara',label:''/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+      route3Markers[2] = new google.maps.Marker({position: route3Coordinates[2],map: null,title: 'Ankara',label:'', icon:'images/marker-pink.png'});
 
-      route3Markers[3] = new google.maps.Marker({position: route3Coordinates[4],map: null,title: 'Aleppo',label:''});
+      route3Markers[3] = new google.maps.Marker({position: route3Coordinates[4],map: null,title: 'Aleppo',label:'', icon:'images/marker-pink.png'});
         
 
 
@@ -272,7 +276,7 @@
 
         route2Infowindow[0] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/spiceRoute/Kochi.jpg" width="200px"></td><td style="font-size:13px;"><h1><b>Kochi</b></h1>Past:<br>Kochi was the centre of Indian spice trade for many centuries, and was known to the Yavanas (Greeksand Romans) as well as Jews, Syrians, Arabs, and Chinese since ancient times. Kochi rose to significance as a trading centre after the port Muziris around Kodungallur (Cranganore) was destroyed by massive flooding of Periyar in 1341. The earliest documented references to Kochi occur in books written by Chinese voyager Ma Huan during his visit to Kochi in the 15th century as part of AdmiralZheng He'+"'"+'s treasure fleet. There are also references to Kochi in accounts written by Italian travellerNiccolo Da Conti, who visited Kochi in 1440.<br> <a href="http://www.cochinspices.com/spice_journey.php">See More</a><br>Present:<br>Kochi is the largest City in the Indian state of Kerala and it is also the business capital of Kerala attracting investments in Information Technology and its place as an important sea port in history.</td></tr></table>'});  
         route2Infowindow[1] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1><b>City Name</b></h1> introduction <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});   
-        route2Infowindow[2] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/spiceRoute/Istanbul.jpg" width="200px"></td><td style="font-size:13px;"><h1><b>Istanbul</b></h1>Past:<br>Constantinople was the capital city of the Roman/Byzantine Empire (330–1204 and 1261–1453), and also of the brief Latin (1204–1261), and the later Ottoman (1453–1924) empires. It was reinaugurated in 324 AD at ancient Byzantium, as the new capital of the Roman Empire by Emperor Constantine the Great, after whom it was named, and dedicated on 11 May 330. From its foundation in the 4th century to the early 13th century, Constantinople was the largest and wealthiest city in Europe and it was instrumental in the advancement of Christianity during Roman and Byzantine times.<br>Constantinople was the largest and richest urban center in the Eastern Mediterranean Sea during the late Eastern Roman Empire, mostly as a result of its strategic position commanding the trade routes between the Aegean Sea and the Black Sea. It would remain the capital of the eastern, Greek-speaking empire for over a thousand years. At its peak, roughly corresponding to the Middle Ages, it was the richest and largest European city, exerting a powerful cultural pull and dominating economic life in the Mediterranean.<br>Present:<br>Historically also known as Constantinople and Byzantium, is the most populous city in Turkey and the country'+"'"+'s economic, cultural, and historic center. Istanbul is a transcontinental city in Eurasia, straddling the Bosphorus strait between the Sea of Marmara and the Black Sea. Its commercial and historical center lies on the Europeanside and about a third of its population lives on the Asian side. Istanbul'+"'"+'s strategic position on the historic Silk Road, rail networks to Europe and the Middle East, and the only sea route between the Black Sea and the Mediterranean have produced a cosmopolitan populace, although less so since the establishment of the Turkish Republic in 1923. <a href="http://miracleofeedingcities.com/what-has-come-of-the-worlds-ancient-spice-trade-epicenter/">See More</a></td></tr></table>'});   
+        route2Infowindow[2] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/spiceRoute/Istanbul.jpg" width="200px"></td><td style="font-size:13px;"><h1><b>Istanbul</b></h1>Past:<br>Constantinople was the capital city of the Roman/Byzantine Empire (330-1204 and 1261-1453), and also of the brief Latin (1204-1261), and the later Ottoman (1453-1924) empires. It was reinaugurated in 324 AD at ancient Byzantium, as the new capital of the Roman Empire by Emperor Constantine the Great, after whom it was named, and dedicated on 11 May 330. From its foundation in the 4th century to the early 13th century, Constantinople was the largest and wealthiest city in Europe and it was instrumental in the advancement of Christianity during Roman and Byzantine times.<br>Constantinople was the largest and richest urban center in the Eastern Mediterranean Sea during the late Eastern Roman Empire, mostly as a result of its strategic position commanding the trade routes between the Aegean Sea and the Black Sea. It would remain the capital of the eastern, Greek-speaking empire for over a thousand years. At its peak, roughly corresponding to the Middle Ages, it was the richest and largest European city, exerting a powerful cultural pull and dominating economic life in the Mediterranean.<br>Present:<br>Historically also known as Constantinople and Byzantium, is the most populous city in Turkey and the country'+"'"+'s economic, cultural, and historic center. Istanbul is a transcontinental city in Eurasia, straddling the Bosphorus strait between the Sea of Marmara and the Black Sea. Its commercial and historical center lies on the Europeanside and about a third of its population lives on the Asian side. Istanbul'+"'"+'s strategic position on the historic Silk Road, rail networks to Europe and the Middle East, and the only sea route between the Black Sea and the Mediterranean have produced a cosmopolitan populace, although less so since the establishment of the Turkish Republic in 1923. <a href="http://miracleofeedingcities.com/what-has-come-of-the-worlds-ancient-spice-trade-epicenter/">See More</a></td></tr></table>'});   
         route2Infowindow[3] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/image1.jpg" width="100px"></td><td><h1><b>City Name</b></h1> introduction <br> <a href="https://en.wikipedia.org/wiki/Aeschylus">See More</a></td></tr></table>'});  
 
         route3Infowindow[0] = new google.maps.InfoWindow({content: '<table><tr><td><img src="images/refugeeRoute/aleppo.jpg" width="200px"></td><td><h1><b>Aleppo</b></h1> Remembering Syria'+"'"+'s historic Silk Road souk in Aleppo.<br> <a href="http://www.theguardian.com/travel/2012/oct/05/aleppo-souk-syria-destroyed-war">See More</a><br>Numbers of the migration crisis:<br><a href="http://www.bbc.com/news/world-europe-34131911">Migration to Europe in 7 charts</a></td></tr></table>'});  
@@ -402,6 +406,8 @@
         }
         */
 
+
+
         //draw routes
 
           var routePath1 = new google.maps.Polyline({
@@ -409,7 +415,7 @@
             geodesic: true,
             strokeColor: '#FF0000',
             strokeOpacity: 1.0,
-            strokeWeight: 2
+            strokeWeight: 2,
           });
 
           //route2
@@ -431,6 +437,8 @@
             strokeOpacity: 1.0,
             strokeWeight: 2
           });
+
+          //main menu click event controls
 
           $('#route1').unbind('click').click(function() {
             //infowindow4.open(ufmap, marker4);
@@ -603,6 +611,7 @@
            }
 
             $('#T4').fadeIn();
+            $('#my_map').fadeOut();
             $('#wordCloud').fadeIn();
             $('#wordCloud').html('<img src="images/timelinecover.png" style="width:686px;height:535px;">');
             
