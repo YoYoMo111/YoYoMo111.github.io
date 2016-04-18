@@ -18,27 +18,178 @@
   <link rel="stylesheet" type="text/css" href="css/index.css?505620523" id="pagesheet"/>
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="scripts/jquery-1.7.2.min.js"></script>
-    <script>
+    
+    
+</head>
+<body onload="load_maps();" style="background-image: url(images/silkroad_pattern_invert.jpg); background-repeat: repeat;">
+
+  <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_CN/sdk.js#xfbml=1&version=v2.6";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+   <div class="clearfix" id="page"><!-- column -->
+   <div class="position_content" id="page_position_content">
+    <div class="clearfix colelem" id="u77" style="background-image: url(images/banner2.png);background-size:100%;"><!-- group -->
+     <div  id="u79-4"  width="557" height="42"></div><!-- rasterized frame -->
+    </div>
+    <div class="clearfix colelem" id="pu81"><!-- group -->
+     <div class="grpelem" id="u81">
+
+        <table id="T0" class="tables" style="width:354px;height:500px; display:block;">
+        <tbody>
+            <tr><td style="padding: 10px;">intro content</td></tr>
+        </tbody>
+        </table>
+
+
+        <table id="T1" class="tables" style="width:354px; height:200px; display:none;">
+        <tbody>
+            <tr><td colspan="2" style="padding-top: 10px;"><center><img src="images/tradeRoute/TradeRoute.jpg" style="width:300px;"></center></td></tr>
+            <tr><td id="title" colspan="2"><center><b>Trade Route (Land Silk Road)</b></center></td></tr>
+            <tr id="yesterday-row"><td class="day-type">Yesterday:</td><td style="padding:10px;">Around 200 BC, the Han Government sent General Zhang Qian as an envoy to build relationships and established trade with small nomadic states. After that the merchants traveled on this route safely and began to carry silk and other goods from China to other parts of the world. And Tang Dynasty reopened the silk route and promoted trading, resulting in a boom in trade with the west.</td></tr>
+            <tr id="today-row"><td class="day-type">Today:</td><td style="padding:10px;"><img src="images/tradeRoute/BeltRoad.jpg" style="width:250px;"><br>Nowadays Chinese government is building the Silk Road Economic Belt and the 21st-Century Maritime Silk Road(also known as The Belt and Road). The initiative calls for the integration of the region into a cohesive economic area through building infrastructure, increasing cultural exchanges, and broadening trade.<br><br>See More: <br><a href=" http://www.chinahighlights.com/silkroad/history.htm">Silk Road history</a><br><a href="  https://en.wikipedia.org/wiki/One_Belt,_One_Road">One Belt One Road</a></td></tr>
+        </tbody>
+        </table>
+
+        <table id="T2" class="tables" style="width:354px; display:none;">
+        <tbody>
+            <tr><td colspan="2" style="padding-top: 10px;"><center><img src="images/spiceRoute/Spices.jpg" style="width:300px;"></center></td></tr>
+            <tr><td id="title" colspan="2"><center><b>Spice Route (Maritime Silk Route)</b></center></td></tr>
+            <tr id="yesterday-row"><td class="day-type">Yesterday:</td><td style="padding:10px;">Arabs took the knowledge of Mathematics and Medicine from China and India and worked on it to bring up new sciences like Algebra.<br>Moluccan products were then shipped to trading emporiums in India, passing through ports like Kozhikode (Kochi / 'Muziris' in the olden days), and through Sri Lanka.<br><img src="images/spiceRoute/spiceroutemap.png" style="width:250px;"></td></tr>
+            <tr id="today-row"><td class="day-type">Today:</td><td style="padding:10px;">The Silk Road's greatest contribution to the world history was not mere trading of a few commodities but exchange of ideas, art and science between Asia, Europe and Africa. Greek Art from Europe flowed into India whereas Buddhism from India reached out to the world through Silk Road.</td></tr>
+        </tbody>
+        </table>
+
+        <table id="T3" class="tables" style="width:354px; display:none;">
+        <tbody>
+            <tr><td colspan="2" style="padding-top: 10px;"><center><img src="images/refugeeRoute/dronejourney.png" style="width:300px;"></center></td></tr>
+            <tr><td id="title" colspan="2"><center><b>Syrian Refugees Crisis</b></center></td></tr>
+            <tr id="yesterday-row"><td class="day-type">Yesterday:</td><td style="padding:10px;">Aleppo and Damascus where the closest ports to Europe, where good from the Far East would enter into Europe since the Phoenician merchant, the Roman Empire up to the Renaissance.</td></tr>
+            <tr id="today-row"><td class="day-type">Today:</td><td style="padding:10px;">Today Aleppo is one of the most devastated cities in Syria. Its civilian population has almost entirely fled. It has become the symbol of the migration that, through Turkey, is leading millions of people into Europe, looking for security and peace.</td></tr>
+        </tbody>
+        </table>
+
+        <table id="T4" class="tables" style="width: 364px; height:200px; margin-top:50px; display: none;">
+        <tbody>
+            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><b>Trade Route (Land Silk Road)</b></center></td></tr>
+            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><a id="year1">Past</a></center></td></tr>
+            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><a id="year2">Present</a></center></td></tr>
+            <tr style="height: 28px;"><br></tr>
+            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><b>Spice Route (Maritime Silk Route)</b></center></td></tr>
+            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><a id="year3">Past</a></center></td></tr>
+            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><a id="year4">Present</a></center></td></tr>
+            <tr style="height: 28px;"><br></tr>
+            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><b>Syrian Refugees Crisis</b></center></td></tr>
+            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><a id="year5">Past</a></center></td></tr>
+            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><a id="year6">Present</a></center></td></tr>
+        </tbody>
+        </table>
+
+     </div>
+     <!--
+     <div class="grpelem" id="container">
+        <div id="my_map"></div>
+    </div>
+    -->
+    <div class="clearfix grpelem" id="u83"><!-- column -->
+      <div class="position_content" id="u83_position_content">
+       <nav class="MenuBar clearfix colelem" id="menuu139"><!-- horizontal box -->
+
+        <div class="MenuItemContainer clearfix grpelem" id="u147"><!-- vertical box -->
+         <a class="nonblock nontext MenuItem MenuItemWithSubMenu MuseMenuActive clearfix colelem" id="route1"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u152-4"><!-- content --><p>Route 1</p></div></a>
+        </div>
+
+        <div class="MenuItemContainer clearfix grpelem" id="u140"><!-- vertical box -->
+         <a class="nonblock nontext MenuItem MenuItemWithSubMenu clearfix colelem" id="route2"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u146-4"><!-- content --><p>Route 2</p></div></a>
+        </div>
+
+        <div class="MenuItemContainer clearfix grpelem" id="u154"><!-- vertical box -->
+         <a class="nonblock nontext MenuItem MenuItemWithSubMenu clearfix colelem" id="route3"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u158-4"><!-- content --><p>Route 3</p></div></a>
+        </div>
+
+        <div class="MenuItemContainer clearfix grpelem" id="u161"><!-- vertical box -->
+         <a class="nonblock nontext MenuItem MenuItemWithSubMenu clearfix colelem" id="clean"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u163-4"><!-- content --><p>All Routes</p></div></a>
+        </div>
+
+        <div class="MenuItemContainer clearfix grpelem" id="u168"><!-- vertical box -->
+         <a class="nonblock nontext MenuItem MenuItemWithSubMenu clearfix colelem" id="timeline"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u170-4"><!-- content --><p>Timeline</p></div></a>
+        </div>
+
+       </nav>
+
+
+       <div class="colelem" id="my_map"><!-- simple frame --></div>
+       <div class="colelem" id="wordCloud"></div>
+      </div>
+     </div>
+
+    </div>
+    <div class="verticalspacer"></div>
+    <div class="colelem" id="u78"><!-- simple frame -->
+
+      <div class="clearfix grpelem" id="pu178-4"><!-- column -->
+      <img class="colelem" id="u178-4" alt="About Us" width="196" height="22" src="images/aboutUs.png"/><!-- rasterized frame -->
+      <div class="clearfix colelem" id="pu183-7"><!-- group -->
+       <div class="clearfix grpelem" id="u183-7"><!-- content -->
+        <p id="u183-2">You Mo</p>
+        <p id="u183-4">Shan Yan</p>
+        <p id="u183-5">&nbsp;</p>
+       </div>
+       <div class="clearfix grpelem" id="u193-7"><!-- content -->
+        <p id="u193-2">Sandeep Bedadala</p>
+        <p id="u193-4">Alberto De Simoni</p>
+        <p id="u193-5">&nbsp;</p>
+       </div>
+      </div>
+     </div>
+     <div class="clearfix grpelem" id="pu182-4"><!-- column -->
+      <img class="colelem" id="u182-4" alt="Social" width="196" height="22" src="images/social.png"/><!-- rasterized frame -->
+      <div class="clearfix colelem" id="pu196"><!-- group -->
+
+       <div class="grpelem" id="u196"><!-- simple frame -->
+        <!--<iframe src="https://www.facebook.com/plugins/share_button.php?href=http%3A%2F%2Fyoyomo111.github.io%2Fsilk_road%2Findex.html&layout=button_count&mobile_iframe=false&width=80&height=20&appId" width="80" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>-->
+        <div class="fb-share-button" data-href="http://yoyomo111.github.io/silk_road/index.html" data-layout="button_count" data-mobile-iframe="false"></div>
+       </div>
+
+       <div class="grpelem" id="u197"><!-- simple frame -->
+       <iframe src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fyoyomo111.github.io%2Fsilk_road%2Findex.html&width=450&layout=standard&action=like&show_faces=true&share=false&height=80&appId" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+     </div>
+
+       <div class="grpelem" id="u198"><!-- simple frame -->
+        <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://yoyomo111.github.io/silk_road/index.html" data-text="This is a wonderful website! Silk Road - Yesterday and Today" data-via="YoYoMo_111" data-related="YoYoMo_111" data-hashtags="SilkRoadProject">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+       </div>
+      </div>
+     </div>
+
+   </div>
+  </div>
+
+  <script>
     
         function load_maps()
         {
             
         //The following lines create a map. All you need is: a div id, a location for the center of the map, and a zoom level.
       var loc={lat: 31.201298,  lng: 68.486586};
-	    var ufmap = new google.maps.Map(document.getElementById('my_map'), {center: loc,zoom: 3});
+      var ufmap = new google.maps.Map(document.getElementById('my_map'), {center: loc,zoom: 3});
       ufmap.setOptions({ scrollwheel: false });
-	
+  
         //The following lines create a marker on a map. All you need is a location for the marker and a map.
         //var loc1={lat: 29.6448497, lng: -82.3605733};
-	    //var marker1 = new google.maps.Marker({position: loc1,map: ufmap});
+      //var marker1 = new google.maps.Marker({position: loc1,map: ufmap});
             
         //optionally you can also give a title for the marker:
         //var loc1={lat: 29.6448497, lng: -82.3605733};
-	    //var marker1 = new google.maps.Marker({position: loc1,map: ufmap, title: 'This is Baby Gator.'});     
+      //var marker1 = new google.maps.Marker({position: loc1,map: ufmap, title: 'This is Baby Gator.'});     
             
         //optionally you can also give a single character label for the marker:
         //var loc1={lat: 29.6448497, lng: -82.3605733};
-	    //var marker1 = new google.maps.Marker({position: loc1,map: ufmap, title: 'This is Baby Gator.',label:'A'});
+      //var marker1 = new google.maps.Marker({position: loc1,map: ufmap, title: 'This is Baby Gator.',label:'A'});
             
         //optionally you can also give an icon for the marker:
         var route1Coordinates = [
@@ -79,11 +230,11 @@
           var route3Markers = [];
 
 
-	     route1Markers[0] = new google.maps.Marker({position: route1Coordinates[0],map: null, title: 'Xi'+"'"+'an',label:''/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});           
+       route1Markers[0] = new google.maps.Marker({position: route1Coordinates[0],map: null, title: 'Xi'+"'"+'an',label:''/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});           
 
-	     route1Markers[1] = new google.maps.Marker({position: route1Coordinates[1],map: null,title: 'Lanzhou',label:''/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+       route1Markers[1] = new google.maps.Marker({position: route1Coordinates[1],map: null,title: 'Lanzhou',label:''/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
 
-	     route1Markers[2] = new google.maps.Marker({position: route1Coordinates[2],map: null,title: 'Dunhuang',label:''/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
+       route1Markers[2] = new google.maps.Marker({position: route1Coordinates[2],map: null,title: 'Dunhuang',label:''/*, icon:'http://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'*/});
 
        route1Markers[3] = new google.maps.Marker({position: route1Coordinates[3],map: null,title: 'Kashgar',label:''});
 
@@ -456,155 +607,6 @@
         
     
     </script>
-    
-</head>
-<body onload="load_maps();" style="background-image: url(images/silkroad_pattern_invert.jpg); background-repeat: repeat;">
-
-  <div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/zh_CN/sdk.js#xfbml=1&version=v2.6";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
-   <div class="clearfix" id="page"><!-- column -->
-   <div class="position_content" id="page_position_content">
-    <div class="clearfix colelem" id="u77" style="background-image: url(images/banner2.png);background-size:100%;"><!-- group -->
-     <div  id="u79-4"  width="557" height="42"></div><!-- rasterized frame -->
-    </div>
-    <div class="clearfix colelem" id="pu81"><!-- group -->
-     <div class="grpelem" id="u81">
-
-        <table id="T0" class="tables" style="width:354px;height:500px; display:block;">
-        <tbody>
-            <tr><td style="padding: 10px;">intro content</td></tr>
-        </tbody>
-        </table>
-
-
-        <table id="T1" class="tables" style="width:354px; height:200px; display:none;">
-        <tbody>
-            <tr><td colspan="2" style="padding-top: 10px;"><center><img src="images/tradeRoute/TradeRoute.jpg" style="width:300px;"></center></td></tr>
-            <tr><td id="title" colspan="2"><center><b>Trade Route (Land Silk Road)</b></center></td></tr>
-            <tr id="yesterday-row"><td class="day-type">Yesterday:</td><td style="padding:10px;">Around 200 BC, the Han Government sent General Zhang Qian as an envoy to build relationships and established trade with small nomadic states. After that the merchants traveled on this route safely and began to carry silk and other goods from China to other parts of the world. And Tang Dynasty reopened the silk route and promoted trading, resulting in a boom in trade with the west.</td></tr>
-            <tr id="today-row"><td class="day-type">Today:</td><td style="padding:10px;"><img src="images/tradeRoute/BeltRoad.jpg" style="width:250px;"><br>Nowadays Chinese government is building the Silk Road Economic Belt and the 21st-Century Maritime Silk Road(also known as The Belt and Road). The initiative calls for the integration of the region into a cohesive economic area through building infrastructure, increasing cultural exchanges, and broadening trade.<br><br>See More: <br><a href=" http://www.chinahighlights.com/silkroad/history.htm">Silk Road history</a><br><a href="  https://en.wikipedia.org/wiki/One_Belt,_One_Road">One Belt One Road</a></td></tr>
-        </tbody>
-        </table>
-
-        <table id="T2" class="tables" style="width:354px; display:none;">
-        <tbody>
-            <tr><td colspan="2" style="padding-top: 10px;"><center><img src="images/spiceRoute/Spices.jpg" style="width:300px;"></center></td></tr>
-            <tr><td id="title" colspan="2"><center><b>Spice Route (Maritime Silk Route)</b></center></td></tr>
-            <tr id="yesterday-row"><td class="day-type">Yesterday:</td><td style="padding:10px;">Arabs took the knowledge of Mathematics and Medicine from China and India and worked on it to bring up new sciences like Algebra.<br>Moluccan products were then shipped to trading emporiums in India, passing through ports like Kozhikode (Kochi / 'Muziris' in the olden days), and through Sri Lanka.<br><img src="images/spiceRoute/spiceroutemap.png" style="width:250px;"></td></tr>
-            <tr id="today-row"><td class="day-type">Today:</td><td style="padding:10px;">The Silk Road's greatest contribution to the world history was not mere trading of a few commodities but exchange of ideas, art and science between Asia, Europe and Africa. Greek Art from Europe flowed into India whereas Buddhism from India reached out to the world through Silk Road.</td></tr>
-        </tbody>
-        </table>
-
-        <table id="T3" class="tables" style="width:354px; display:none;">
-        <tbody>
-            <tr><td colspan="2" style="padding-top: 10px;"><center><img src="images/refugeeRoute/dronejourney.png" style="width:300px;"></center></td></tr>
-            <tr><td id="title" colspan="2"><center><b>Syrian Refugees Crisis</b></center></td></tr>
-            <tr id="yesterday-row"><td class="day-type">Yesterday:</td><td style="padding:10px;">Aleppo and Damascus where the closest ports to Europe, where good from the Far East would enter into Europe since the Phoenician merchant, the Roman Empire up to the Renaissance.</td></tr>
-            <tr id="today-row"><td class="day-type">Today:</td><td style="padding:10px;">Today Aleppo is one of the most devastated cities in Syria. Its civilian population has almost entirely fled. It has become the symbol of the migration that, through Turkey, is leading millions of people into Europe, looking for security and peace.</td></tr>
-        </tbody>
-        </table>
-
-        <table id="T4" class="tables" style="width: 364px; height:200px; margin-top:50px; display: none;">
-        <tbody>
-            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><b>Trade Route (Land Silk Road)</b></center></td></tr>
-            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><a id="year1">Past</a></center></td></tr>
-            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><a id="year2">Present</a></center></td></tr>
-            <tr style="height: 28px;"><br></tr>
-            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><b>Spice Route (Maritime Silk Route)</b></center></td></tr>
-            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><a id="year3">Past</a></center></td></tr>
-            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><a id="year4">Present</a></center></td></tr>
-            <tr style="height: 28px;"><br></tr>
-            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><b>Syrian Refugees Crisis</b></center></td></tr>
-            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><a id="year5">Past</a></center></td></tr>
-            <tr><td  style="padding-top: 10px; cursor: pointer;"><center><a id="year6">Present</a></center></td></tr>
-        </tbody>
-        </table>
-
-     </div>
-     <!--
-     <div class="grpelem" id="container">
-        <div id="my_map"></div>
-    </div>
-    -->
-    <div class="clearfix grpelem" id="u83"><!-- column -->
-      <div class="position_content" id="u83_position_content">
-       <nav class="MenuBar clearfix colelem" id="menuu139"><!-- horizontal box -->
-
-        <div class="MenuItemContainer clearfix grpelem" id="u147"><!-- vertical box -->
-         <a class="nonblock nontext MenuItem MenuItemWithSubMenu MuseMenuActive clearfix colelem" id="route1"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u152-4"><!-- content --><p>Route 1</p></div></a>
-        </div>
-
-        <div class="MenuItemContainer clearfix grpelem" id="u140"><!-- vertical box -->
-         <a class="nonblock nontext MenuItem MenuItemWithSubMenu clearfix colelem" id="route2"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u146-4"><!-- content --><p>Route 2</p></div></a>
-        </div>
-
-        <div class="MenuItemContainer clearfix grpelem" id="u154"><!-- vertical box -->
-         <a class="nonblock nontext MenuItem MenuItemWithSubMenu clearfix colelem" id="route3"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u158-4"><!-- content --><p>Route 3</p></div></a>
-        </div>
-
-        <div class="MenuItemContainer clearfix grpelem" id="u161"><!-- vertical box -->
-         <a class="nonblock nontext MenuItem MenuItemWithSubMenu clearfix colelem" id="clean"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u163-4"><!-- content --><p>All Routes</p></div></a>
-        </div>
-
-        <div class="MenuItemContainer clearfix grpelem" id="u168"><!-- vertical box -->
-         <a class="nonblock nontext MenuItem MenuItemWithSubMenu clearfix colelem" id="timeline"><!-- horizontal box --><div class="MenuItemLabel NoWrap clearfix grpelem" id="u170-4"><!-- content --><p>Timeline</p></div></a>
-        </div>
-
-       </nav>
-
-
-       <div class="colelem" id="my_map"><!-- simple frame --></div>
-       <div class="colelem" id="wordCloud"></div>
-      </div>
-     </div>
-
-    </div>
-    <div class="verticalspacer"></div>
-    <div class="colelem" id="u78"><!-- simple frame -->
-
-      <div class="clearfix grpelem" id="pu178-4"><!-- column -->
-      <img class="colelem" id="u178-4" alt="About Us" width="196" height="22" src="images/aboutUs.png"/><!-- rasterized frame -->
-      <div class="clearfix colelem" id="pu183-7"><!-- group -->
-       <div class="clearfix grpelem" id="u183-7"><!-- content -->
-        <p id="u183-2">You Mo</p>
-        <p id="u183-4">Shan Yan</p>
-        <p id="u183-5">&nbsp;</p>
-       </div>
-       <div class="clearfix grpelem" id="u193-7"><!-- content -->
-        <p id="u193-2">Sandeep Bedadala</p>
-        <p id="u193-4">Alberto De Simoni</p>
-        <p id="u193-5">&nbsp;</p>
-       </div>
-      </div>
-     </div>
-     <div class="clearfix grpelem" id="pu182-4"><!-- column -->
-      <img class="colelem" id="u182-4" alt="Social" width="196" height="22" src="images/social.png"/><!-- rasterized frame -->
-      <div class="clearfix colelem" id="pu196"><!-- group -->
-
-       <div class="grpelem" id="u196"><!-- simple frame -->
-        <!--<iframe src="https://www.facebook.com/plugins/share_button.php?href=http%3A%2F%2Fyoyomo111.github.io%2Fsilk_road%2Findex.html&layout=button_count&mobile_iframe=false&width=80&height=20&appId" width="80" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>-->
-        <div class="fb-share-button" data-href="http://yoyomo111.github.io/silk_road/index.html" data-layout="button_count" data-mobile-iframe="false"></div>
-       </div>
-
-       <div class="grpelem" id="u197"><!-- simple frame -->
-       <iframe src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fyoyomo111.github.io%2Fsilk_road%2Findex.html&width=450&layout=standard&action=like&show_faces=true&share=false&height=80&appId" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
-     </div>
-
-       <div class="grpelem" id="u198"><!-- simple frame -->
-        <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://yoyomo111.github.io/silk_road/index.html" data-text="This is a wonderful website! Silk Road - Yesterday and Today" data-via="YoYoMo_111" data-related="YoYoMo_111" data-hashtags="SilkRoadProject">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-       </div>
-      </div>
-     </div>
-
-   </div>
-  </div>
 
 </body>
 </html>
