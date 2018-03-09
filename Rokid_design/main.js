@@ -76,6 +76,7 @@ $( function(){
 	    {
 
 	        drag: function(e,ui){
+	        	window.addEventListener( 'touchmove', function() {});
 	        	//get main ball attributes
 	            var mainOffset = $(this).offset();
 	            //mainR = parseInt($(this).css("border-radius"),10);
