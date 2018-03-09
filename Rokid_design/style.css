@@ -85,4 +85,10 @@
 	    box-shadow: 0px 0px 20px 0.5px #696969b3;
 	    
 	}
+	.lock-screen {
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+    position: fixed;
+	}
 }
