@@ -1,5 +1,4 @@
 $( function(){
-	
 	var posPaddingY = parseInt($('#circle').css("top"),10);
 	var posPaddingX = parseInt($('#circle').css("left"),10);
 	var BallR = parseInt($('.Ball').css("border-radius"),10);
@@ -77,7 +76,7 @@ $( function(){
 	    {
 
 	        drag: function(e,ui){
-	        	
+	        	window.addEventListener( 'touchmove', function() {});
 	        	//get main ball attributes
 	            var mainOffset = $(this).offset();
 	            //mainR = parseInt($(this).css("border-radius"),10);
