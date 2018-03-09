@@ -1,9 +1,11 @@
 $( function(){
-
+	var posPaddingY = parseInt($('#circle').css("top"),10);
+	var posPaddingX = parseInt($('#circle').css("left"),10);
+	var BallR = parseInt($('.Ball').css("border-radius"),10);
 	var createNodes = function(num, radius){
 		var nodes = [], 
-             width = (radius * 2) + 50,
-             height = (radius * 2) + 50,
+             width = (radius * 2) ,
+             height = (radius * 2),
              angle,
              x,
              y,
@@ -11,8 +13,8 @@ $( function(){
          for (i=0; i<num; i++) {
           angle = (i / (num/2)) * Math.PI; // Calculate the angle at which the element will be placed.
                                                 // For a semicircle, we would use (i / numNodes) * Math.PI.
-          x = (radius * Math.cos(angle)) + (width/2); // Calculate the x position of the element.
-          y = (-radius * Math.sin(angle)) + (width/2); // Calculate the y position of the element.
+          x = (radius * Math.cos(angle)) + (width/2) + posPaddingX - BallR; // Calculate the x position of the element.
+          y = (-radius * Math.sin(angle)) + (width/2)+ posPaddingY - BallR; // Calculate the y position of the element.
           nodes.push({x,  y});
 
          }
@@ -20,11 +22,17 @@ $( function(){
 	}
 
 	//put all the ball around the circle
-	var CircleR = 160;
+	var CircleR = parseInt($('#circle').css("border-radius"),10);
 	var NodesNum = 8;
 	var ballNum = 5;
-	document.getElementById("MainBall").style.left = CircleR + "px";
-    document.getElementById("MainBall").style.top = CircleR + "px";
+	var mainR = parseInt($('#MainBall').css("border-radius"),10);
+	var mainX;
+	var mainY;
+	var notBlue = false;
+	var CircleX = CircleR + posPaddingX;
+	var CircleY = CircleR + posPaddingY;
+	document.getElementById("MainBall").style.left = CircleX - mainR + "px";
+    document.getElementById("MainBall").style.top = CircleY - mainR + "px";
 	var nodes = createNodes(NodesNum,CircleR);//original pos
 	console.log(nodes);
 	console.log(nodes[1].x);
@@ -39,22 +47,70 @@ $( function(){
 	//var allDistances = [];
 	//var isTouch = [];
 	//var isMin = [];
-	var mainR;
-	var mainX;
-	var mainY;
-	var notBlue = false;
+
+	function distance(dot1, dot2) {
+    var x1 = dot1[0],
+        y1 = dot1[1],
+        x2 = dot2[0],
+        y2 = dot2[1];
+    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+	}
+
+	function limit(x, y) {
+    var dist = distance([x, y], [CircleX,CircleY]);
+    if (dist <= CircleR) {
+        return {x: x, y: y};
+    } 
+    else {
+        x = x - CircleX;
+        y = y - CircleY;
+        var radians = Math.atan2(y, x)
+           return {
+               x: Math.cos(radians) * CircleR + CircleX,
+               y: Math.sin(radians) * CircleR + CircleY
+           }
+        } 
+    }
 
 	$('#MainBall').draggable(
 	    {
 
-	        drag: function(){
+	        drag: function(e,ui){
 	        	//get main ball attributes
 	            var mainOffset = $(this).offset();
-	            mainR = parseInt($(this).css("border-radius"),10);
+	            //mainR = parseInt($(this).css("border-radius"),10);
 	            mainX = mainOffset.left + mainR;
 	            mainY = mainOffset.top + mainR;
 	            //$('#posX').text('x: ' + mainX);
 	            //$('#posY').text('y: ' + mainY);
+	           
+	            var result = limit(mainX,mainY);
+	            console.log("mainpffset"+mainOffset.left+","+mainOffset.top);
+	            console.log("result"+(result.x-mainR)+","+(result.y-mainR));
+
+	            var mouseX, mouseY;
+				mouseX = e.pageX;
+				mouseY = e.pageY;
+				console.log("mouse:"+mouseX+","+mouseY);
+				//constrain in circle
+	            var dist = distance([mouseX, mouseY], [CircleX,CircleY]);//should be distance between mouse and centre
+				    console.log([mouseX, mouseY]);
+				    if (dist >= (CircleR-mainR)) {
+				        var x = mouseX - CircleX;
+				        var y = mouseY  - CircleY;
+				        var radians = Math.atan2(y, x);
+				           
+				        x= Math.cos(radians) * (CircleR-mainR) + CircleX;
+				        y=Math.sin(radians) * (CircleR-mainR) + CircleY;
+
+				        ui.position.left = x-mainR-8;
+	            		ui.position.top = y-mainR-8;
+	            		console.log("ui.position:"+ui.position.left+","+ui.position.top);
+				    } 
+				  
+
+
+	            console.log("distance = "+ distance([mainX, mainY], [CircleX,CircleY]));
 
 	            function getDistance(id){
 		            var smallOffset = $(id).offset();
@@ -75,7 +131,7 @@ $( function(){
 				for (var i = 0; i < ballNum; i++){
 					allDistances.push(getDistance("#B"+i));
 				}
-				console.log(allDistances);
+				//console.log(allDistances);
 
 			//whether touch any ball
 				var isTouch = [];
@@ -87,7 +143,7 @@ $( function(){
 						isTouch.push(false);
 					}
 				}
-				console.log(isTouch);
+				//console.log(isTouch);
 
 			//whether distance is min
 				var isMin = [];
@@ -100,7 +156,7 @@ $( function(){
 					}
 				}
 				console.log(isMin);
-				console.log("min distance ="+Math.min(...allDistances));
+				//console.log("min distance ="+Math.min(...allDistances));
 
 			//Animation control
 			//var notBlue = false;
@@ -116,7 +172,7 @@ $( function(){
 				 		targets:"#MainBall",
 				 		background: $("#B"+id).css("background"),
 				 		easing: 'easeInOutQuad',
-						duration: 80
+						duration: 100
 				 	});
 				 	
 				 }
@@ -158,7 +214,7 @@ $( function(){
 				 		targets:"#MainBall",
 				 		background: "#6a89ff",
 				 		easing: 'easeInOutQuad',
-						duration: 80
+						duration: 100
 				 	});
 
 					notBlue = false;
