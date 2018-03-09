@@ -77,7 +77,7 @@ $( function(){
 	    {
 
 	        drag: function(e,ui){
-	        	
+	        	e.preventDefault();
 	        	//get main ball attributes
 	            var mainOffset = $(this).offset();
 	            //mainR = parseInt($(this).css("border-radius"),10);
