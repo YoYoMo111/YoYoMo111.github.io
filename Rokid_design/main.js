@@ -1,5 +1,5 @@
 $( function(){
-	window.addEventListener( 'touchmove', function() {});
+	
 	var posPaddingY = parseInt($('#circle').css("top"),10);
 	var posPaddingX = parseInt($('#circle').css("left"),10);
 	var BallR = parseInt($('.Ball').css("border-radius"),10);
