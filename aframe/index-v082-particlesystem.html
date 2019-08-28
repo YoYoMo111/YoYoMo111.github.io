@@ -1995,7 +1995,7 @@
             for( var i = 0; i < 3; i++){
               document.querySelector('#pebbletext'+i).emit('pebblepage1');
             }
-            pebble.setAttribute('drag-rotate', {speed: 3, control: true});
+            pebble.setAttribute('drag-rotate', {speed: 10, control: true});
             camera.setAttribute('look-controls', {enabled: false});
             pebblePage--;
           }
@@ -2111,7 +2111,7 @@
             for( var i = 0; i < 3; i++){
                 document.querySelector('#metext'+i).emit('mepage1');
               }
-            me.setAttribute('drag-rotate', {speed: 3, control: true});
+            me.setAttribute('drag-rotate', {speed: 10, control: true});
             camera.setAttribute('look-controls', {enabled: false});
             mePage--;
           }
@@ -2181,7 +2181,7 @@
             for( var i = 0; i < 3; i++){
               document.querySelector('#alientext'+i).emit('alienpage1');//me texts fadeout
             }
-            alien.setAttribute('drag-rotate', {speed: 3, control: true});
+            alien.setAttribute('drag-rotate', {speed: 10, control: true});
             camera.setAttribute('look-controls', {enabled: false});
             alienPage--;
           }
@@ -2288,7 +2288,7 @@
               document.querySelector('#glasstext'+i).emit('glasspage1');//me texts fadeout
             }
             glass.emit('glasspage1');
-            glass.setAttribute('drag-rotate', {speed: 3, control: true});
+            glass.setAttribute('drag-rotate', {speed: 10, control: true});
             camera.setAttribute('look-controls', {enabled: false});
             glassPage--;
           }
@@ -2386,7 +2386,7 @@
           }
           document.querySelector('#rotate-instruction').emit('mepage1');
           //add drag-rotate
-          me.setAttribute('drag-rotate', {speed: 3, control: true});
+          me.setAttribute('drag-rotate', {speed: 10, control: true});
           camera.setAttribute('look-controls', {enabled: false});
           //fadeout others
           for( var i = 0 ; i < 5 ; i++){
@@ -2415,7 +2415,7 @@
           }
           document.querySelector('#rotate-instruction').emit('alienpage1');
           //add drag-rotate
-          alien.setAttribute('drag-rotate', {speed: 3, control: true});
+          alien.setAttribute('drag-rotate', {speed: 10, control: true});
           camera.setAttribute('look-controls', {enabled: false});
           //fadeout others
           for( var i = 0 ; i < 5 ; i++){
@@ -2445,7 +2445,7 @@
           }
           document.querySelector('#rotate-instruction').emit('pebblepage1');
           //add drag-rotate
-          pebble.setAttribute('drag-rotate', {speed: 3, control: true});
+          pebble.setAttribute('drag-rotate', {speed: 10, control: true});
           camera.setAttribute('look-controls', {enabled: false});
           //fadeout others
           for( var i = 0 ; i < 9 ; i++){
@@ -2474,7 +2474,7 @@
           }
           document.querySelector('#rotate-instruction').emit('glasspage1');
           //add drag-rotate
-          glass.setAttribute('drag-rotate', {speed: 3, control: true});
+          glass.setAttribute('drag-rotate', {speed: 10, control: true});
           camera.setAttribute('look-controls', {enabled: false});
           //fadeout others
           for( var i = 0 ; i < 9 ; i++){
@@ -2601,5 +2601,11 @@
         console.log("x:"+x+" y:"+y);
        }
        //pagebody.addEventListener("mousemove", updateDisplay, false);
+
+      document.querySelector("a-scene").addEventListener("loaded", (e)=>{
+        console.log("hi");
+      document.querySelector(".a-canvas").style.cursor = "none"
+      });
+      document.querySelector(".a-canvas").style.cursor = "none";
     </script>
 </html>
