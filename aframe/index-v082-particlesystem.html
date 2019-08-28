@@ -1,0 +1,2605 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Rokid</title>
+    <meta name="description" content="Rokid.com">
+    <script src="js/aframe-master.js"></script>
+    <script src="js/aframe-event-set-component.min.js"></script>
+    <script src="js/aframe-extras.min.js"></script>
+    <script src="js/aframe-layout-component.min.js"></script>
+    <script src="js/aframe-look-at-component.min.js"></script>
+    <script src="js/aframe-animation-component.min.js"></script>
+    <script src="js/aframe-animation-timeline-component.min.js"></script>
+    <script src="js/aframe-particle-system-component.min.js"></script>
+    <script src="js/aframe-audioanalyser-component.min.js"></script>
+    <script src="js/scale-y-color.js"></script>
+    <script src="js/scale-y-opacity.js"></script>
+    <script src="js/audioanalyser-levels-scale.js"></script>
+    <script src="js/aframe-entity-generator-component.min.js"></script>
+    <script>
+      //control model scale and rotation
+      AFRAME.registerComponent('modelcontrol', {
+        schema:{
+          upevent: {type: 'string'},
+          downevent: {type: 'string'},
+          leftevent: {type: 'string'},
+          rightevent: {type: 'string'}
+        },
+
+        init: function(){
+          var data = this.data;
+          var el = this.el;
+          //var currentScale = this.el.object3D.scale;
+        },
+
+        update: function(){
+          var currentScale = this.el.object3D.scale;
+          var currentRotation = this.el.object3D.rotation;
+
+          if (this.data.upevent) {
+            this.el.addEventListener(this.data.upevent, function (){
+              console.log('listen scale up event');
+              currentScale.x += 0.01;
+              currentScale.y += 0.01;
+              currentScale.z += 0.01;
+            });
+          }
+
+          if (this.data.downevent) {
+            this.el.addEventListener(this.data.downevent, function (){
+              console.log('listen scale down event');
+              currentScale.x -= 0.01;
+              currentScale.y -= 0.01;
+              currentScale.z -= 0.01;
+            });
+          }
+
+          if (this.data.leftevent) {
+            this.el.addEventListener(this.data.leftevent, function (){
+              console.log('listen scale down event');
+              currentRotation.y -= 0.01*Math.PI;
+            });
+          }
+
+          if (this.data.rightevent) {
+            this.el.addEventListener(this.data.rightevent, function (){
+              console.log('listen scale down event');
+              currentRotation.y += 0.01*Math.PI;
+            });
+          }
+
+        }
+      });
+    </script>
+
+    <script type="text/javascript">
+    //drag mouse rotate model
+    AFRAME.registerComponent('drag-rotate',{
+      schema : { speed : {default:1},
+                 control : {type:'boolean', default:true}},
+      init : function(){
+        this.ifMouseDown = false;
+        this.x_cord = 0;
+        this.y_cord = 0;
+        document.addEventListener('mousedown',this.OnDocumentMouseDown.bind(this));
+        document.addEventListener('mouseup',this.OnDocumentMouseUp.bind(this));
+        document.addEventListener('mousemove',this.OnDocumentMouseMove.bind(this));
+      },
+      OnDocumentMouseDown : function(event){
+        if(this.data.control){
+          this.ifMouseDown = true;
+          this.x_cord = event.clientX;
+          this.y_cord = event.clientY;
+          this.axisY = new THREE.Vector3(0,1,0);
+          this.axisX = new THREE.Vector3(1,0,0);
+          this.el.pause();
+        }
+        else{
+          this.ifMouseDown = false;
+        }
+      },
+      OnDocumentMouseUp : function(){
+        if(this.data.control){
+          this.ifMouseDown = false;
+          this.el.play();
+          this.el.emit('resetrotationx');
+        }
+        
+      },
+      OnDocumentMouseMove : function(event)
+      {
+        if(this.ifMouseDown)
+        {
+          var temp_x = event.clientX-this.x_cord;
+          var temp_y = event.clientY-this.y_cord;
+          /*
+          if(Math.abs(temp_y)<Math.abs(temp_x))
+          {
+            this.el.object3D.rotateY(temp_x*this.data.speed/1000);
+          }
+          else
+          {
+            this.el.object3D.rotateX(temp_y*this.data.speed/1000);
+          }*/
+          //this.el.pause();
+          this.el.object3D.rotateOnWorldAxis(this.axisY, temp_x*this.data.speed/1000);
+          this.el.object3D.rotateOnWorldAxis(this.axisX, temp_y*this.data.speed/1000);
+
+          this.x_cord = event.clientX;
+          this.y_cord = event.clientY;
+        }
+
+      }
+    });
+  </script>
+
+  </head>
+  <body>
+
+    <a-scene id="myscene" background="color: black" antialias="true">
+
+      <a-assets>
+        <a-asset-item id="roboto" src="font/Roboto-msdf.json"></a-asset-item>
+        <img id="image-defeat-marker" src="image/rokid_selected.png">
+        <img id="image-blank-marker" src="image/addpage.png">
+        <img id="image-bookmarks" src="image/bookmark.png">
+        <img id="image-rokid-logo" src="image/rokid.png">
+        <img id="image-search-bar" src="image/searching_bar.png">
+        <img id="image-web-address" src="image/www_rokid_com.png">
+        <audio id="blip1" src="audio/FuturisticDeviceButton.mp3"></audio>
+        <audio id="blip2" src="audio/ConfirmButton.wav"></audio>
+        <audio id="slide" src="audio/SlideClick.wav"></audio>
+        <a-mixin id="cube" geometry="primitive: box"></a-mixin>
+        <a-mixin id="hoverColor" event-set__mouseenter="material.color: #CC435F"></a-mixin>
+        <a-mixin id="selectColor" event-set__click="material.color: #876A96"></a-mixin>
+        <a-mixin id="leaveColor" event-set__mouseleave="material.color: #9DE0AD"></a-mixin>
+        <a-mixin id="red" material="color: #F35F5F"></a-mixin>
+        <a-mixin id="green" material="color: #9DE0AD"></a-mixin>
+        <a-mixin id="blue" material="color: #36A3EB"></a-mixin>
+        <a-mixin id="yellow" material="color: #F1EA65"></a-mixin>
+        <a-mixin id="sphere" geometry="primitive: sphere"></a-mixin>
+        <a-asset-item id="me" src="model/me_blender2.gltf"></a-asset-item>
+        <a-asset-item id="alien" src="model/alien_blender3.gltf"></a-asset-item>
+        <a-asset-item id="pebble" src="model/pebble_blender.gltf"></a-asset-item>
+        <a-asset-item id="glass" src="model/glass_blender.gltf"></a-asset-item>
+        <a-mixin id="light"
+                 geometry="primitive: sphere; radius: 1.5"
+                 material="color: #FFF; shader: flat"
+                 light="color: #DDDDFF; distance: 120; intensity: 2; type: point"></a-mixin>
+        <a-mixin id="ambientlight"
+                 light="color: #BBB; type: ambient; intensity: 0.5"
+                 ></a-mixin>
+        <a-mixin id="directionlight"
+                 light="intensity: 0.6; castShadow: true; type: directional; angle: 60"></a-mixin>
+        <a-cubemap id="sky">
+          <img src="texture/posx.png">
+          <img src="texture/negx.png">
+          <img src="texture/posy.png">
+          <img src="texture/negy.png">
+          <img src="texture/posz.png">
+          <img src="texture/negz.png">
+        </a-cubemap>
+        <img id="sph-sky" src="texture/sfmoma.png">
+        <a-asset-item id="alien_obj" src="model/alien_obj.obj"></a-asset-item>
+        <a-asset-item id="back_lid" src="model/alien/back_lid.obj"></a-asset-item>
+        <a-asset-item id="bottom" src="model/alien/bottom.obj"></a-asset-item>
+        <a-asset-item id="bottommiddle" src="model/alien/reduced/bottommiddle.obj"></a-asset-item>
+        <a-asset-item id="camera" src="model/alien/reduced/camera.obj"></a-asset-item>
+        <a-asset-item id="frontface" src="model/alien/reduced/frontface.obj"></a-asset-item>
+        <a-asset-item id="grey_plastic" src="model/alien/reduced/grey_plastic.obj"></a-asset-item>
+        <a-asset-item id="lightwhite_plastic" src="model/alien/reduced/lightwhite_plastic.obj"></a-asset-item>
+        <a-asset-item id="logo" src="model/alien/reduced/logo.obj"></a-asset-item>
+        <a-asset-item id="white_plastic" src="model/alien/reduced/white_plastic.obj"></a-asset-item>
+
+        <a-asset-item id="pebble_top" src="model/pebble/top.obj"></a-asset-item>
+        <a-asset-item id="pebble_middle" src="model/pebble/middle.obj"></a-asset-item>
+        <a-asset-item id="pebble_bottom" src="model/pebble/bottom.obj"></a-asset-item>
+        <a-asset-item id="pebble_bottomplane" src="model/pebble/bottomplane.obj"></a-asset-item>
+        <a-asset-item id="pebble_charge" src="model/pebble/charge.obj"></a-asset-item>
+
+        <a-asset-item id="me_top" src="model/me/top.obj"></a-asset-item>
+        <a-asset-item id="me_buttons" src="model/me/buttons.obj"></a-asset-item>
+        <a-asset-item id="me_middle" src="model/me/middle.obj"></a-asset-item>
+        <a-asset-item id="me_bottom" src="model/me/bottom.obj"></a-asset-item>
+        <a-asset-item id="me_switch" src="model/me/switch.obj"></a-asset-item>
+
+        <a-asset-item id="glass_blackplastic1" src="model/glass/reduced/blackplastic1.obj"></a-asset-item>
+        <a-asset-item id="glass_blackplastic2" src="model/glass/reduced/blackplastic2.obj"></a-asset-item>
+        <a-asset-item id="glass_blackplastic3" src="model/glass/reduced/blackplastic3.obj"></a-asset-item>
+        <a-asset-item id="glass_smoothplastic" src="model/glass/reduced/smoothplastic.obj"></a-asset-item>
+        <a-asset-item id="glass_cameracover" src="model/glass/reduced/cameracover.obj"></a-asset-item>
+        <a-asset-item id="glass_lenses" src="model/glass/reduced/lenses.obj"></a-asset-item>
+
+        <a-mixin id="spec_plane" geometry="primitive: plane; height: 0.1; width: 0.1"
+                 material="shader: flat; side: double; transparent: true;" look-at="#mypebble"></a-mixin>
+
+        <a-mixin id="circle-spec-unit" material="depthWrite: false; opacity:0" scale="27.2 19 19" look-at="#target" animation="property: material.opacity; dur: 1000; from: 0; to: 1; easing:easeInOutCubic; dir: alternate; delay:200; startEvents:pebblepage2" animation__back="property: material.opacity; dur: 1000; from: 1; to: 0; easing:easeInOutCubic; dir: alternate; delay:200; startEvents:pebblepage2back"></a-mixin>
+        <a-mixin id="glass-spec-unit" material="depthWrite: false; opacity:0" scale="10 10 10" animation="property: material.opacity; dur: 800; from: 0; to: 1; easing:easeInOutCubic; dir: alternate; startEvents:glasspage2" animation__back="property: material.opacity; dur: 800; from: 1; to: 0; easing:easeInOutCubic; dir: alternate; delay:; startEvents:glasspage2out"></a-mixin>
+        <img id="pebble_spec2" src="texture/pebble_spec2_70.png">
+        <img id="pebble_spec3" src="texture/pebble_spec3_70.png">
+        <img id="pebble_spec4" src="texture/pebble_spec4_70.png">
+        <img id="pebble_spec5" src="texture/pebble_spec5_70.png">
+        <a-mixin id="barrage-animation" 
+         text="align: center; anchor: center; width: 0.8; color: white; wrapCount: 50; opacity:0.8"
+         visible="false"
+         animation__move="property: position; dur: 4000; easing:linear; dir:normal;"
+         animation__fadein="property:text.opacity; dur: 1000; to: 0.8; easing: easeInOutCubic; dir: normal;"
+         animation__fadeout="property:text.opacity; dur: 1000; to:0; easing: easeInOutCubic; dir: normal;"
+         animation__togglevisible="property: visible; from: false; to: true; dur: 1;"
+         animation__togglevisibleoff="property: visible; from: true; to: false; dur: 1;"></a-mixin>
+        <audio id="song1" loop src="audio/TurnOn.wav"></audio>
+        <audio id="song2" loop src="audio/BombDiggaWoo.mp3"></audio>
+        <audio id="shake" src="audio/shake.wav"></audio>
+        <a-mixin id="bar"
+          scale="0.1 0.1 0.1"
+          geometry="primitive: box"
+          material="color: #e86422"
+          
+          scale-y-opacity="from:0; to:1; maxScale:30"></a-mixin>
+<!--scale-y-color="from: 23 9 30; to: 232 74 34; maxScale: 30"-->
+        <img id="alien_spec1" src="texture/dlp.png">
+        <img id="alien_spec2" src="texture/13mp.png">
+        <img id="alien_spec3" src="texture/42.png">
+        <a-mixin id="alien-spec-unit" material="depthWrite: false; opacity:0" animation__fadein="property: material.opacity; dur:1000; from: 0; to: 1; easing: linear;" animation__fadeout="property: material.opacity; dur: 500; from: 1; to: 0; easing: linear;"></a-mixin>
+        <a-mixin id="alien-spec-container-unit" rotation="0 -90 0" animation__rotatein="property: rotation; from: 0 -90 0; to: 0 0 0; dur: 1000; easing: easeInOutCubic;" animation__rotateout=" property: rotation; from: 0 0 0; to: 0 90 0; dur: 1000; easing: easeInOutCubic;"></a-mixin>
+        <img id="voice-icon" src="texture/voice-icon.png">
+        <img id="vision-icon" src="texture/vision-icon.png">
+        <img id="object-icon" src="texture/object-icon.png">
+        <img id="faceid-icon" src="texture/faceid-icon.png">
+        <img id="remote-icon" src="texture/remote-icon.png">
+        <img id="navigation-icon" src="texture/navigation-icon.png">
+        <img id="remote-img" src="texture/remote-img.png">
+        <img id="field-img" src="texture/field-img.png">
+        <img id="training-img" src="texture/training-img.png">
+        <img id="manufacturing-img" src="texture/manufacturing-img.png">
+        <a-mixin id="glass-scenario-unit" material="depthWrite: true; opacity:0; color:#b5b5b5;" animation__fadein="property: material.opacity; dur:500; to: 1; easing: linear;" animation__halfopacity="property: material.opacity; dur:500; to: 0.35; easing: linear;" animation__fadeout="property: material.opacity; dur:500; to: 0; easing: easeInOutCubic; startEvents: glasspage3out, glasspage6out;"></a-mixin>
+        <a-mixin id="glass-scenario-text-unit" animation__fadein="property: text.opacity; dur:500; to: 1; easing: linear;" animation__halfopacity="property: text.opacity; dur:500; to: 0.35; easing: linear;" animation__fadeout="property: text.opacity; dur:500; to: 0; easing: easeInOutCubic; startEvents: glasspage3out, glasspage6out;"></a-mixin>
+        <a-mixin id="obj-toggle-visible" animation__togglevisibleoff="property: visible; from: true; to: false; dur:1; delay: 1000; startEvents: visibleoff" animation__togglevisible="property: visible; from: false; to: true; dur:1; startEvents: visibleon"></a-mixin>
+        <a-mixin id="bookmark-toggle-visible" animation__togglevisibleoff="property: visible; from: true; to: false; dur:1; delay: 1500; startEvents: visibleoff" animation__togglevisible="property: visible; from: false; to: true; dur:1; startEvents: visibleon"></a-mixin>
+        <a-mixin id="positions" 
+                 animation__position0="property: position; to: -0.162 -0.132 -7.532; dur: 500; ease: easeInOutCubic;"
+                 animation__position1="property: position; to: -0.732 0.039 -9.5; dur: 500; ease: easeInOutCubic;"
+                 animation__position2="property: position; to: -0.094 0.2 -10.6; dur: 500; ease: easeInOutCubic;"
+                 animation__position3="property: position; to: 0.275 -0.043 -8.5; dur: 500; ease: easeInOutCubic;"></a-mixin>
+        <img id="rotate-icon" src="texture/rotate-icon1.png">
+      </a-assets>
+      <!--
+      <a-entity id="mouseCursor" cursor="rayOrigin: mouse" raycaster="objects: .intersectable"></a-entity>
+      -->
+      <!--
+      <a-entity position="0 .6 4">
+        
+        <a-camera>
+          <a-entity id="mygaze"
+                    raycaster="far: 30; objects: .intersectable"
+                    cursor
+                    geometry="primitive: ring; radiusOuter: 0.015;
+                              radiusInner: 0.01; segmentsTheta: 32"
+                    material="color: white; shader: flat"
+                    position="0 0 -0.75"
+                    animation__click="property: scale; startEvents: gazeconfirm; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1"
+                    animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1500; from: 1 1 1; to: 0.1 0.1 0.1"
+                    animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1"></a-entity>
+        </a-camera>
+
+      </a-entity>
+      -->
+
+<!-- Camera + cursor. -->    
+  <a-entity id="mycamera" camera="fov: 35" look-controls="enabled: true" position="0 0 0">
+          
+            <a-cursor id="mygaze"
+                      scale="0.7 0.7 0.7"
+                      material="color: white; shader: flat; opacity:0.9"
+                      geometry="radiusOuter:0.014; segmentsTheta:40;"
+                      animation__click="property: scale; startEvents: gazeconfirm; from: 1.4 1.4 1.4; to: 0.7 0.7 0.7; dur: 150"
+                      animation__fusing="property: fusing; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500"
+                      animation__hover="property: scale; from: 0.7 0.7 0.7; to: 1.4 1.4 1.4; dur:200; startEvents:mouseenter;"
+                      animation__leave="property: scale; from: 1.4 1.4 1.4; to: 0.7 0.7 0.7; dur:200; startEvents:mouseleave;"
+                      event-set__1="_event: mouseenter; color: springgreen"
+                      event-set__2="_event: mouseleave; color: white"
+                      sound__1="on: gazeconfirm; src: #blip1; poolSize: 6"
+                      sound__2="on: mouseenter; src: #blip2; poolSize: 6"
+                      fuse="false"
+                      raycaster="objects: .intersectable; interval:100"
+                      position="0 0 -1.99">
+            </a-cursor>
+  </a-entity>
+
+  <a-sky src="#sph-sky"></a-sky>
+
+<!-- Lights. -->
+<!--
+  <a-entity animation="property: rotation; to: 0 0 360; dur: 4000; easing: linear; loop: true">
+        <a-entity mixin="light" position="10 0 0">
+        </a-entity>
+        <a-animation attribute="rotation"
+                       to="0 0 360"
+                       dur="4000"
+                       easing="linear"
+                       repeat></a-animation>
+  </a-entity>
+-->
+<a-entity mixin="ambientlight" position="0 0 0">
+</a-entity>
+<a-entity mixin="directionlight" position="-0.5 1 1">
+</a-entity>
+
+<a-entity id="myobjects" position="0 0 5.9" scale="1 1 1">
+  <a-entity position="-0.058 2.250 -9.914" rotation="0 45 0" particle-system="preset:dust;duration:NaN;maxParticleCount:300;particleCount:1000;texture:texture/star.png;maxAge:20;positionSpread:30 30 30;rotationAngle:3.14;accelerationValue:0 0 0;accelerationSpread:0 0 0;velocityValue:0.3 0.2 0.3;velocitySpread:0.5 1 0.5;color:#FFFFFF"></a-entity>
+  
+  <a-image id="rotate-instruction" src="#rotate-icon" visible="false" material="depthWrite:false; opacity:0;" geometry="" scale="0.2 0.1 0.1" position="0 -0.154 -6.928" rotation="-30 0 0"
+  animation__togglevisible="property:visible; from:false; to:true; delay:999; dur:1; startEvents:alienpage1,mepage1,glasspage1,pebblepage1;"
+  animation__fadein="property:material.opacity; from:0; to:1; delay:1000; dur:1000; easing:easeInOutCubic; startEvents:alienpage1,mepage1,glasspage1,pebblepage1;"
+  animation__fadeout="property:material.opacity;from:1; to:0; delay:2500; dur:1000; easing:easeInOutCubic; startEvents:alienpage1,mepage1,glasspage1,pebblepage1;"
+  animation__togglevisibleoff="property:visible; from:true; to:false; delay:4000;dur:1; startEvents:alienpage1,mepage1,glasspage1,pebblepage1;"></a-image>
+  <!--bookmark obj-->
+    <a-entity id="bookmark-obj" mixin="bookmark-toggle-visible">
+        <a-image id="a-image-search-bar" position="0 0.742 -11" scale="0.7 0.7 0.7" geometry="width: 0.8; height: 0.28;" material="color: #ffffff; opacity: 1; side: double; src: #image-search-bar; metalness: 0.5; roughness: 1; repeat: 1 1;" shadow="cast: true; receive: true;" visible="true">
+            <a-animation attribute="material.opacity" begin="fade" from="1" to="0" delay="300" dur="1000" fill="forwards" direction="alternate"></a-animation>
+        </a-image>
+
+        <a-image id="a-image-bookmarks" position="0 0.505 -11" scale="0.7 0.7 0.7" geometry="width: 1.5; height: 0.94;" material="color: #ffffff; opacity: 1; side: double; src: #image-bookmarks; metalness: 0.5; roughness: 1; repeat: 1 1;" shadow="cast: true; receive: true;" visible="true">
+            <a-animation attribute="material.opacity" begin="fade" from="1" to="0"  delay="300" dur="1000" fill="forwards" direction="alternate"></a-animation>
+        </a-image>
+
+        <a-image id="a-image-defeat-marker" position="0 0 -10.6" scale="0.7 0.7 0.7" rotation="0 0 0" scale="1 1 1" geometry="width: 1.8; height: 1.5;" material="color: #ffffff; opacity: 1; side: double; src: #image-defeat-marker; metalness: 0.5; roughness: 1; repeat: 1 1;" shadow="cast: true; receive: true;" visible="true">
+            <a-animation attribute="material.opacity" begin="fade" from="1" to="0" fill="forwards" dur="1000" direction="alternate"></a-animation>
+        </a-image>
+
+        <a-image id="a-image-blank-maker-right" position="0.9 0 -10.33" scale="0.7 0.7 0.7" rotation="0 -30 0" geometry="width: 1; height: 0.75;" material="color: #ffffff; opacity: 1; side: double; src: #image-blank-marker; metalness: 0.5; roughness: 1; repeat: 1 1;" shadow="cast: true; receive: true;" visible="true">
+            <a-animation attribute="material.opacity" begin="fade" from="1" to="0" fill="forwards" dur="1000" direction="alternate"></a-animation>
+        </a-image>
+
+        <a-image id="a-image-blank-maker-left" position="-0.9 0 -10.33" scale="0.7 0.7 0.7" rotation="0 30 0" geometry="width: 1; height: 0.75;" material="color: #ffffff; opacity: 1; side: double; src: #image-blank-marker; metalness: 0.5; roughness: 1; repeat: 1 1;" shadow="cast: true; receive: true;" visible="true">
+            <a-animation attribute="material.opacity" begin="fade" from="1" to="0" fill="forwards" dur="1000" direction="alternate"></a-animation>
+        </a-image>
+
+        <a-image id="a-image-rokid-logo"  position="-0.25 -0.4 -10.2" scale="0.7 0.7 0.7" geometry="width: 0.25; height: 0.08;" material="color: #ffffff; opacity: 1; side: double; src: #image-rokid-logo; metalness: 0.5; roughness: 1; repeat: 1 1;" shadow="cast: true; receive: true;" visible="true">
+            <a-animation attribute="material.opacity" begin="fade" from="1" to="0" delay="300" fill="forwards" dur="1000" direction="alternate"></a-animation>
+        </a-image>
+
+        <a-image id="a-image-web-address"  position="0.15 -0.4 -10.2" scale="0.7 0.7 0.7" geometry="width: 0.4; height: 0.047;" material="color: #ffffff; opacity: 1; side: double; src: #image-web-address; metalness: 0.5; roughness: 1; repeat: 1 1;" shadow="cast: true; receive: true;" visible="true">
+            <a-animation attribute="material.opacity" begin="fade" from="1" to="0" delay="300" fill="forwards" dur="1000" direction="alternate"></a-animation>
+        </a-image>
+    </a-entity>
+<!--me obj-->
+<a-entity position="-0.3 0 -8.7"
+          rotation="0 30 0"
+          scale="0.028 0.028 0.028"
+          id="myme"
+          class="nonintersectable"
+          visible="false"
+          modelcontrol="upevent: scaleUp; downevent: scaleDown; leftevent: rotateLeft; rightevent: rotateRight"
+          animation__moveout="property: position; to: 0 -0.24 -7.5; dur:1000; easing: easeInOutCubic; startEvents: mepage1"
+          animation__moveback="property: position; to: -0.3 0 -8.7; dur:1000; easing: easeInOutCubic; startEvents: mepage1out"
+          animation__moveup="property: position; to: 0 -0.170 -7.5; dur: 1000; easing: easeInOutCubic; startEvents: mepage2"
+          animation__rotate0="property: rotation; to: 0 0 0; dur: 1000; easing: easeInOutCubic; startEvents: mepage2"
+          animation__resetrotation="property: rotation; to: 0 30 0; easing: easeInOutCubic; dur: 1000; startEvents: mepage1out, mepage1;"
+          animation__resetrotationx="property: rotation; to:0 30 0; easing: easeInOutSine; dur: 1500; startEvents: resetrotationx;"
+          animation-timeline__1="timeline:#meshakeTimeline; startEvents: shake"
+          animation-timeline__2="timeline:#meflipTimeline; startEvents: flip"
+          animation__shake1="property: position; to: 0.05 -0.170 -7.5; easing: easeInCubic; dur:200;startEvents: empty"
+          animation__shake2="property: position; from: 0.05 -0.170 -7.5; to: -0.05 -0.170 -7.5; easing: linear; dur:300;startEvents:empty"
+          animation__shake3="property: position; from: -0.05 -0.170 -7.5; to: 0 -0.170 -7.5; easing: easeOutCubic; dur:200;startEvents:empty"
+          animation__flip1="property: position; from: 0 -0.170 -7.5; to: 0 -0.110 -7.5; easing: easeInOutSine; dur:400; startEvents: empty;"
+          animation__flip2="property: position; from: 0 -0.120 -7.5; to: 0 -0.170 -7.5; easing: easeInOutSine; dur:400; startEvents: empty;"
+          sound__1="src: #song1; loop:true;"
+          sound__2="src: #song2; loop:true;"
+          sound__shake="src: #shake; loop:false; on:shake"
+          mixin="obj-toggle-visible"
+          >
+  <a-entity id="meempty" rotation="45 0 0" 
+            animation__rotate0="property: rotation; to: 90 0 0; dur: 1000; easing: easeInOutCubic; startEvents: empty"
+            animation__rotate45="property: rotation; to: 45 0 0; dur: 800; easing: easeInOutCubic; startEvents: mepage4out"
+            animation__flip3="property: rotation; to: 45 0 180; dur: 800; easing: easeInOutCubic; startEvents: mepage4">
+    <a-entity rotation="0 0 0"
+              scale="1 1 1"
+              id="me0" 
+              obj-model="obj: #me_top" 
+              material="src: texture/muslin.jpg; color: #f32c33; roughness: 1; metalness: 0; emissive:#F35F5F; emissiveIntensity:0; envMap: #sky; opacity: 0;"
+              ><a-animation attribute="material.opacity"
+                 dur="1000"
+                 fill="forwards"
+                 from="0"
+                 to="1"
+                 easing="ease-in-out-cubic"
+                 direction="alternate"
+                 begin="fade"></a-animation></a-entity>
+    <a-entity rotation="0 0 0"
+              scale="1 1 1"
+              id="me1" 
+              obj-model="obj: #me_buttons" 
+              material="color: #ffffff; roughness: 0; metalness: 0; emissive:#c8a4e6; emissiveIntensity:0; envMap: #sky; opacity: 0;"
+              ><a-animation attribute="material.opacity"
+                 dur="1000"
+                 fill="forwards"
+                 from="0"
+                 to="1"
+                 easing="ease-in-out-cubic"
+                 direction="alternate"
+                 begin="fade"></a-animation></a-entity>
+    <a-entity rotation="0 0 0"
+              scale="1 1 1"
+              id="me2" 
+              obj-model="obj: #me_middle" 
+              material="color: #a7a2ff; roughness: 0; metalness: 0; emissive:#c8a4e6; emissiveIntensity:0; envMap: #sky; opacity: 0;"
+              ><a-animation attribute="material.opacity"
+                 dur="1000"
+                 fill="forwards"
+                 from="0"
+                 to="1"
+                 easing="ease-in-out-cubic"
+                 direction="alternate"
+                 begin="fade"></a-animation></a-entity>
+    <a-entity rotation="0 0 0"
+              scale="1 1 1"
+              id="me3" 
+              obj-model="obj: #me_bottom" 
+              material="color: #ff1b2c; roughness: 0.57; metalness: 0.6; emissive:#F35F5F; emissiveIntensity:0; envMap: #sky; opacity: 0;"
+              ><a-animation attribute="material.opacity"
+                 dur="1000"
+                 fill="forwards"
+                 from="0"
+                 to="1"
+                 easing="ease-in-out-cubic"
+                 direction="alternate"
+                 begin="fade"></a-animation></a-entity>
+    <a-entity rotation="0 0 0"
+              scale="1 1 1"
+              id="me4" 
+              obj-model="obj: #me_switch" 
+              material="color: #0d0d0d; roughness: 0.8; metalness: 0; emissive:#F35F5F; emissiveIntensity:0; envMap: #sky; opacity: 0;"
+              ><a-animation attribute="material.opacity"
+                 dur="1000"
+                 fill="forwards"
+                 from="0"
+                 to="1"
+                 easing="ease-in-out-cubic"
+                 direction="alternate"
+                 begin="fade"></a-animation></a-entity>
+  </a-entity>
+</a-entity>
+
+<a-timeline id="meshakeTimeline">
+      <a-timeline-animation select="#myme" name="shake1"></a-timeline-animation>
+      <a-timeline-animation select="#myme" name="shake2"></a-timeline-animation>
+      <a-timeline-animation select="#myme" name="shake3"></a-timeline-animation>
+</a-timeline>
+<a-timeline id="meflipTimeline">
+      <a-timeline-animation select="#myme" name="flip1"></a-timeline-animation>
+      <a-timeline-animation select="#myme" name="flip2"></a-timeline-animation>
+</a-timeline>
+<!--me texts-->
+<a-entity id="metext" visible="false">
+  <a-entity id="metext0"
+            position="0 0.170 -8.5"
+            text="align: center; anchor: center; width: 1.5; color: #a488c7; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png; value: ME; wrapCount: 40; opacity:0;"
+            animation__fadein="property: text.opacity; from: 0; to: 1; dur:600; easing: easeInOutCubic; delay:100; startEvents: mepage1"
+            animation__fadeout="property: text.opacity; from: 1; to: 0; dur: 600; easing: easeInOutCubic; delay: 400; startEvents: mepage1out"
+            animation__movein="property: position; from: 0 0.170 -8.5; to: 0 0.170 -7.5; dur: 600; easing: easeInOutCubic; delay: 100; startEvents: mepage1;"
+            animation__moveout="property: position; from: 0 0.170 -7.5; to: 0 0.170 -8.5; dur: 600; easing: easeInOutCubic; delay: 400; startEvents: mepage1out;"
+            animation__togglevisible="property: visible; from: false; to: true; dur:1; startEvents:mepage1"
+            animation__togglevisibleoff="property: visible; from: true; to: false; dur:1; delay:1001; startEvents:mepage1out">
+  </a-entity>
+  <a-entity id="metext1"
+            position="0 0.063 -9.4"
+            text="align: center; anchor: center; width: 1.5; color: white; value: No Wires, No Limits, Be Young!; wrapCount: 50; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__fadein="property: text.opacity; from: 0; to: 1; dur:600; easing: easeInOutCubic; delay:300; startEvents: mepage1"
+            animation__fadeout="property: text.opacity; from: 1; to: 0; dur: 600; easing: easeInOutCubic; delay: 300; startEvents: mepage1out"
+            animation__movein="property: position; from: 0 0.063 -9.4; to: 0 0.063 -7.4; dur: 600; easing: easeInOutCubic; delay: 300; startEvents: mepage1;"
+            animation__moveout="property: position; from: 0 0.063 -7.4; to: 0 0.063 -9.4; dur: 600; easing: easeInOutCubic; delay: 300; startEvents: mepage1out;"
+            animation__togglevisible="property: visible; from: false; to: true; dur:1; delay:299; startEvents:mepage1"
+            animation__togglevisibleoff="property: visible; from: true; to: false; dur:1; delay:901; startEvents:mepage1out">
+  </a-entity>
+  <a-entity id="metext2"
+            position="0 -0.025 -9.4"
+            text="align: center; width: 0.6; color: white; value: Destination: Anywhere. The personal, portable smart speaker for you when you're on the go.; wrapCount: 45; lineHeight: 55; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__fadein="property: text.opacity; from: 0; to: 1; dur:600; easing: easeInOutCubic; delay:400; startEvents: mepage1"
+            animation__fadeout="property: text.opacity; from: 1; to: 0; dur: 600; easing: easeInOutCubic; delay: 100; startEvents: mepage1out"
+            animation__movein="property: position; from: 0 -0.025 -9.4; to: 0 -0.025 -7.4; dur: 600; easing: easeInOutCubic; delay: 400; startEvents: mepage1;"
+            animation__moveout="property: position; from: 0 -0.025 -7.4; to: 0 -0.025 -9.4; dur: 600; easing: easeInOutCubic; delay: 100; startEvents: mepage1out;"
+            animation__togglevisible="property: visible; from: false; to: true; dur:1; delay:399; startEvents:mepage1"
+            animation__togglevisibleoff="property: visible; from: true; to: false; dur:1; delay:701; startEvents:mepage1out">
+  </a-entity>
+  <a-entity id="metext3"
+            position="0 0.120 -7.4"
+            visible="false"
+            text="align: center; anchor: center; width: 1.5; color: white; value: Shake Me; wrapCount: 50; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__fadein="property: text.opacity; from: 0; to: 1; dur:600; easing: easeInOutCubic; delay:400; startEvents: mepage2"
+            animation__fadeout="property: text.opacity; from: 1; to: 0; dur: 600; easing: easeInOutCubic; startEvents: mepage2out"
+            animation__togglevisible="property: visible; from: false; to: true; dur:1; delay:399; startEvents:mepage2"
+            animation__togglevisibleoff="property: visible; from: true; to: false; dur:1; delay:601; startEvents:mepage2out">
+  </a-entity>
+  <a-entity id="metext4"
+            position="0 0.042 -7.4"
+            visible="false"
+            text="align: center; width: 0.8; color: white; value: Discover a new side of yourself, and expand your musical horizons by exploring a universe of new music.; wrapCount: 60; lineHeight: 55; opacity:1; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__fadein="property: text.opacity; from: 0; to: 1; dur:600; easing: easeInOutCubic; delay:400; startEvents: mepage2"
+            animation__fadeout="property: text.opacity; from: 1; to: 0; dur: 600; easing: easeInOutCubic; startEvents: mepage2out"
+            animation__togglevisible="property: visible; from: false; to: true; dur:1; delay:399; startEvents:mepage2"
+            animation__togglevisibleoff="property: visible; from: true; to: false; dur:1; delay:601; startEvents:mepage2out">
+  </a-entity>
+  <a-entity id="metext5"
+            position="0 0.120 -7.4"
+            visible="false"
+            text="align: center; anchor: center; width: 1.5; color: white; value: Flip Me; wrapCount: 50; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__fadein="property: text.opacity; from: 0; to: 1; dur:600; easing: easeInOutCubic; delay:400; startEvents: mepage3"
+            animation__fadeout="property: text.opacity; from: 1; to: 0; dur: 600; easing: easeInOutCubic; startEvents: mepage3out"
+            animation__togglevisible="property: visible; from: false; to: true; dur:1; delay:399; startEvents:mepage3"
+            animation__togglevisibleoff="property: visible; from: true; to: false; dur:1; delay:601; startEvents:mepage3out">
+  </a-entity>
+  <a-entity id="metext6"
+            position="0 0.045 -7.4"
+            visible="false"
+            text="align: center; width: 0.8; color: white; value: Pause the music / Stop the alarm / Hang up the phone.; wrapCount: 60; lineHeight: 55; opacity:1; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__fadein="property: text.opacity; from: 0; to: 1; dur:600; easing: easeInOutCubic; delay:400; startEvents: mepage3"
+            animation__fadeout="property: text.opacity; from: 1; to: 0; dur: 600; easing: easeInOutCubic; startEvents: mepage3out"
+            animation__togglevisible="property: visible; from: false; to: true; dur:1; delay:399; startEvents:mepage3"
+            animation__togglevisibleoff="property: visible; from: true; to: false; dur:1; delay:601; startEvents:mepage3out">
+  </a-entity>
+</a-entity>
+<!--me video-->
+<a-video id="mymevideo" position="0 -0.18 -11" scale="3.2 1.8 1" src="#mevideo" visible="false" material="opacity: 0;"
+         animation__fadein="property:material.opacity; from:0; to:1; delay:1000; dur:1000; ease:easeInOutCubic; startEvents: mepage5;"
+         animation__fadeout="property:material.opacity; from:1; to:0; dur:500; ease:easeInOutCubic; startEvents: mepage5out;"
+         animation__togglevisible="property: visible; from: false; to: true; dur:1; startEvents:mepage5"
+         animation__togglevisibleoff="property: visible; from: true; to: false; dur:1; delay:500; startEvents:mepage5out"></a-video>
+<!--me music bars-->
+<a-entity position="0 -0.5 -6.7" id="musicbars-container" scale="0.07 0.05 0.07" visible="false">
+      <a-entity id="musicbars"
+                entity-generator="mixin: bar; num: 40"
+                layout="type: circle; radius: 40; plane:xz; angle: 3;"
+                rotation="0 148.5 0"></a-entity>
+      <a-circle color="#9e3015" opacity="0.5" rotation="-90 0 0" radius="39.5" roughness="1"></a-circle>
+</a-entity>
+
+<!--alien obj-->
+<a-entity position="-0.9 0.094 -8.7"
+          scale="0.016 0.016 0.016"
+          rotation="0 40 0"
+          id="myalien"
+          class="nonintersectable"
+          visible="false"
+          modelcontrol="upevent: scaleUp; downevent: scaleDown; leftevent: rotateLeft; rightevent: rotateRight"
+          animation__moveout="property: position; to: -0.25 -0.15 -7.5; dur:1000; easing: easeInOutCubic; startEvents: alienpage1"
+          animation__rotationout="property: rotation; to: 0 0 0; dur: 1000; easing: easeInOutCubic; startEvents: alienpage1"
+          animation__moveback="property: position; to: -0.9 0.094 -8.7; dur:1000; easing: easeInOutCubic; startEvents: alienpage1out"
+          animation__rotationback="property: rotation; from: 0 0 0; to: 0 40 0; dur: 1000; easing: easeInOutCubic; startEvents: alienpage1out"
+          animation__moveright="property: position; to: 0.25 -0.15 -7.5; dur:1000; easing: easeInOutCubic; startEvents: alienpage2, alienpage4;"
+          animation__moveleftbottom="property: position; to: -0.1 -0.430 -7.292; dur: 1000; easing: easeInOutCubic; startEvents:alienpage3;"
+          animation__resetrotation="property: rotation; to: 0 40 0; easing: easeInOutCubic; dur: 1000; startEvents: alienpage1out;"
+          animation__resetrotationx="property: rotation; to:0 0 0; easing: easeInOutSine; dur: 1500; startEvents: resetrotationx;"
+          mixin="obj-toggle-visible">
+  <a-entity rotation="0 0 0"
+            scale="1 1 1"
+            id="alien0" 
+            obj-model="obj: #back_lid" 
+            material="color: #cbc8cd; roughness: 0.6; metalness: 1; emissive:#F35F5F; emissiveIntensity:0; envMap: #sky; opacity: 0"
+            ><a-animation attribute="material.opacity"
+               dur="1000"
+               fill="forwards"
+               from="0"
+               to="1"
+               easing="ease-in-out-cubic"
+               direction="alternate"
+               begin="fade"></a-animation></a-entity>
+  <a-entity rotation="0 0 0"
+            scale="1 1 1"
+            id="alien1" 
+            obj-model="obj: #bottom" 
+            material="src: texture/muslin.jpg; color: #fefcff; roughness: 1; metalness: 0; emissive:#F35F5F; emissiveIntensity:0;opacity: 0"
+            ><a-animation attribute="material.opacity"
+               dur="1000"
+               fill="forwards"
+               from="0"
+               to="1"
+               easing="ease-in-out-cubic"
+               direction="alternate"
+               begin="fade"></a-animation></a-entity>
+  <a-entity rotation="0 0 0"
+            scale="1 1 1"
+            id="alien2" 
+            obj-model="obj: #bottommiddle" 
+            material="color: #cbc8cd; roughness: 0.6; metalness: 1; emissive:#F35F5F; emissiveIntensity:0; envMap: #sky; opacity: 0"
+            ><a-animation attribute="material.opacity"
+               dur="1000"
+               fill="forwards"
+               from="0"
+               to="1"
+               easing="ease-in-out-cubic"
+               direction="alternate"
+               begin="fade"></a-animation></a-entity>
+  <a-entity rotation="0 0 0"
+            scale="1 1 1"
+            id="alien3" 
+            obj-model="obj: #camera" 
+            material="color: #000000; roughness: 0; metalness: 0; emissive:#F35F5F; emissiveIntensity:0; envMap: #sky; opacity: 0"
+            ><a-animation attribute="material.opacity"
+               dur="1000"
+               fill="forwards"
+               from="0"
+               to="1"
+               easing="ease-in-out-cubic"
+               direction="alternate"
+               begin="fade"></a-animation></a-entity>
+  <a-entity rotation="0 0 0"
+            scale="1 1 1"
+            id="alien4" 
+            obj-model="obj: #frontface" 
+            material="color: #e4edf3; roughness: 0; metalness: 0; emissive:#F35F5F; emissiveIntensity:0; envMap: #sky; opacity: 0"
+            ><a-animation attribute="material.opacity"
+               dur="1000"
+               fill="forwards"
+               from="0"
+               to="1"
+               easing="ease-in-out-cubic"
+               direction="alternate"
+               begin="fade"></a-animation></a-entity>
+  <a-entity rotation="0 0 0"
+            scale="1 1 1"
+            id="alien5" 
+            obj-model="obj: #grey_plastic" 
+            material="color: #d9d6db; roughness: 0.8; metalness: 0; emissive:#F35F5F; emissiveIntensity:0; envMap: #sky; opacity: 0"
+            ><a-animation attribute="material.opacity"
+               dur="1000"
+               fill="forwards"
+               from="0"
+               to="1"
+               easing="ease-in-out-cubic"
+               direction="alternate"
+               begin="fade"></a-animation></a-entity>
+  <a-entity rotation="0 0 0"
+            scale="1 1 1"
+            id="alien6" 
+            obj-model="obj: #logo" 
+            material="color: #cbc8cd; roughness: 0; metalness: 1; emissive:#F35F5F; emissiveIntensity:0; envMap: #sky; opacity: 0"
+            ><a-animation attribute="material.opacity"
+               dur="1000"
+               fill="forwards"
+               from="0"
+               to="1"
+               easing="ease-in-out-cubic"
+               direction="alternate"
+               begin="fade"></a-animation></a-entity>
+  <a-entity rotation="0 0 0"
+            scale="1 1 1"
+            id="alien7" 
+            obj-model="obj: #white_plastic" 
+            material="color: #fefcff; roughness: 0; metalness: 0; emissive:#F35F5F; emissiveIntensity:0; envMap: #sky; opacity: 0"
+            ><a-animation attribute="material.opacity"
+               dur="1000"
+               fill="forwards"
+               from="0"
+               to="1"
+               easing="ease-in-out-cubic"
+               direction="alternate"
+               begin="fade"></a-animation></a-entity>
+  <a-entity rotation="0 0 0"
+            scale="1 1 1"
+            id="alien8" 
+            obj-model="obj: #lightwhite_plastic" 
+            material="color: #e8e6eb; roughness: 0; metalness: 0; emissive:#F35F5F; emissiveIntensity:0; envMap: #sky; opacity: 0"
+            ><a-animation attribute="material.opacity"
+               dur="1000"
+               fill="forwards"
+               from="0"
+               to="1"
+               easing="ease-in-out-cubic"
+               direction="alternate"
+               begin="fade"></a-animation></a-entity>
+</a-entity>
+<!--alien text-->
+<a-entity id="alientext" visible="false">
+  <a-entity id="alientext0"
+            position="0.139 0.025 -8.5"
+            text="align: center; anchor: center; width: 1.5; color: #a488c7; value: ALIEN; wrapCount: 40; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__fadein="property: text.opacity; from: 0; to: 1; dur:600; easing: easeInOutCubic; delay:100; startEvents: alienpage1"
+            animation__fadeout="property: text.opacity; from: 1; to: 0; dur: 600; easing: easeInOutCubic; delay: 400; startEvents: alienpage1out"
+            animation__movein="property: position; from: 0.139 0.025 -8.5; to: 0.139 0.025 -7.5; dur: 600; easing: easeInOutCubic; delay: 100; startEvents: alienpage1;"
+            animation__moveout="property: position; from: 0.139 0.025 -7.5; to: 0.139 0.025 -8.5; dur: 600; easing: easeInOutCubic; delay: 400; startEvents: alienpage1out;">
+  </a-entity>
+  <a-entity id="alientext1"
+            position="0.185 -0.082 -9.4"
+            text="align: center; anchor: center; width: 1.5; color: white; value: Unprecedented Beauty; wrapCount: 50; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__fadein="property: text.opacity; from: 0; to: 1; dur:600; easing: easeInOutCubic; delay:300; startEvents: alienpage1"
+            animation__fadeout="property: text.opacity; from: 1; to: 0; dur: 600; easing: easeInOutCubic; delay: 300; startEvents: alienpage1out"
+            animation__movein="property: position; from: 0.185 -0.082 -9.4; to: 0.185 -0.082 -7.4; dur: 600; easing: easeInOutCubic; delay: 300; startEvents: alienpage1;"
+            animation__moveout="property: position; from: 0.185 -0.082 -7.4; to: 0.185 -0.082 -9.4; dur: 600; easing: easeInOutCubic; delay: 300; startEvents: alienpage1out;">
+  </a-entity>
+  <a-entity id="alientext2"
+            position="0.122 -0.17 -9.4"
+            text="align: left; width: 0.4; color: white; value: A reliable companion that gets to know you.; wrapCount: 30; lineHeight: 55; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__fadein="property: text.opacity; from: 0; to: 1; dur:600; easing: easeInOutCubic; delay:400; startEvents: alienpage1"
+            animation__fadeout="property: text.opacity; from: 1; to: 0; dur: 600; easing: easeInOutCubic; delay: 100; startEvents: alienpage1out"
+            animation__movein="property: position; from: 0.122 -0.17 -9.4; to: 0.122 -0.17 -7.4; dur: 600; easing: easeInOutCubic; delay: 400; startEvents: alienpage1;"
+            animation__moveout="property: position; from: 0.122 -0.17 -7.4; to: 0.122 -0.17 -9.4; dur: 600; easing: easeInOutCubic; delay: 100; startEvents: alienpage1out;">
+  </a-entity>
+</a-entity>
+<!--alien spec-->
+<a-entity id="myalien_spec0-container"
+           position="0.435 -0.036 -7.4" 
+          mixin="alien-spec-container-unit" 
+          animation__rotatein="startEvents: alienpage2" animation__rotateout="startEvents:alienpage2out">
+  <a-image id="myalien_spec0" position="-0.685 0 0" scale="0.42 0.35 0.2" src="#alien_spec1" mixin="alien-spec-unit" 
+           animation__fadein="startEvents:alienpage2" animation__fadeout="startEvents: alienpage2out"></a-image>
+</a-entity>
+<a-entity id="myalien_spec1-container"
+          position="-0.314 -0.098 -7.135" 
+          mixin="alien-spec-container-unit" 
+          animation__rotatein="startEvents: alienpage3" animation__rotateout="startEvents:alienpage3out">
+  <a-image id="myalien_spec1" position="0.441 0 0" rotation="0 0 0" scale="0.35 0.35 0.2" src="#alien_spec2" mixin="alien-spec-unit" 
+           animation__fadein="startEvents:alienpage3" animation__fadeout="startEvents: alienpage3out"></a-image>
+</a-entity>
+<a-entity id="myalien_spec2-container"
+          position="0 -0.036 -7.4" 
+          mixin="alien-spec-container-unit" 
+          animation__rotatein="startEvents: alienpage4" animation__rotateout="startEvents:alienpage4out">
+  <a-image id="myalien_spec2" position="-0.25 0 0" scale="0.37 0.35 0.2" src="#alien_spec3" mixin="alien-spec-unit" 
+           animation__fadein="startEvents:alienpage4" animation__fadeout="startEvents: alienpage4out"></a-image>
+</a-entity>
+<!--pebble obj-->
+<a-entity position="0.9 0 -8.7"
+          rotation="0 0 0"
+          scale="0.024 0.024 0.024"
+          id="mypebble"
+          class="nonintersectable"
+          visible="false"
+          modelcontrol="upevent: scaleUp; downevent: scaleDown; leftevent: rotateLeft; rightevent: rotateRight"
+          animation__moveout="property: position; to: 0 -0.25 -7.5; dur:1000; easing: easeInOutCubic; startEvents: pebblepage1"
+          animation__moveback="property: position; to: 0.9 0 -8.7; dur:1000; easing: easeInOutCubic; startEvents: pebblepage1out"
+          animation__moveup="property: position; to:0 -0.10 -7.5; dur:1000; easing: easeInOutCubic; startEvents: pebblepage2;"
+          animation__resetrotation="property: rotation; to: 0 0 0; easing: easeInOutCubic; dur: 1000; startEvents: pebblepage1out;"
+          animation-timeline="timeline: #mypebbleTimeline; startEvents:pebblepage3; loop:true"
+          animation-timeline__fadeout="timeline:#pebbleBarrageOut; startEvents:pebblepage3out"
+          animation__resetrotationx="property: rotation; to:0 0 0; easing: easeInOutSine; dur: 1500; startEvents: resetrotationx;"
+          mixin="obj-toggle-visible">
+  <a-entity rotation="40 10 0">
+    <a-entity rotation="0 0 0"
+              scale="1 1 1"
+              id="pebble0" 
+              obj-model="obj: #pebble_top" 
+              material="color: #ff9ba3; roughness: 0.75; metalness: 0.4; emissive:#F35F5F; emissiveIntensity:0; envMap: #sky; opacity: 0;"
+              ><a-animation attribute="material.opacity"
+                 dur="1000"
+                 fill="forwards"
+                 from="0"
+                 to="1"
+                 easing="ease-in-out-cubic"
+                 direction="alternate"
+                 begin="fade"></a-animation></a-entity>
+    <a-entity rotation="0 0 0"
+              scale="1 1 1"
+              id="pebble1" 
+              obj-model="obj: #pebble_middle" 
+              material="color: #a7a2ff; roughness: 0; metalness: 0; emissive:#c8a4e6; emissiveIntensity:0; envMap: #sky; opacity: 0"
+              ><a-animation attribute="material.opacity"
+                 dur="1000"
+                 fill="forwards"
+                 from="0"
+                 to="1"
+                 easing="ease-in-out-cubic"
+                 direction="alternate"
+                 begin="fade"></a-animation></a-entity>
+    <a-entity rotation="0 0 0"
+              scale="1 1 1"
+              id="pebble2" 
+              obj-model="obj: #pebble_bottom" 
+              material="src: texture/muslin.jpg; color: #ae7784; roughness: 1; metalness: 0; emissive:#F35F5F; emissiveIntensity:0; envMap:; opacity: 0"
+              ><a-animation attribute="material.opacity"
+                 dur="1000"
+                 fill="forwards"
+                 from="0"
+                 to="1"
+                 easing="ease-in-out-cubic"
+                 direction="alternate"
+                 begin="fade"></a-animation></a-entity>
+    <a-entity rotation="0 0 0"
+              scale="1 1 1"
+              id="pebble3" 
+              obj-model="obj: #pebble_bottomplane" 
+              material="color: #000000; roughness: 0.8; metalness: 0; emissive:#F35F5F; emissiveIntensity:0; opacity: 0;"
+              ><a-animation attribute="material.opacity"
+                 dur="1000"
+                 fill="forwards"
+                 from="0"
+                 to="1"
+                 easing="ease-in-out-cubic"
+                 direction="alternate"
+                 begin="fade"></a-animation></a-entity>
+    <a-entity rotation="0 0 0"
+              scale="1 1 1"
+              id="pebble4" 
+              obj-model="obj: #pebble_charge" 
+              material="color: #aa8590; roughness: 0.8; metalness: 0; emissive:#F35F5F; emissiveIntensity:0; envMap: #sky; opacity: 0;"
+              ><a-animation attribute="material.opacity"
+                 dur="1000"
+                 fill="forwards"
+                 from="0"
+                 to="1"
+                 easing="ease-in-out-cubic"
+                 direction="alternate"
+                 begin="fade"></a-animation></a-entity>
+  </a-entity>
+</a-entity>
+
+<!--pebble texts-->
+<a-entity id="pebbletext" visible="false">
+  <a-entity id="pebbletext0"
+            position="0 0.170 -8.5"
+            text="align: center; anchor: center; width: 1.5; color: #a488c7; value: PEBBLE; wrapCount: 40; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__fadein="property: text.opacity; from: 0; to: 1; dur:600; easing: easeInOutCubic; delay:100; startEvents: pebblepage1"
+            animation__fadeout="property: text.opacity; from: 1; to: 0; dur: 600; easing: easeInOutCubic; delay: 400; startEvents: pebblepage1out"
+            animation__movein="property: position; from: 0 0.170 -8.5; to: 0 0.170 -7.5; dur: 600; easing: easeInOutCubic; delay: 100; startEvents: pebblepage1;"
+            animation__moveout="property: position; from: 0 0.170 -7.5; to: 0 0.170 -8.5; dur: 600; easing: easeInOutCubic; delay: 400; startEvents: pebblepage1out;">
+  </a-entity>
+  <a-entity id="pebbletext1"
+            position="0 0.063 -9.4"
+            text="align: center; anchor: center; width: 1.5; color: white; value: The sound of dreams; wrapCount: 50; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__fadein="property: text.opacity; from: 0; to: 1; dur:600; easing: easeInOutCubic; delay:300; startEvents: pebblepage1"
+            animation__fadeout="property: text.opacity; from: 1; to: 0; dur: 600; easing: easeInOutCubic; delay: 300; startEvents: pebblepage1out"
+            animation__movein="property: position; from: 0 0.063 -9.4; to: 0 0.063 -7.4; dur: 600; easing: easeInOutCubic; delay: 300; startEvents: pebblepage1;"
+            animation__moveout="property: position; from: 0 0.063 -7.4; to: 0 0.063 -9.4; dur: 600; easing: easeInOutCubic; delay: 300; startEvents: pebblepage1out;">
+  </a-entity>
+  <a-entity id="pebbletext2"
+            position="0 -0.025 -9.4"
+            text="align: center; width: 0.6; color: white; value: Inspired by pebbles in nature, exquisite craftsmanship that conveys quality and artistry.; wrapCount: 45; lineHeight: 55; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__fadein="property: text.opacity; from: 0; to: 1; dur:600; easing: easeInOutCubic; delay:400; startEvents: pebblepage1"
+            animation__fadeout="property: text.opacity; from: 1; to: 0; dur: 600; easing: easeInOutCubic; delay: 100; startEvents: pebblepage1out"
+            animation__movein="property: position; from: 0 -0.025 -9.4; to: 0 -0.025 -7.4; dur: 600; easing: easeInOutCubic; delay: 400; startEvents: pebblepage1;"
+            animation__moveout="property: position; from: 0 -0.025 -7.4; to: 0 -0.025 -9.4; dur: 600; easing: easeInOutCubic; delay: 100; startEvents: pebblepage1out;">
+  </a-entity>
+  <a-entity id="pebbletext3"
+            position="0 0.170 -7.4"
+            text="align: center; anchor: center; width: 1.5; color: white; value: Smart voice control; wrapCount: 50; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__fadein="property: text.opacity; from: 0; to: 1; dur: 600; easing:easeInOutCubic; delay: 400; startEvents: pebblepage2;"
+            animation__fadeout="property: text.opacity; from: 1; to: 0; dur: 600; easing:easeInOutCubic; startEvents: pebblepage2back;"
+            animation__togglevisible="property: visible; from: false; to: true; dur:1; startEvents:pebblepage2"
+            animation__togglevisibleoff="property: visible; from: true; to: false; dur:1; delay:601; startEvents:pebblepage2back"></a-entity>
+  <a-entity id="pebbletext4"
+            position="0 0.170 -7.4"
+            text="align: center; anchor: center; width: 1.5; color: white; value: Your wish is my command; wrapCount: 50; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__fadein="property: text.opacity; from: 0; to: 1; dur: 600; easing:easeInOutCubic; delay: 400; startEvents: pebblepage3;"
+            animation__fadeout="property: text.opacity; from: 1; to: 0; dur: 600; easing:easeInOutCubic; startEvents: pebblepage3out;"
+            animation__togglevisible="property: visible; from: false; to: true; dur:1; startEvents:pebblepage3"
+            animation__togglevisibleoff="property: visible; from: true; to: false; dur:1; delay:601; startEvents:pebblepage3out"></a-entity>
+</a-entity>
+
+<a-timeline id="pebbleBarrageOut">
+    <a-timeline-group>
+      <a-timeline-animation select="#barrage0" name="fadeout"></a-timeline-animation>
+      <a-timeline-animation select="#barrage0" name="togglevisibleoff" offset="1000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage1" name="fadeout"></a-timeline-animation>
+      <a-timeline-animation select="#barrage1" name="togglevisibleoff" offset="1000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage2" name="fadeout"></a-timeline-animation>
+      <a-timeline-animation select="#barrage2" name="togglevisibleoff" offset="1000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage3" name="fadeout"></a-timeline-animation>
+      <a-timeline-animation select="#barrage3" name="togglevisibleoff" offset="1000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage4" name="fadeout"></a-timeline-animation>
+      <a-timeline-animation select="#barrage4" name="togglevisibleoff" offset="1000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage5" name="fadeout"></a-timeline-animation>
+      <a-timeline-animation select="#barrage5" name="togglevisibleoff" offset="1000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage6" name="fadeout"></a-timeline-animation>
+      <a-timeline-animation select="#barrage6" name="togglevisibleoff" offset="1000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage7" name="fadeout"></a-timeline-animation>
+      <a-timeline-animation select="#barrage7" name="togglevisibleoff" offset="1000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage8" name="fadeout"></a-timeline-animation>
+      <a-timeline-animation select="#barrage8" name="togglevisibleoff" offset="1000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage9" name="fadeout"></a-timeline-animation>
+      <a-timeline-animation select="#barrage9" name="togglevisibleoff" offset="1000"></a-timeline-animation>
+    </a-timeline-group>
+
+</a-timeline>
+
+<a-timeline id="mypebbleTimeline">
+    <a-timeline-group>
+      <a-timeline-animation select="#barrage0" name="togglevisible"></a-timeline-animation>
+      <a-timeline-animation select="#barrage0" name="move"></a-timeline-animation>
+      <a-timeline-animation select="#barrage0" name="fadein"></a-timeline-animation>
+      <a-timeline-animation select="#barrage0" name="fadeout" offset="3000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage0" name="togglevisibleoff" offset="4000"></a-timeline-animation>
+
+      <a-timeline-animation select="#barrage2" name="togglevisible" offset="500"></a-timeline-animation>
+      <a-timeline-animation select="#barrage2" name="move" offset="500"></a-timeline-animation>
+      <a-timeline-animation select="#barrage2" name="fadein" offset="500"></a-timeline-animation>
+      <a-timeline-animation select="#barrage2" name="fadeout" offset="3500"></a-timeline-animation>
+      <a-timeline-animation select="#barrage2" name="togglevisibleoff" offset="4500"></a-timeline-animation>
+
+      <a-timeline-animation select="#barrage4" name="togglevisible" offset="1000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage4" name="move" offset="1000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage4" name="fadein" offset="1000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage4" name="fadeout" offset="4000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage4" name="togglevisibleoff" offset="5000"></a-timeline-animation>
+
+      <a-timeline-animation select="#barrage8" name="togglevisible" offset="1000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage8" name="move" offset="1000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage8" name="fadein" offset="1000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage8" name="fadeout" offset="2500"></a-timeline-animation>
+      <a-timeline-animation select="#barrage8" name="togglevisibleoff" offset="3500"></a-timeline-animation>
+
+      <a-timeline-animation select="#barrage1" name="togglevisible" offset="1500"></a-timeline-animation>
+      <a-timeline-animation select="#barrage1" name="move" offset="1500"></a-timeline-animation>
+      <a-timeline-animation select="#barrage1" name="fadein" offset="1500"></a-timeline-animation>
+      <a-timeline-animation select="#barrage1" name="fadeout" offset="4500"></a-timeline-animation>
+      <a-timeline-animation select="#barrage1" name="togglevisibleoff" offset="5500"></a-timeline-animation>
+
+      <a-timeline-animation select="#barrage3" name="togglevisible" offset="2000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage3" name="move" offset="2000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage3" name="fadein" offset="2000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage3" name="fadeout" offset="5000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage3" name="togglevisibleoff" offset="6000"></a-timeline-animation>
+
+      <a-timeline-animation select="#barrage5" name="togglevisible" offset="2500"></a-timeline-animation>
+      <a-timeline-animation select="#barrage5" name="move" offset="2500"></a-timeline-animation>
+      <a-timeline-animation select="#barrage5" name="fadein" offset="2500"></a-timeline-animation>
+      <a-timeline-animation select="#barrage5" name="fadeout" offset="5500"></a-timeline-animation>
+      <a-timeline-animation select="#barrage5" name="togglevisibleoff" offset="6500"></a-timeline-animation>
+
+      <a-timeline-animation select="#barrage7" name="togglevisible" offset="3000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage7" name="move" offset="3000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage7" name="fadein" offset="3000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage7" name="fadeout" offset="6000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage7" name="togglevisibleoff" offset="7000"></a-timeline-animation>
+
+      <a-timeline-animation select="#barrage9" name="togglevisible" offset="3500"></a-timeline-animation>
+      <a-timeline-animation select="#barrage9" name="move" offset="3500"></a-timeline-animation>
+      <a-timeline-animation select="#barrage9" name="fadein" offset="3500"></a-timeline-animation>
+      <a-timeline-animation select="#barrage9" name="fadeout" offset="6500"></a-timeline-animation>
+      <a-timeline-animation select="#barrage9" name="togglevisibleoff" offset="7500"></a-timeline-animation>
+
+      <a-timeline-animation select="#barrage6" name="togglevisible" offset="4000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage6" name="move" offset="4000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage6" name="fadein" offset="4000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage6" name="fadeout" offset="7000"></a-timeline-animation>
+      <a-timeline-animation select="#barrage6" name="togglevisibleoff" offset="8000"></a-timeline-animation>
+    </a-timeline-group>
+</a-timeline>
+
+<a-entity id="barrage-group" position="0 -0.106 0" visible="false" animation__togglevisible="property: visible; from: false; to: true; dur: 1;" animation__togglevisibleoff="property: visible; to: false; dur:1;">
+  <a-entity id="barrage0" 
+            position="0.6 0.210 -7.642" 
+            text="value: Melody, I want to listen to music.; color: #b0f6ff; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__move="from:0.6 0.210 -7.642; to: -0.6 0.210 -7.642;" 
+            mixin="barrage-animation"></a-entity>
+  <a-entity id="barrage1" 
+            position="0.6 0.123 -8" 
+            text="value: Melody, what's the weather like today?; color:#68c5ff; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__move="from:0.6 0.123 -8; to: -0.6 0.123 -8;" 
+            mixin="barrage-animation"></a-entity>          
+  <a-entity id="barrage2" 
+            position="0.6 0.092 -7.0" 
+            text="value: Melody, start a 10-minute timer.; color:#68c5ff; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__move="from:0.6 0.092 -7.0; to: -0.6 0.092 -7.0;" 
+            mixin="barrage-animation"></a-entity>
+  <a-entity id="barrage3" 
+            position="0.6 -0.083 -7.852" 
+            text="value: Melody, wake me up at 10 AM.; color:#7593ff; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__move="from:0.6 -0.083 -7.852; to: -0.6 -0.083 -7.852;" 
+            mixin="barrage-animation"></a-entity>          
+  <a-entity id="barrage4" 
+            position="0.6 -0.116 -7.2" 
+            text="value: Melody, play Peppa Pig!; color:#a988ff; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__move="from:0.6 -0.116 -7.2; to: -0.6 -0.116 -7.2;" 
+            mixin="barrage-animation"></a-entity>
+
+  <a-entity id="barrage5" 
+            position="0.6 0.210 -7.642" 
+            text="value: Melody, I want to listen to music.; color: #b0f6ff; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__move="from:0.6 0.210 -7.642; to: -0.6 0.210 -7.642;" 
+            mixin="barrage-animation"></a-entity>
+  <a-entity id="barrage6" 
+            position="0.6 0.123 -8" 
+            text="value: Melody, start a 10-minute timer.; color:#68c5ff; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__move="from:0.6 0.123 -8; to: -0.6 0.123 -8;" 
+            mixin="barrage-animation"></a-entity>          
+  <a-entity id="barrage7" 
+            position="0.6 0.092 -7.0" 
+            text="value: Melody, what's the weather like today?; color:#68c5ff; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__move="from:0.6 0.092 -7.0; to: -0.6 0.092 -7.0;" 
+            mixin="barrage-animation"></a-entity>
+  <a-entity id="barrage8" 
+            position="0.6 -0.083 -7.852" 
+            text="value: Melody, play Peppa Pig!; color:#7593ff; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__move="from:0 -0.083 -7.852; to: -1.2 -0.083 -7.852;" 
+            mixin="barrage-animation"></a-entity>          
+  <a-entity id="barrage9" 
+            position="0.6 -0.155 -7.2" 
+            text="value: Melody, wake me up at 10 AM.; color:#a988ff; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__move="from:0.6 -0.155 -7.2; to: -0.6 -0.155 -7.2;" 
+            mixin="barrage-animation"></a-entity>
+</a-entity>
+
+<!--
+<a-image id="mypebble_spec1" src="#pebble_spec1" material="opacity:0;depthWrite: false" geometry="" scale="0.783 0.170 1" position="0 -0.4 -7.266">
+<a-animation attribute="material.opacity"
+               dur="800"
+               fill="forwards"
+               from="0"
+               to="1"
+               easing="ease-in-out-cubic"
+               direction="alternate"
+               delay="200"
+               begin="pebblepage2"></a-animation>
+<a-animation attribute="position"
+               dur="800"
+               fill="forwards"
+               from="0 -0.4 -7.266"
+               to="0 -0.3 -7.266"
+               easing="ease-in-out-cubic"
+               direction="alternate"
+               delay="200"
+               begin="pebblepage2"></a-animation>  
+</a-image> 
+-->
+<a-entity id="circlelayouttest" layout="type: circle; radius:50; plane:xz; reverse:true;" position="0 -0.5 -7.5" scale="0.01 0.01 0.01" 
+          animation__rotate="property: rotation; dur: 20000; from: 0 0 0; to: 0 360 0; easing: linear; dir: normal; loop: true;" 
+          animation__scale="property: scale; dur:1000; from: 0.002 0.002 0.002; to: 0.01 0.01 0.01; easing: easeInOutSine; dir: alternate; startEvents:pebblepage2; elasticity:500; enabled: true"
+          animation__scaleback="property: scale; dur:1000; from: 0.01 0.01 0.01; to: 0.002 0.002 0.002; easing: easeInOutCubic; dir: alternate; startEvents:pebblepage2back; enabled: true"
+          animation__position="property: position; dur: 1000; from: 0 -0.5 -7.5; to: 0 -0.15 -7.5; easing: easeInOutCubic; dir: alternate; startEvents:pebblepage2;"
+          animation__positionback="property: position; dur: 1000; from: 0 -0.15 -7.5; to: 0 -0.5 -7.5; easing: easeInOutCubic; dir: alternate; startEvents:pebblepage2back;">
+  <a-image id="mypebble_spec0" src="#pebble_spec2" mixin="circle-spec-unit"></a-image>
+  <a-image id="mypebble_spec1" src="#pebble_spec3" mixin="circle-spec-unit"></a-image>
+  <a-image id="mypebble_spec2" src="#pebble_spec4" mixin="circle-spec-unit"></a-image>
+  <a-image id="mypebble_spec3" src="#pebble_spec5" mixin="circle-spec-unit"></a-image>
+  <a-image id="mypebble_spec4" src="#pebble_spec2" mixin="circle-spec-unit"></a-image>
+  <a-image id="mypebble_spec5" src="#pebble_spec3" mixin="circle-spec-unit"></a-image>
+  <a-image id="mypebble_spec6" src="#pebble_spec4" mixin="circle-spec-unit"></a-image>
+  <a-image id="mypebble_spec7" src="#pebble_spec5" mixin="circle-spec-unit"></a-image>
+  <a-image id="mypebble_spec8" src="#pebble_spec2" mixin="circle-spec-unit"></a-image>
+  <a-image id="mypebble_spec9" src="#pebble_spec3" mixin="circle-spec-unit"></a-image>
+  <a-image id="mypebble_spec10" src="#pebble_spec4" mixin="circle-spec-unit"></a-image>
+  <a-image id="mypebble_spec11" src="#pebble_spec5" mixin="circle-spec-unit"></a-image>
+</a-entity>
+<a-entity id="target" position="0 -0.3 -7.5" scale="0.0001 0.0001 0.0001"></a-entity>
+<!--
+<a-entity id="dodecahedronlayouttest" layout="type: dodecahedron; radius: 50" position="0 -0.3 -7.5" scale="0.015 0.015 0.015">
+        <a-image src="#pebble_spec2" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec3" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec4" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec5" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec2" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec3" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec4" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec5" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec2" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec3" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec4" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec5" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec2" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec3" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec4" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec5" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec2" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec3" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec4" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+        <a-image src="#pebble_spec5" geometry="" material="depthWrite: false" scale="16 16 16" look-at="#target"></a-image>
+</a-entity>-->
+
+<!--glass obj-->
+<a-entity position="0.3 0 -8.7"
+          rotation="0 -30 0"
+          scale="0.02 0.02 0.02"
+          id="myglass"
+          class="nonintersectable"
+          visible="false"
+          modelcontrol="upevent: scaleUp; downevent: scaleDown; leftevent: rotateLeft; rightevent: rotateRight"
+          animation__moveout="property: position; to: 0 -0.3 -7.5; dur:1000; easing: easeInOutCubic; startEvents: glasspage1"
+          animation__moveback="property: position; to: 0.3 0 -8.7; dur:1000; easing: easeInOutCubic; startEvents: glasspage1out"
+          animation__moveup="property: position; to: 0 -0.115 -7.5; dur: 1000; easing: easeInOutCubic; startEvents: glasspage2"
+          animation__rotateloop="property: rotation; from: 0 -30 0; to: 0 330 0; dur:10000; easing:linear; loop:true; startEvents: glasspage2; pauseEvents: glasspage2out, glasspage1;"
+          animation__resetrotation="property: rotation; to: 0 -30 0; easing: easeInOutCubic; dur: 1000; startEvents: glasspage1out, glasspage2out;"
+          animation__resetrotationx="property: rotation; to:0 -30 0; easing: easeInOutSine; dur: 1500; startEvents: resetrotationx;"
+          mixin="obj-toggle-visible">
+  <a-entity rotation="-30 0 0">
+    <a-entity rotation="0 0 0"
+              scale="1 1 1"
+              id="glass0" 
+              obj-model="obj: #glass_blackplastic1" 
+              material="color: #5257b1; roughness: 0.6; metalness: 0; emissive:#F35F5F; emissiveIntensity:0; envMap: #sky; opacity: 0;"
+              ><a-animation attribute="material.opacity"
+                 dur="1000"
+                 fill="forwards"
+                 from="0"
+                 to="1"
+                 easing="ease-in-out-cubic"
+                 direction="alternate"
+                 begin="fade"></a-animation></a-entity>
+    <a-entity rotation="0 0 0"
+              scale="1 1 1"
+              id="glass4" 
+              obj-model="obj: #glass_blackplastic2" 
+              material="color: #6b76fe; roughness: 0.6; metalness: 0; emissive:#F35F5F; emissiveIntensity:0; envMap: #sky; opacity: 0;"
+              ><a-animation attribute="material.opacity"
+                 dur="1000"
+                 fill="forwards"
+                 from="0"
+                 to="1"
+                 easing="ease-in-out-cubic"
+                 direction="alternate"
+                 begin="fade"></a-animation></a-entity>
+    <a-entity rotation="0 0 0"
+              scale="1 1 1"
+              id="glass5" 
+              obj-model="obj: #glass_blackplastic3" 
+              material="color: #6b76fe; roughness: 0.6; metalness: 0; emissive:#F35F5F; emissiveIntensity:0; envMap: #sky; opacity:0;"
+              ><a-animation attribute="material.opacity"
+                 dur="1000"
+                 fill="forwards"
+                 from="0"
+                 to="1"
+                 easing="ease-in-out-cubic"
+                 direction="alternate"
+                 begin="fade"></a-animation></a-entity>
+    <a-entity rotation="0 0 0"
+              scale="1 1 1"
+              id="glass1" 
+              obj-model="obj: #glass_smoothplastic" 
+              material="color: #8485ff; roughness: 0; metalness: 0; emissive:#c8a4e6; emissiveIntensity:0; envMap: #sky; opacity: 0"
+              ><a-animation attribute="material.opacity"
+                 dur="1000"
+                 fill="forwards"
+                 from="0"
+                 to="1"
+                 easing="ease-in-out-cubic"
+                 direction="alternate"
+                 begin="fade"></a-animation></a-entity>
+    <a-entity rotation="0 0 0"
+              scale="1 1 1"
+              id="glass2" 
+              obj-model="obj: #glass_cameracover" 
+              material="color: #332ead; roughness: 1; metalness: 0; emissive:#F35F5F; emissiveIntensity:0; opacity:0;"
+              ><a-animation attribute="material.opacity"
+                 dur="1000"
+                 fill="forwards"
+                 from="0"
+                 to="0.8"
+                 easing="ease-in-out-cubic"
+                 direction="alternate"
+                 begin="fade"></a-animation></a-entity>
+    <a-entity rotation="0 0 0"
+              scale="1 1 1"
+              id="glass3" 
+              obj-model="obj: #glass_lenses" 
+              material="color: #292f48; roughness: 0; metalness: 0; emissive:#F35F5F; emissiveIntensity:0; envMap: #sky; opacity:0"
+              ><a-animation attribute="material.opacity"
+                 dur="1000"
+                 fill="forwards"
+                 from="0"
+                 to="0.8"
+                 easing="ease-in-out-cubic"
+                 direction="alternate"
+                 begin="fade"></a-animation></a-entity>
+  </a-entity>
+</a-entity>
+<!--glass texts-->
+<a-entity id="glasstext" visible="false">
+  <a-entity id="glasstext0"
+            position="0 0.170 -8.5"
+            text="align: center; anchor: center; width: 1.5; color: #a488c7; value: ROKID GLASS; wrapCount: 40; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__fadein="property: text.opacity; from: 0; to: 1; dur:600; easing: easeInOutCubic; delay:100; startEvents: glasspage1"
+            animation__fadeout="property: text.opacity; from: 1; to: 0; dur: 600; easing: easeInOutCubic; delay: 400; startEvents: glasspage1out"
+            animation__movein="property: position; from: 0 0.170 -8.5; to: 0 0.170 -7.5; dur: 600; easing: easeInOutCubic; delay: 100; startEvents: glasspage1;"
+            animation__moveout="property: position; from: 0 0.170 -7.5; to: 0 0.170 -8.5; dur: 600; easing: easeInOutCubic; delay: 400; startEvents: glasspage1out;"
+            animation__togglevisible="property: visible; from: false; to: true; dur:1; startEvents:glasspage1"
+            animation__togglevisibleoff="property: visible; from: true; to: false; dur:1; delay: 1001; startEvents:glasspage1out">
+  </a-entity>
+  <a-entity id="glasstext1"
+            position="0 0.063 -9.4"
+            text="align: center; anchor: center; width: 1.5; color: white; value: See More; wrapCount: 50; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__fadein="property: text.opacity; from: 0; to: 1; dur:600; easing: easeInOutCubic; delay:300; startEvents: glasspage1"
+            animation__fadeout="property: text.opacity; from: 1; to: 0; dur: 600; easing: easeInOutCubic; delay: 300; startEvents: glasspage1out"
+            animation__movein="property: position; from: 0 0.063 -9.4; to: 0 0.063 -7.4; dur: 600; easing: easeInOutCubic; delay: 300; startEvents: glasspage1;"
+            animation__moveout="property: position; from: 0 0.063 -7.4; to: 0 0.063 -9.4; dur: 600; easing: easeInOutCubic; delay: 300; startEvents: glasspage1out;"
+            animation__togglevisible="property: visible; from: false; to: true; dur:1; startEvents:glasspage1"
+            animation__togglevisibleoff="property: visible; from: true; to: false; dur:1; delay: 901; startEvents:glasspage1out">
+  </a-entity>
+  <a-entity id="glasstext2"
+            position="0 -0.025 -9.4"
+            text="align: center; width: 0.6; color: white; value: For enterprises who want to harness the optimization and productivity benefits of AI & AR.; wrapCount: 45; lineHeight: 55; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+            animation__fadein="property: text.opacity; from: 0; to: 1; dur:600; easing: easeInOutCubic; delay:400; startEvents: glasspage1"
+            animation__fadeout="property: text.opacity; from: 1; to: 0; dur: 600; easing: easeInOutCubic; delay: 100; startEvents: glasspage1out"
+            animation__movein="property: position; from: 0 -0.025 -9.4; to: 0 -0.025 -7.4; dur: 600; easing: easeInOutCubic; delay: 400; startEvents: glasspage1;"
+            animation__moveout="property: position; from: 0 -0.025 -7.4; to: 0 -0.025 -9.4; dur: 600; easing: easeInOutCubic; delay: 100; startEvents: glasspage1out;"
+            animation__togglevisible="property: visible; from: false; to: true; dur:1; startEvents:glasspage1"
+            animation__togglevisibleoff="property: visible; from: true; to: false; dur:1; delay: 701; startEvents:glasspage1out">
+  </a-entity>
+</a-entity>
+<!--glass circle icon-->
+<a-entity id="glasscircle" layout="type: circle; radius:40; plane:xy; reverse:true; angle: 0;" position="0 -0.115 -7.5" scale="0.007 0.007 0.007" 
+          animation__open="property: layout.angle; from: 0; to: 60; dur: 2000; easing: easeInOutCubic; startEvents:glasspage2; delay:500;">
+  <a-image id="myglass_spec0" src="#voice-icon" mixin="glass-spec-unit" animation="delay:500"></a-image>
+  <a-image id="myglass_spec1" src="#vision-icon" mixin="glass-spec-unit" animation="delay:600"></a-image>
+  <a-image id="myglass_spec2" src="#object-icon" mixin="glass-spec-unit" animation="delay:700"></a-image>
+  <a-image id="myglass_spec3" src="#faceid-icon" mixin="glass-spec-unit" animation="delay:800"></a-image>
+  <a-image id="myglass_spec4" src="#remote-icon" mixin="glass-spec-unit" animation="delay:900"></a-image>
+  <a-image id="myglass_spec5" src="#navigation-icon" mixin="glass-spec-unit" animation="delay:1000"></a-image>
+</a-entity>
+<!--glass scenario-->
+<a-entity id="glass-scenario-0" position="-0.162 -0.132 -7.532" mixin="positions"
+          animation__position1="startEvents:glasspage4"
+          animation__position2="startEvents:glasspage5"
+          animation__position3="startEvents:glasspage6"
+          animation__position0="startEvents:glasspage3">
+    <a-image id="glass-scenario-img-0" scale="0.35 0.35 0.35" src="#remote-img" mixin="glass-scenario-unit"
+             animation__fadein="startEvents: glasspage3"
+             animation__halfopacity="startEvents: glasspage4"
+             ></a-image>
+             <!--
+    <a-image id="glass-scenario-text-0" position="0.218 -0.046 0.132" scale="0.35 0.13 1" src="#remote-text" mixin="glass-scenario-unit"
+             animation__fadein="startEvents: glasspage3"
+             animation__halfopacity="startEvents: glasspage4"></a-image>-->
+
+    <a-entity id="glass-scenario-text-0-0"
+              position="0.218 0.006 0.132"
+              mixin="glass-scenario-text-unit"
+              text="align: center; width: 1; color: white; value: Remote Assistance; wrapCount: 50; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+              animation__fadein="startEvents: glasspage3"
+              animation__halfopacity="startEvents: glasspage4">
+    </a-entity>
+    <a-entity id="glass-scenario-text-1-0"
+              position="0.218 -0.075 0.132"
+              mixin="glass-scenario-text-unit"
+              text="align: center; width: 0.4; color: white; value: Often referred to as 'See what you see', Remote assistance applications allow for the seamless sharing of on-site field of vision.; lineHeight: 70; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+              animation__fadein="startEvents: glasspage3"
+              animation__halfopacity="startEvents: glasspage4">
+    </a-entity>
+</a-entity>
+
+<a-entity id="glass-scenario-1" position="0.275 -0.043 -8.5" mixin="positions"
+          animation__position0="startEvents:glasspage4"
+          animation__position1="startEvents:glasspage5"
+          animation__position2="startEvents:glasspage6"
+          animation__position3="startEvents:glasspage3">
+    <a-image id="glass-scenario-img-1" scale="0.35 0.35 0.35" src="#field-img" mixin="glass-scenario-unit"
+             animation__fadein="startEvents: glasspage4"
+             animation__halfopacity="startEvents: glasspage3, glasspage5"></a-image>
+             <!--
+    <a-image id="glass-scenario-text-1" position="0.218 -0.046 0.132" scale="0.35 0.171 1" src="#field-text" mixin="glass-scenario-unit"
+             animation__fadein="startEvents: glasspage4"
+             animation__halfopacity="startEvents: glasspage3, glasspage5"></a-image>-->
+    <a-entity id="glass-scenario-text-0-1"
+              position="0.218 0.006 0.132"
+              mixin="glass-scenario-text-unit"
+              text="align: center; width: 1; color: white; value: Field Service; wrapCount: 50; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+              animation__fadein="startEvents: glasspage4"
+              animation__halfopacity="startEvents: glasspage3, glasspage5">
+    </a-entity>
+    <a-entity id="glass-scenario-text-1-1"
+              position="0.218 -0.075 0.132"
+              mixin="glass-scenario-text-unit"
+              text="align: center; width: 0.4; color: white; value: Remote assistance is more than the ability to upskill or inform workers - it also provides valuable oversight for managers and supervising technicians.; lineHeight: 70; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+              animation__fadein="startEvents: glasspage4"
+              animation__halfopacity="startEvents: glasspage3, glasspage5">
+    </a-entity>
+</a-entity>
+
+<a-entity id="glass-scenario-2" position="-0.094 0.2 -10.6" mixin="positions"
+          animation__position3="startEvents:glasspage4"
+          animation__position0="startEvents:glasspage5"
+          animation__position1="startEvents:glasspage6"
+          animation__position2="startEvents:glasspage3">
+    <a-image id="glass-scenario-img-2" scale="0.35 0.35 0.35" src="#training-img" mixin="glass-scenario-unit"
+             animation__fadein="startEvents: glasspage5"
+             animation__halfopacity="startEvents: glasspage3, glasspage4, glasspage6"></a-image>
+             <!--
+    <a-image id="glass-scenario-text-2" position="0.218 -0.046 0.132" scale="0.35 0.13 1" src="#training-text" mixin="glass-scenario-unit"
+             animation__fadein="startEvents: glasspage5"
+             animation__halfopacity="startEvents: glasspage3, glasspage4, glasspage6"></a-image>-->
+    <a-entity id="glass-scenario-text-0-2"
+              position="0.218 0.006 0.132"
+              mixin="glass-scenario-text-unit"
+              text="align: center; width: 1; color: white; value: Training; wrapCount: 50; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+              animation__fadein="startEvents: glasspage5"
+              animation__halfopacity="startEvents: glasspage3, glasspage4, glasspage6">
+    </a-entity>
+    <a-entity id="glass-scenario-text-1-2"
+              position="0.218 -0.075 0.132"
+              mixin="glass-scenario-text-unit"
+              text="align: center; width: 0.4; color: white; value: Rokid Glass allows companies to train workers more effectively.; lineHeight: 70; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+              animation__fadein="startEvents: glasspage5"
+              animation__halfopacity="startEvents: glasspage3, glasspage4, glasspage6">
+    </a-entity>
+</a-entity>
+
+<a-entity id="glass-scenario-3" position="-0.732 0.039 -9.5" mixin="positions"
+          animation__position2="startEvents:glasspage4"
+          animation__position3="startEvents:glasspage5"
+          animation__position0="startEvents:glasspage6"
+          animation__position1="startEvents:glasspage3">
+    <a-image id="glass-scenario-img-3" scale="0.35 0.35 0.35" src="#manufacturing-img" mixin="glass-scenario-unit"
+             animation__fadein="startEvents: glasspage6"
+             animation__halfopacity="startEvents: glasspage3, glasspage5"></a-image>
+             <!--
+    <a-image id="glass-scenario-text-3" position="0.218 -0.046 0.132" scale="0.35 0.162 1" src="#manufacturing-text" mixin="glass-scenario-unit"
+             animation__fadein="startEvents: glasspage6"
+             animation__halfopacity="startEvents: glasspage3, glasspage5"></a-image>-->
+    <a-entity id="glass-scenario-text-0-3"
+              position="0.218 0.006 0.132"
+              mixin="glass-scenario-text-unit"
+              text="align: center; width: 1; color: white; value: Manufacturing; wrapCount: 50; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+              animation__fadein="startEvents: glasspage6"
+              animation__halfopacity="startEvents: glasspage3, glasspage5">
+    </a-entity>
+    <a-entity id="glass-scenario-text-1-3"
+              position="0.218 -0.075 0.132"
+              mixin="glass-scenario-text-unit"
+              text="align: center; width: 0.4; color: white; value: Using digital information that is both overlaid and tracked to the physical environment or material.; lineHeight: 70; opacity:0; font:font/Roboto-msdf.json; fontImage:font/Roboto-msdf.png;"
+              animation__fadein="startEvents: glasspage6"
+              animation__halfopacity="startEvents: glasspage3, glasspage5">
+    </a-entity>
+</a-entity>
+<!--boxes-->
+<a-entity class="nonintersectable" geometry="primitive:plane" material="opacity:0" position="-0.3 0 -8.7" scale="0.35 0.3 1" id="mebox" rotation="0 30 0"></a-entity>
+<a-entity class="nonintersectable" geometry="primitive:plane" material="opacity:0" position="-0.9 0.094 -8.7" scale="0.43 0.59 1" id="alienbox"></a-entity>
+<a-entity class="nonintersectable" geometry="primitive:plane" material="opacity:0" position="0.9 0 -8.7" scale="0.39 0.33 1" id="pebblebox"></a-entity>
+<a-entity class="nonintersectable" geometry="primitive:plane" material="opacity:0" position="0.3 0 -8.7" scale="0.45 0.26 1" id="glassbox" rotation="0 -29.999999999999996 0"></a-entity>
+
+<!--testing cube
+<a-entity geometry="depth:0.12;width:0.12;height:0.075" position="0 0 -2" material="color:#ff5f00" rotation="0 45 0"></a-entity>
+<a-entity geometry="depth:0.12;width:0.12;height:0.075" position="0 0 -4" material="color:#ff5f00" rotation="0 45 0"></a-entity>
+<a-entity geometry="depth:0.12;width:0.12;height:0.075" position="0 0 -6" material="color:#ff5f00" rotation="0 45 0"></a-entity>
+<a-entity geometry="depth:0.12;width:0.12;height:0.075" position="0 0 -8" material="color:#ff5f00" rotation="0 45 0"></a-entity>-->
+</a-entity>
+</a-scene>
+<video id="mevideo" preload="metadata" crossorigin="anonymous" poster="texture/thumbnail.jpeg">
+  <source src="video/RokidMe.mp4" type="video/mp4">
+<!--         <source src="file:///sdcard/m1.m4v" type="video/mp4">
+ -->      Your browser does not support the video tag.
+</video>
+  </body>
+
+    <script>
+
+      var clickFlag = false;
+      var enter0 = false;
+      var enter1 = false;
+      var enter2 = false;
+      var enter3 = false;
+      var redcubeActive = false;
+      var greencubeActive = false;
+      var yellowcubeActive = false;
+      var bluecubeActive = false;
+
+      var meisActive = false;
+      var alienisActive = false;
+      var pebbleisActive = false;
+      var glassisActive = false;
+
+      var meRotateActive = false;
+      var alienRotateActive = false;
+      var pebbleRotateActive = false;
+      var glassRotateActive = false;
+
+      var pebblePage = 0;
+      var mePage = 0;
+      var alienPage = 0;
+      var glassPage = 0;
+
+      var scene = document.querySelector('#myscene');
+      var me = document.querySelector('#myme');
+      var alien = document.querySelector('#myalien');
+      var pebble = document.querySelector('#mypebble');
+      var glass = document.querySelector('#myglass');
+      var gaze = document.querySelector('#mygaze');
+      var camera = document.querySelector('#mycamera');
+
+      var animationFinished = true;
+      var glassCircleFinished = false;
+      var bookmark = true;
+      var sound2Played = false;
+      var sound1Played = false;
+
+      //scene.removeChild(me);
+      //scene.appendChild(me);
+      removeGaze();
+//event listener if gazeon gazeleave
+      document.querySelector('#mebox').addEventListener('mouseenter', function(event){
+        enter0 = true;
+      });
+
+      document.querySelector('#mebox').addEventListener('mouseleave', function(event){
+        enter0 = false;
+      });
+
+      document.querySelector('#alienbox').addEventListener('mouseenter', function(event){
+        enter1 = true;
+      });
+
+      document.querySelector('#alienbox').addEventListener('mouseleave', function(event){
+        enter1 = false;
+      });
+
+      document.querySelector('#pebblebox').addEventListener('mouseenter', function(event){
+        enter2 = true;
+      });
+
+      document.querySelector('#pebblebox').addEventListener('mouseleave', function(event){
+        enter2 = false;
+      });
+
+      document.querySelector('#glassbox').addEventListener('mouseenter', function(event){
+        enter3 = true;
+      });
+
+      document.querySelector('#glassbox').addEventListener('mouseleave', function(event){
+        //document.querySelector('#redcube').removeAttribute('animation', 'startEvents');
+        enter3 = false;
+      });
+
+//test input
+      document.addEventListener('keydown', function(event){
+        if(event.code == 'KeyZ'){
+          //MOSE OVER OR NOT
+          confirm();
+          /*
+            document.querySelector('#redcube').addEventListener('mouseenter', function(event){
+            document.querySelector('#redcube').emit('pressZ');
+          });*/
+            
+        }
+
+        if(event.code == 'KeyX'){
+          //document.querySelector('#myalien').emit('scaleUp');
+          console.log('emit scaleup');
+        }
+        if(event.code == 'KeyC'){
+          document.querySelector('#myalien').emit('scaleDown');
+          console.log('emit scaledown');
+        }
+        if(event.code == 'KeyV'){
+          document.querySelector('#myalien').emit('rotateLeft');
+          console.log('emit rotateLeft');
+        }
+        if(event.code == 'KeyB'){
+          document.querySelector('#myalien').emit('rotateRight');
+          console.log('emit rotateRight');
+        }
+        if(event.code == 'KeyN'){
+          //rotateObjectY(100, 1);
+          pre();
+        }
+        if(event.code == 'KeyM'){
+          next();
+        }
+        if(event.code == 'KeyR'){
+          rotateObjectY(100 , 3);
+        }
+        if(event.code == 'KeyT'){
+          rotateObjectXY(100 , 3, 0, 0);
+        }
+        if(event.code == 'KeyY'){
+          rotateObjectXY(0 , 0, 100, 3);
+        }
+        if(event.code == 'KeyU'){
+          resetRotation();
+        }
+      });
+//animation event listener
+//animationcomplete
+//animationbegin
+      //pebble
+      document.querySelector('#mypebble').addEventListener('animationcomplete', function () {
+            //console.log('my pebble animationend');
+            animationFinished = true;
+      });
+      document.querySelector('#mypebble').addEventListener('animationbegin', function () {
+            //console.log('my pebble animationbegin');
+            animationFinished = false;
+      });
+      //me
+      document.querySelector('#myme').addEventListener('animationcomplete', function () {
+            //console.log('myme animationend');
+            animationFinished = true;
+      });
+      document.querySelector('#myme').addEventListener('animationbegin', function () {
+            //console.log('myme animationstart');
+            animationFinished = false;
+      });
+      //alien
+      document.querySelector('#myalien').addEventListener('animationcomplete', function () {
+            //console.log('myalien animationend');
+            animationFinished = true;
+      });
+      document.querySelector('#myalien').addEventListener('animationbegin', function () {
+            //console.log('myalien animationstart');
+            animationFinished = false;
+      });
+      //glass
+      document.querySelector('#myglass').addEventListener('animationcomplete', function () {
+            //console.log('myglass animationend');
+            animationFinished = true;
+      });
+      document.querySelector('#myglass').addEventListener('animationbegin', function () {
+            //console.log('myglass animationstart');
+            animationFinished = false;
+      });
+      //alien spec
+      document.querySelector('#myalien_spec0-container').addEventListener('animationcomplete', function(){
+            //animationFinished = true;
+            //console.log('alien spec0 animation end');
+      });
+      document.querySelector('#myalien_spec0-container').addEventListener('animationbegin', function(){
+            //animationFinished = false;
+      });
+      document.querySelector('#myalien_spec1-container').addEventListener('animationcomplete', function(){
+            //animationFinished = true;
+            //console.log('alien spec1 animation end');
+      });
+      document.querySelector('#myalien_spec1-container').addEventListener('animationbegin', function(){
+            //animationFinished = false;
+      });
+      document.querySelector('#myalien_spec2-container').addEventListener('animationcomplete', function(){
+            //animationFinished = true;
+            //console.log('alien spec2 animation end');
+      });
+      document.querySelector('#myalien_spec2-container').addEventListener('animationbegin', function(){
+            //animationFinished = false;
+      });
+      //glass circle
+      document.querySelector('#glasscircle').addEventListener('animationcomplete', function(){
+        glassCircleFinished = true;
+      });
+      document.querySelector('#glasscircle').addEventListener('animationbegin', function(){
+        glassCircleFinished = false;
+      });
+//next
+      function next(){
+        //console.log('animationfinished='+animationFinished);
+        if((!pebbleisActive && !meisActive && !alienisActive && !glassisActive) || !animationFinished){
+          return;
+        } 
+        else if(pebbleisActive && animationFinished){//enter pebble
+          
+          if(pebblePage == 1){//going to page2
+            pebbleRotateActive = false;
+          //page 2 elements fadein
+            document.querySelector('#pebbletext3').emit('pebblepage2');//page 2 title
+            document.querySelector('#mypebble').emit('pebblepage2');//up animation
+            document.querySelector('#circlelayouttest').emit('pebblepage2');//circle scale and position
+            for( var i = 0; i < 12; i++){//spec fadein
+              document.querySelector('#mypebble_spec'+i).emit('pebblepage2');
+            }
+          //page 1 elements fadeout
+            for( var i = 0; i < 3; i++){
+              document.querySelector('#pebbletext'+i).emit('pebblepage1out');
+            }
+          //delete drag-rotate
+          pebble.setAttribute('drag-rotate', {speed: 0, control: false});
+          camera.setAttribute('look-controls', {enabled: true});
+            pebblePage++;
+          }
+          else if(pebblePage == 2){//going to page3
+          //page 3 elements fadein
+            document.querySelector('#pebbletext4').emit('pebblepage3');//page 3 title
+            document.querySelector('#barrage-group').setAttribute('visible','true');
+            document.querySelector('#mypebble').emit('pebblepage3');//barrage
+          //page 2 elements fadeout
+            document.querySelector('#pebbletext3').emit('pebblepage2back');//page 2 title
+            document.querySelector('#circlelayouttest').emit('pebblepage2back');//circle scale and position
+            for( var i = 0; i < 12; i++){
+              document.querySelector('#mypebble_spec'+i).emit('pebblepage2back');
+            }
+
+            pebblePage++;
+          }
+          else if(pebblePage == 3){//going to page0
+          //page 0 elements fadein
+            alien.emit('visibleon');
+            me.emit('visibleon');
+            glass.emit('visibleon');
+            for( var i = 0 ; i < 9 ; i++){
+              document.querySelector('#alien'+i).emit('fade');
+            }
+            for( var i = 0; i < 5; i++){
+              document.querySelector('#me'+i).emit('fade');
+            }
+            for( var i = 0; i < 6; i++){
+              document.querySelector('#glass'+i).emit('fade');
+            }
+            document.querySelector('#mypebble').emit('pebblepage1out');//pebble back animation
+          //page 3 elements fadeout
+            document.querySelector('#pebbletext4').emit('pebblepage3out');//page 3 title  
+            document.querySelector('#mypebble').emit('pebblepage3out');//barrage fadeout
+            setTimeout(function(){
+              document.querySelector('#barrage-group').setAttribute('visible','false');
+            }, 1001);
+          //enable gaze
+            addGaze();
+            enableGazeInteraction();
+
+            setTimeout(function(){
+              document.querySelector('#pebbletext').setAttribute('visible', 'false');
+            },1000);
+            
+            pebblePage = 0;
+            pebbleisActive = false;  
+          }
+
+        }//pebble end
+
+        else if(meisActive && animationFinished){
+          if(mePage == 1){
+            meRotateActive = false;
+            //page 2 elements fadein
+            me.emit('mepage2');
+            document.querySelector('#meempty').emit('mepage2');
+            document.querySelector('#metext3').emit('mepage2');
+            document.querySelector('#metext4').emit('mepage2');
+            //play music , visualizer
+            document.querySelector('#musicbars-container').setAttribute('visible', 'true');
+            document.querySelector('#musicbars').setAttribute('audioanalyser', {src: '#song1', smoothingTimeConstant: 0.9});
+            document.querySelector('#musicbars').setAttribute('audioanalyser-levels-scale', {max: 80, multiplier: 0.1});
+            document.getElementById('song2').pause();
+            document.getElementById('song1').currentTime = 0;
+            document.getElementById('song1').play();
+            sound1Played = true;
+            /*
+            me.components.sound__2.stopSound();
+            setTimeout(function(){
+              me.components.sound__1.playSound();
+              sound1Played = true;
+            },1000);*/
+            
+            //page 1 elements fadeout
+            for( var i = 0; i < 3; i++){//page 1 text fadeout
+                document.querySelector('#metext'+i).emit('mepage1out');
+              }
+
+            //delete drag-rotate
+            me.setAttribute('drag-rotate', {speed: 0, control: false});
+            camera.setAttribute('look-controls', {enabled: true});
+            mePage++
+          }
+          else if (mePage == 2 && sound1Played){
+            //page 3 elements fadein
+            me.emit('shake'); //shake
+            setTimeout(function(){
+              document.getElementById('metext5').emit('mepage3');
+              document.getElementById('metext6').emit('mepage3');
+            }, 1500);
+            
+            //delay change text
+            //audio
+            document.querySelector('#musicbars').setAttribute('audioanalyser', {src: '#song2', smoothingTimeConstant: 0.9});
+            document.getElementById('song1').pause();
+            sound1Played = false;
+            document.getElementById('song2').currentTime = 0;
+            document.getElementById('song2').play();
+            sound2Played = true;
+            /*
+            me.components.sound__1.stopSound();
+            sound1Played = false;
+            setTimeout(function(){
+              me.components.sound__2.playSound();
+              sound2Played = true;
+            }, 1000);*/
+            
+            //page 2 elements fadeout
+            setTimeout(function(){
+              document.getElementById('metext3').emit('mepage2out');
+              document.getElementById('metext4').emit('mepage2out');
+            }, 1500);
+            
+            mePage++;
+          }
+          else if (mePage == 3 && sound2Played){
+            //page 4 elements fadeiin
+            me.emit('flip');
+            document.querySelector('#meempty').emit('mepage4');
+            //page 3 elements fadeout
+            document.getElementById('song2').pause();
+            document.getElementById('song1').pause();
+            /*
+            me.components.sound__2.stopSound();
+            me.components.sound__1.stopSound();*/
+            sound2Played = false;
+            sound1Played = false;
+            mePage++;
+          }
+          else if (mePage == 4){
+            //page 5 elements fadein video
+            document.querySelector('#mymevideo').emit('mepage5');
+            document.querySelector('#mevideo').currentTime = 0;
+            document.querySelector('#mevideo').play();
+            //page 4 elements fadeout
+            document.querySelector('#musicbars-container').setAttribute('visible', false);
+            document.getElementById('metext5').emit('mepage3out');
+            document.getElementById('metext6').emit('mepage3out');
+            me.emit('mepage1out');//me moveback
+            document.querySelector('#meempty').emit('mepage4out');//rotate 45
+            for( var i = 0; i < 5; i++){
+              document.querySelector('#me'+i).emit('fade');
+            }
+            me.emit('visibleoff');
+
+            mePage++;
+          }
+          else if (mePage == 5){
+            //page 0 elements fadein
+            alien.emit('visibleon');
+            pebble.emit('visibleon');
+            glass.emit('visibleon');
+            me.emit('visibleon');
+            for( var i = 0; i < 5; i++){
+              document.querySelector('#me'+i).emit('fade');
+            }
+            for( var i = 0 ; i < 5 ; i++){
+              document.querySelector('#pebble'+i).emit('fade');
+            }
+            for( var i = 0; i < 9; i++){
+              document.querySelector('#alien'+i).emit('fade');
+            }
+            for( var i = 0; i < 6; i++){
+              document.querySelector('#glass'+i).emit('fade');
+            }
+            //page 5 element fadeout
+            document.querySelector('#mymevideo').emit('mepage5out');
+            document.querySelector('#mevideo').pause();
+            //enable gaze
+            addGaze();
+            enableGazeInteraction();
+
+            setTimeout(function(){
+              document.querySelector('#metext').setAttribute('visible', 'false');
+            },1000);
+            mePage = 0;
+            meisActive = false;
+          }
+        }//me end
+
+        else if(alienisActive && animationFinished){
+          if(alienPage == 1){
+            alienRotateActive = false;
+            //page 2 elements fadein
+            document.querySelector('#myalien_spec0-container').emit('alienpage2');
+            document.querySelector('#myalien_spec0').emit('alienpage2');
+            alien.emit('alienpage2');
+            //page 1 elements fadeout
+            for( var i = 0; i < 3; i++){
+              document.querySelector('#alientext'+i).emit('alienpage1out');//alien texts fadeout
+            }
+            //delete drag-rotate
+            alien.setAttribute('drag-rotate', {speed: 0, control: false});
+            camera.setAttribute('look-controls', {enabled: true});
+            alienPage++
+          }
+          else if (alienPage == 2){
+            //page 3 elements fadein
+            document.querySelector('#myalien_spec1-container').emit('alienpage3');
+            document.querySelector('#myalien_spec1').emit('alienpage3');
+            alien.emit('alienpage3');
+            //page 2 elements fadeout
+            document.querySelector('#myalien_spec0-container').emit('alienpage2out');
+            document.querySelector('#myalien_spec0').emit('alienpage2out');
+            alienPage++;
+          }
+          else if (alienPage == 3){
+            //page 4 elements fadeiin
+            document.querySelector('#myalien_spec2-container').emit('alienpage4');
+            document.querySelector('#myalien_spec2').emit('alienpage4');
+            alien.emit('alienpage4');
+            //page 3 elements fadeout
+            document.querySelector('#myalien_spec1-container').emit('alienpage3out');
+            document.querySelector('#myalien_spec1').emit('alienpage3out');
+            alienPage++;
+          }
+          else if (alienPage == 4){
+            //page 0 elements fadein
+            alien.emit('alienpage1out');//alien move back
+            pebble.emit('visibleon');
+            me.emit('visibleon');
+            glass.emit('visibleon');
+            for( var i = 0 ; i < 5 ; i++){
+              document.querySelector('#pebble'+i).emit('fade');
+            }
+            for( var i = 0; i < 5; i++){
+              document.querySelector('#me'+i).emit('fade');
+            }
+            for( var i = 0; i < 6; i++){
+              document.querySelector('#glass'+i).emit('fade');
+            }
+            //page 4 elements fadeout
+            document.querySelector('#myalien_spec2-container').emit('alienpage4out');
+            document.querySelector('#myalien_spec2').emit('alienpage4out');
+            //enable gaze
+            addGaze();
+            enableGazeInteraction();
+
+            setTimeout(function(){
+              document.querySelector('#alientext').setAttribute('visible', 'false');
+            },1000);
+            alienPage = 0;
+            alienisActive = false;
+          }
+        }//alien end
+
+        else if(glassisActive && animationFinished){
+          if(glassPage == 1){
+            glassRotateActive = false;
+            //page 2 elements fadein
+            document.querySelector('#glasscircle').emit('glasspage2');
+            for(var i = 0; i < 6; i++){
+              document.querySelector('#myglass_spec' + i).emit('glasspage2');
+            }
+            glass.emit('glasspage2');
+            //page 1 elements fadeout
+            for( var i = 0; i < 3; i++){
+              document.querySelector('#glasstext'+i).emit('glasspage1out');//me texts fadeout
+            }
+            //delete drag-rotate
+            glass.setAttribute('drag-rotate', {speed: 0, control: false});
+            camera.setAttribute('look-controls', {enabled: true});
+            glassPage++
+          }
+          else if (glassPage == 2 && glassCircleFinished){
+            //page 3 elements fadein
+            for(var i = 0; i < 4; i++){
+              document.querySelector('#glass-scenario-'+i).emit('glasspage3');
+              document.querySelector('#glass-scenario-img-'+i).emit('glasspage3');
+              document.querySelector('#glass-scenario-text-0-'+i).emit('glasspage3');
+              document.querySelector('#glass-scenario-text-1-'+i).emit('glasspage3');
+            }
+            document.querySelector('#slide').play();
+            //page 2 elements fadeout
+            for(var i = 0; i < 6; i++){
+              document.querySelector('#myglass_spec' + i).emit('glasspage2out');
+            }
+            glass.emit('glasspage2out');//stop loop, reset rotation
+            for( var i = 0; i < 6; i++){
+              document.querySelector('#glass'+i).emit('fade');
+            }//glass fadeout
+            glass.emit('glasspage1out');
+            glass.emit('visibleoff');
+            glassPage++;
+          }
+          else if (glassPage == 3){
+            //page 4 elements fadeiin
+            for(var i = 0; i < 4; i++){
+              document.querySelector('#glass-scenario-'+i).emit('glasspage4');
+              document.querySelector('#glass-scenario-img-'+i).emit('glasspage4');
+              document.querySelector('#glass-scenario-text-0-'+i).emit('glasspage4');
+              document.querySelector('#glass-scenario-text-1-'+i).emit('glasspage4');
+            }
+            document.querySelector('#slide').play();
+            //page 3 elements fadeout
+            glassPage++;
+          }
+          else if (glassPage == 4){
+            //page 5 elements fadeiin
+            for(var i = 0; i < 4; i++){
+              document.querySelector('#glass-scenario-'+i).emit('glasspage5');
+              document.querySelector('#glass-scenario-img-'+i).emit('glasspage5');
+              document.querySelector('#glass-scenario-text-0-'+i).emit('glasspage5');
+              document.querySelector('#glass-scenario-text-1-'+i).emit('glasspage5');
+            }
+            document.querySelector('#slide').play();
+            //page 4 elements fadeout
+            glassPage++;
+          }
+          else if (glassPage == 5){
+            //page 6 elements fadeiin
+            for(var i = 0; i < 4; i++){
+              document.querySelector('#glass-scenario-'+i).emit('glasspage6');
+              document.querySelector('#glass-scenario-img-'+i).emit('glasspage6');
+              document.querySelector('#glass-scenario-text-0-'+i).emit('glasspage6');
+              document.querySelector('#glass-scenario-text-1-'+i).emit('glasspage6');
+            }
+            document.querySelector('#slide').play();
+            //page 5 elements fadeout
+            glassPage++;
+          }
+          else if (glassPage == 6){
+            //page 0 elements fadein
+            pebble.emit('visibleon');
+            me.emit('visibleon');
+            alien.emit('visibleon');
+            glass.emit('visibleon');
+            for( var i = 0; i < 5; i++){
+              document.querySelector('#me'+i).emit('fade');
+            }
+            for( var i = 0 ; i < 5 ; i++){
+              document.querySelector('#pebble'+i).emit('fade');
+            }
+            for( var i = 0; i < 9; i++){
+              document.querySelector('#alien'+i).emit('fade');
+            }
+            for( var i = 0; i < 6; i++){
+              document.querySelector('#glass'+i).emit('fade');
+            }
+            glass.emit('glasspage1out');//glass goback
+            //page 6 elements fadeout
+            for(var i = 0; i < 4; i++){
+              document.querySelector('#glass-scenario-img-'+i).emit('glasspage6out');
+              document.querySelector('#glass-scenario-text-0-'+i).emit('glasspage6out');
+              document.querySelector('#glass-scenario-text-1-'+i).emit('glasspage6out');
+            }
+            //enable gaze
+            enableGazeInteraction();
+            addGaze();
+
+            setTimeout(function(){
+              document.querySelector('#glasstext').setAttribute('visible', 'false');
+            },1000);
+            glassPage = 0;
+            glassisActive = false;
+          }
+        }//glass end
+      }
+//pre
+      function pre(){
+        if(!animationFinished){
+          return;
+        }
+        if(!pebbleisActive && !meisActive && !alienisActive && !glassisActive && !bookmark){//go to bookmark
+            //products fadeout animation
+            for( var i = 0; i < 5; i++){
+              document.querySelector('#me'+i).emit('fade');
+            }
+            for( var i = 0 ; i < 5 ; i++){
+              document.querySelector('#pebble'+i).emit('fade');
+            }
+            for( var i = 0; i < 9; i++){
+              document.querySelector('#alien'+i).emit('fade');
+            }
+            for( var i = 0; i < 6; i++){
+              document.querySelector('#glass'+i).emit('fade');
+            }
+            alien.emit('visibleoff');
+            me.emit('visibleoff');
+            glass.emit('visibleoff');
+            pebble.emit('visibleoff');
+            //parameters
+            bookmark = true;
+            removeGaze();
+            disableGazeInteraction();
+            //bookmark fadein
+            document.querySelector('#bookmark-obj').emit('visibleon');
+            setTimeout(function() {
+              document.querySelector('#a-image-defeat-marker').emit('fade');
+              document.querySelector('#a-image-blank-maker-left').emit('fade');
+              document.querySelector('#a-image-blank-maker-right').emit('fade');
+              //delay 1000
+              document.querySelector('#a-image-search-bar').emit('fade');
+              document.querySelector('#a-image-bookmarks').emit('fade');
+              document.querySelector('#a-image-rokid-logo').emit('fade');
+              document.querySelector('#a-image-web-address').emit('fade');
+          }, 2000);
+        }
+        else if(pebbleisActive && animationFinished){
+          if(pebblePage == 3){//going to page 2
+          //page 3 elements fadeout
+            document.querySelector('#pebbletext4').emit('pebblepage3out');//page 3 title  
+            document.querySelector('#mypebble').emit('pebblepage3out');//barrage fadeout
+            setTimeout(function(){
+              document.querySelector('#barrage-group').setAttribute('visible','false');
+            }, 1001);
+          //page 2 elements fadein
+            document.querySelector('#circlelayouttest').emit('pebblepage2');//circle rotate
+            for( var i = 0; i < 12; i++){//circle spec fadein
+              document.querySelector('#mypebble_spec'+i).emit('pebblepage2');
+            }
+            document.querySelector('#pebbletext3').emit('pebblepage2');//page 2 title
+            pebblePage--;
+          }
+          else if(pebblePage == 2){//going to page 1
+            pebbleRotateActive = true;
+          //page 2 elements fadeout
+            document.querySelector('#circlelayouttest').emit('pebblepage2back');
+            for( var i = 0; i < 12; i++){
+              document.querySelector('#mypebble_spec'+i).emit('pebblepage2back');
+            }
+            document.querySelector('#pebbletext3').emit('pebblepage2back');
+          //page 1 element fadein
+            document.querySelector('#mypebble').emit('pebblepage1');//pebble goes down
+            for( var i = 0; i < 3; i++){
+              document.querySelector('#pebbletext'+i).emit('pebblepage1');
+            }
+            pebble.setAttribute('drag-rotate', {speed: 3, control: true});
+            camera.setAttribute('look-controls', {enabled: false});
+            pebblePage--;
+          }
+          else if(pebblePage == 1){//going to page 0
+            pebbleisActive = false;
+            pebbleRotateActive = false;
+            pebble.play();//rotate function may pause it so that it can not goback
+          //page 1 elements out
+            document.querySelector('#mypebble').emit('pebblepage1out');//pebble back animation
+            for( var i = 0; i < 3; i++){
+              document.querySelector('#pebbletext'+i).emit('pebblepage1out');
+            }
+            pebble.setAttribute('drag-rotate', {speed: 0, control: false});
+            camera.setAttribute('look-controls', {enabled: true});
+          //page 0 fadein others
+            alien.emit('visibleon');
+            me.emit('visibleon');
+            glass.emit('visibleon');
+            for( var i = 0 ; i < 9 ; i++){
+              document.querySelector('#alien'+i).emit('fade');
+            }
+            for( var i = 0; i < 5; i++){
+              document.querySelector('#me'+i).emit('fade');
+            }
+            for( var i = 0; i < 6; i++){
+              document.querySelector('#glass'+i).emit('fade');
+            }
+            setTimeout(function(){
+              document.querySelector('#pebbletext').setAttribute('visible', 'false');
+            },1000);
+            
+            //enable gaze
+            addGaze();
+            enableGazeInteraction();
+
+            pebblePage--;
+          }
+        }//pebble end
+
+        else if(meisActive && animationFinished){
+          if(mePage == 5){
+            //page 5 fadeout
+            document.querySelector('#mevideo').pause();
+            document.querySelector('#mymevideo').emit('mepage5out');
+            //page 4 fadein
+            //me.emit('mepage1');
+            me.emit('visibleon');
+            document.getElementById('metext5').emit('mepage3');//flip me text
+            document.getElementById('metext6').emit('mepage3');
+            me.emit('flip');
+            me.emit('mepage2');
+            document.querySelector('#meempty').emit('mepage4');
+            for( var i = 0; i < 5; i++){
+              document.querySelector('#me'+i).emit('fade');
+            }
+
+            mePage--;
+          }
+          else if(mePage == 4){
+            me.emit('flip');
+            document.querySelector('#meempty').emit('mepage4out');
+            //page 3 elements fadeout
+            document.getElementById('song2').currentTime = 0;
+            document.getElementById('song2').play();
+            sound2Played = true;
+            /*
+            setTimeout(function(){
+              me.components.sound__2.playSound();
+              sound2Played = true;
+            }, 1000);*/
+            
+            mePage--;
+          }
+          else if(mePage == 3 && sound2Played){
+            //page 3 fadeout
+            document.getElementById('metext5').emit('mepage3out');
+            document.getElementById('metext6').emit('mepage3out');
+            me.emit('shake');
+            //play music
+            document.querySelector('#musicbars').setAttribute('audioanalyser', {src: '#song1', smoothingTimeConstant: 0.9});
+            document.getElementById('song2').pause();
+            sound2Played = false;
+            document.getElementById('song1').currentTime = 0;
+            document.getElementById('song1').play();
+            sound1Played = true;
+            /*
+            me.components.sound__2.stopSound();
+            sound2Played = false;
+            setTimeout(function(){
+              me.components.sound__1.playSound();
+              sound1Played = true;
+            }, 1000)*/
+            //page 2 fadein
+            document.getElementById('metext3').emit('mepage2');
+            document.getElementById('metext4').emit('mepage2');
+            mePage--;
+          }
+          else if(mePage == 2 && sound1Played){
+            meRotateActive = true;
+            //page 2 fadeout
+            document.querySelector('#metext3').emit('mepage2out');
+            document.querySelector('#metext4').emit('mepage2out');
+            //audio fadeout
+            document.querySelector('#musicbars-container').setAttribute('visible', 'false');
+            document.getElementById('song1').pause();
+            sound1Played = false;
+            /*
+            me.components.sound__1.stopSound();
+            sound1Played = false;*/
+            //page 1 el fadein
+            me.emit('mepage1');
+            document.querySelector('#meempty').emit('mepage1');
+            for( var i = 0; i < 3; i++){
+                document.querySelector('#metext'+i).emit('mepage1');
+              }
+            me.setAttribute('drag-rotate', {speed: 3, control: true});
+            camera.setAttribute('look-controls', {enabled: false});
+            mePage--;
+          }
+          else if(mePage == 1){//go to page 0
+            meisActive = false;
+            meRotateActive = false;
+            me.play();//rotate function may pause it so that it can not goback
+            //page 1 elements fadeout
+            document.querySelector('#myme').emit('mepage1out');//me back animation
+            for( var i = 0; i < 3; i++){
+                document.querySelector('#metext'+i).emit('mepage1out');
+              }
+            me.setAttribute('drag-rotate', {speed: 0, control: false});
+            camera.setAttribute('look-controls', {enabled: true});
+            //page 0 fadein others
+            alien.emit('visibleon');
+            pebble.emit('visibleon');
+            glass.emit('visibleon');
+            for( var i = 0 ; i < 5 ; i++){
+              document.querySelector('#pebble'+i).emit('fade');
+            }
+            for( var i = 0; i < 9; i++){
+              document.querySelector('#alien'+i).emit('fade');
+            }
+            for( var i = 0; i < 6; i++){
+              document.querySelector('#glass'+i).emit('fade');
+            }
+            setTimeout(function(){
+              document.querySelector('#metext').setAttribute('visible', 'false');
+            },1000);
+            //enable gaze
+              addGaze();
+              enableGazeInteraction();
+
+              mePage--;
+          }
+        }//me end
+
+        else if(alienisActive && animationFinished){
+          if(alienPage == 4){
+            //4 out
+            document.querySelector('#myalien_spec2-container').emit('alienpage4out');
+            document.querySelector('#myalien_spec2').emit('alienpage4out');
+            //3 in
+            document.querySelector('#myalien_spec1-container').emit('alienpage3');
+            document.querySelector('#myalien_spec1').emit('alienpage3');
+            alien.emit('alienpage3');
+            alienPage--;
+          }
+          else if(alienPage == 3){
+            //3 out
+            document.querySelector('#myalien_spec1-container').emit('alienpage3out');
+            document.querySelector('#myalien_spec1').emit('alienpage3out');
+            //2 in
+            document.querySelector('#myalien_spec0-container').emit('alienpage2');
+            document.querySelector('#myalien_spec0').emit('alienpage2');
+            alien.emit('alienpage2');
+            alienPage--;
+          }
+          else if(alienPage == 2){
+            alienRotateActive = true;
+            //2 out
+            document.querySelector('#myalien_spec0-container').emit('alienpage2out');
+            document.querySelector('#myalien_spec0').emit('alienpage2out');
+            //1 in
+            alien.emit('alienpage1');
+            for( var i = 0; i < 3; i++){
+              document.querySelector('#alientext'+i).emit('alienpage1');//me texts fadeout
+            }
+            alien.setAttribute('drag-rotate', {speed: 3, control: true});
+            camera.setAttribute('look-controls', {enabled: false});
+            alienPage--;
+          }
+          else if(alienPage == 1){//go to page 0
+            alienisActive = false;
+            alienRotateActive = false;
+            alien.play();//rotate function may pause it so that it can not goback
+            //page 1 elements fadeout
+            alien.emit('alienpage1out');
+            for( var i = 0; i < 3; i++){
+              document.querySelector('#alientext'+i).emit('alienpage1out');//me texts fadeout
+            }
+            alien.setAttribute('drag-rotate', {speed: 0, control: false});
+            camera.setAttribute('look-controls', {enabled: true});
+            //page 0 fadein others
+            pebble.emit('visibleon');
+            me.emit('visibleon');
+            glass.emit('visibleon');
+            for( var i = 0 ; i < 5 ; i++){
+              document.querySelector('#pebble'+i).emit('fade');
+            }
+            for( var i = 0; i < 5; i++){
+              document.querySelector('#me'+i).emit('fade');
+            }
+            for( var i = 0; i < 6; i++){
+              document.querySelector('#glass'+i).emit('fade');
+            }
+            setTimeout(function(){
+              document.querySelector('#alientext').setAttribute('visible', 'false');
+            },1000);
+          //enable gaze
+            addGaze();
+            enableGazeInteraction();
+
+            alienPage--;
+          }
+        }//alien end
+
+        else if(glassisActive && animationFinished){
+          if(glassPage == 6){
+            //
+            for(var i = 0; i < 4; i++){
+              document.querySelector('#glass-scenario-'+i).emit('glasspage5');
+              document.querySelector('#glass-scenario-img-'+i).emit('glasspage5');
+              document.querySelector('#glass-scenario-text-0-'+i).emit('glasspage5');
+              document.querySelector('#glass-scenario-text-1-'+i).emit('glasspage5');
+            }
+            document.querySelector('#slide').play();
+            //
+            glassPage--;
+          }
+          else if(glassPage == 5){
+            //
+            for(var i = 0; i < 4; i++){
+              document.querySelector('#glass-scenario-'+i).emit('glasspage4');
+              document.querySelector('#glass-scenario-img-'+i).emit('glasspage4');
+              document.querySelector('#glass-scenario-text-0-'+i).emit('glasspage4');
+              document.querySelector('#glass-scenario-text-1-'+i).emit('glasspage4');
+            }
+            document.querySelector('#slide').play();
+            //
+            glassPage--;
+          }
+          else if(glassPage == 4){
+            //
+            for(var i = 0; i < 4; i++){
+              document.querySelector('#glass-scenario-'+i).emit('glasspage3');
+              document.querySelector('#glass-scenario-img-'+i).emit('glasspage3');
+              document.querySelector('#glass-scenario-text-0-'+i).emit('glasspage3');
+              document.querySelector('#glass-scenario-text-1-'+i).emit('glasspage3');
+            }
+            document.querySelector('#slide').play();
+            //
+            glassPage--;
+          }
+          else if(glassPage == 3){
+            //page 3 out
+            for(var i = 0; i < 4; i++){
+              document.querySelector('#glass-scenario-img-'+i).emit('glasspage3out');
+              document.querySelector('#glass-scenario-text-0-'+i).emit('glasspage3out');
+              document.querySelector('#glass-scenario-text-1-'+i).emit('glasspage3out');
+            }
+            //
+            glass.emit('visibleon');
+            document.querySelector('#glasscircle').emit('glasspage2');
+            for(var i = 0; i < 6; i++){
+              document.querySelector('#myglass_spec' + i).emit('glasspage2');
+            }
+            for( var i = 0; i < 6; i++){
+              document.querySelector('#glass'+i).emit('fade');//glass fadein
+            } 
+            glass.emit('glasspage2');//glass move in
+            glassPage--;
+          }
+          else if(glassPage == 2){
+            glassRotateActive = true;
+            //page 2 out
+            for( var i = 0; i < 6; i++){
+              document.querySelector('#myglass_spec'+i).emit('glasspage2out');//me texts fadeout
+            }
+            glass.emit('glasspage2out');
+            //page 1 in
+            for( var i = 0; i < 3; i++){
+              document.querySelector('#glasstext'+i).emit('glasspage1');//me texts fadeout
+            }
+            glass.emit('glasspage1');
+            glass.setAttribute('drag-rotate', {speed: 3, control: true});
+            camera.setAttribute('look-controls', {enabled: false});
+            glassPage--;
+          }
+          else if(glassPage == 1){
+            glassisActive = false;
+            glassRotateActive = false;
+            glass.play();//rotate function may pause it so that it can not goback
+            //page 1 elements fadeout
+            document.querySelector('#myglass').emit('glasspage1out');
+            for( var i = 0; i < 3; i++){
+              document.querySelector('#glasstext'+i).emit('glasspage1out');//me texts fadeout
+            }
+            glass.setAttribute('drag-rotate', {speed: 0, control: false});
+            camera.setAttribute('look-controls', {enabled: true});
+            //page 0 fadein others
+            alien.emit('visibleon');
+            me.emit('visibleon');
+            pebble.emit('visibleon');
+            for( var i = 0 ; i < 9 ; i++){
+              document.querySelector('#alien'+i).emit('fade');
+            }
+            for( var i = 0; i < 5; i++){
+              document.querySelector('#me'+i).emit('fade');
+            }
+            for( var i = 0; i < 5; i++){
+              document.querySelector('#pebble'+i).emit('fade');
+            }
+            setTimeout(function(){
+              document.querySelector('#glasstext').setAttribute('visible', 'false');
+            },1000);
+          //enable gaze
+            addGaze();
+            enableGazeInteraction();
+            glassPage--;
+          }
+          
+        }
+      }
+//confirm
+      function confirm(){
+        if(bookmark){//exit bookmark
+          //bookmark fadeout
+          document.querySelector('#a-image-defeat-marker').emit('fade');
+          document.querySelector('#a-image-blank-maker-left').emit('fade');
+          document.querySelector('#a-image-blank-maker-right').emit('fade');
+          //delay 1000
+          document.querySelector('#a-image-search-bar').emit('fade');
+          document.querySelector('#a-image-bookmarks').emit('fade');
+          document.querySelector('#a-image-rokid-logo').emit('fade');
+          document.querySelector('#a-image-web-address').emit('fade');
+          document.querySelector('#bookmark-obj').emit('visibleoff');
+          //products fadein
+          setTimeout(function() {
+            addGaze();
+            enableGazeInteraction();
+            me.emit('visibleon');
+            alien.emit('visibleon');
+            pebble.emit('visibleon');
+            glass.emit('visibleon');
+            for( var i = 0; i < 5; i++){
+              document.querySelector('#me'+i).emit('fade');
+            }
+            for( var i = 0 ; i < 5 ; i++){
+              document.querySelector('#pebble'+i).emit('fade');
+            }
+            for( var i = 0; i < 9; i++){
+              document.querySelector('#alien'+i).emit('fade');
+            }
+            for( var i = 0; i < 6; i++){
+              document.querySelector('#glass'+i).emit('fade');
+            } 
+          }, 2000);
+          bookmark = false;
+        }
+        next();
+        if(document.querySelector('#mygaze') == null || !animationFinished) return;
+        //disable gaze
+        if(enter0 || enter1 || enter2 || enter3){
+          document.querySelector('#mygaze').emit('gazeconfirm');
+          disableGazeInteraction();
+          setTimeout(function(){
+            removeGaze();
+          }, 151);
+          
+        }
+
+        if(enter0){
+          //transfer me to middle front
+          meisActive = true;
+          meRotateActive = true;
+          me.emit('mepage1');
+          document.querySelector('#metext').setAttribute('visible', 'true');
+          for( var i = 0; i < 3; i++){
+            document.querySelector('#metext'+i).emit('mepage1');//me texts fadein
+          }
+          document.querySelector('#rotate-instruction').emit('mepage1');
+          //add drag-rotate
+          me.setAttribute('drag-rotate', {speed: 3, control: true});
+          camera.setAttribute('look-controls', {enabled: false});
+          //fadeout others
+          for( var i = 0 ; i < 5 ; i++){
+            document.querySelector('#pebble'+i).emit('fade');
+          }
+          for( var i = 0; i < 9; i++){
+            document.querySelector('#alien'+i).emit('fade');
+          }
+          for( var i = 0; i < 6; i++){
+            document.querySelector('#glass'+i).emit('fade');
+          }
+          pebble.emit('visibleoff');
+          alien.emit('visibleoff');
+          glass.emit('visibleoff');
+
+          mePage++;
+       }
+        else if(enter1) {
+          //transfer alien to middle front
+          alienisActive = true;
+          alienRotateActive = true;
+          alien.emit('alienpage1');
+          document.querySelector('#alientext').setAttribute('visible', 'true');
+          for( var i = 0; i < 3; i++){
+            document.querySelector('#alientext'+i).emit('alienpage1');//me texts fadein
+          }
+          document.querySelector('#rotate-instruction').emit('alienpage1');
+          //add drag-rotate
+          alien.setAttribute('drag-rotate', {speed: 3, control: true});
+          camera.setAttribute('look-controls', {enabled: false});
+          //fadeout others
+          for( var i = 0 ; i < 5 ; i++){
+            document.querySelector('#pebble'+i).emit('fade');
+          }
+          for( var i = 0; i < 5; i++){
+            document.querySelector('#me'+i).emit('fade');
+          }
+          for( var i = 0; i < 6; i++){
+            document.querySelector('#glass'+i).emit('fade');
+          }
+          pebble.emit('visibleoff');
+          me.emit('visibleoff');
+          glass.emit('visibleoff');
+
+          alienPage++;
+        }
+        else if(enter2) {
+          //transfer pebble to middle front
+          pebbleisActive = true;
+          pebbleRotateActive = true;
+          //page1 elements fadein
+          document.querySelector('#pebbletext').setAttribute('visible', 'true');
+          document.querySelector('#mypebble').emit('pebblepage1');//comming up front
+          for( var i = 0; i < 3; i++){
+            document.querySelector('#pebbletext'+i).emit('pebblepage1');
+          }
+          document.querySelector('#rotate-instruction').emit('pebblepage1');
+          //add drag-rotate
+          pebble.setAttribute('drag-rotate', {speed: 3, control: true});
+          camera.setAttribute('look-controls', {enabled: false});
+          //fadeout others
+          for( var i = 0 ; i < 9 ; i++){
+            document.querySelector('#alien'+i).emit('fade');
+          }
+          for( var i = 0; i < 5; i++){
+            document.querySelector('#me'+i).emit('fade');
+          }
+          for( var i = 0; i < 6; i++){
+            document.querySelector('#glass'+i).emit('fade');
+          }
+          alien.emit('visibleoff');
+          me.emit('visibleoff');
+          glass.emit('visibleoff');
+          
+          pebblePage++; 
+        }
+        else if(enter3){
+          //transfer glass to middle front
+          glassisActive = true;
+          glassRotateActive = true;
+          document.querySelector('#glasstext').setAttribute('visible', 'true');
+          document.querySelector('#myglass').emit('glasspage1');
+          for( var i = 0; i < 3; i++){
+            document.querySelector('#glasstext'+i).emit('glasspage1');
+          }
+          document.querySelector('#rotate-instruction').emit('glasspage1');
+          //add drag-rotate
+          glass.setAttribute('drag-rotate', {speed: 3, control: true});
+          camera.setAttribute('look-controls', {enabled: false});
+          //fadeout others
+          for( var i = 0 ; i < 9 ; i++){
+            document.querySelector('#alien'+i).emit('fade');
+          }
+          for( var i = 0; i < 5; i++){
+            document.querySelector('#me'+i).emit('fade');
+          }
+          for( var i = 0; i < 5; i++){
+            document.querySelector('#pebble'+i).emit('fade');
+          }
+          alien.emit('visibleoff');
+          me.emit('visibleoff');
+          pebble.emit('visibleoff');
+
+          glassPage++;
+        } 
+      }
+
+//rotate Y
+      function rotateObjectY(distance, speed){
+        if(meRotateActive) document.querySelector('#myme').object3D.rotateY(distance*speed/1000);
+        else if(alienRotateActive) document.querySelector('#myalien').object3D.rotateY(distance*speed/1000);
+        else if(pebbleRotateActive) document.querySelector('#mypebble').object3D.rotateY(distance*speed/1000);
+        else if(glassRotateActive) document.querySelector('#myglass').object3D.rotateY(distance*speed/1000);
+      }
+//rotate XY
+      function rotateObjectXY(distancex, speedx, distancey, speedy){
+        var axisY = new THREE.Vector3(0,1,0);
+        var axisX = new THREE.Vector3(1,0,0);
+        if(meRotateActive) {
+          me.pause();
+          me.object3D.rotateOnWorldAxis(axisY, distancex*speedx/1000);
+          me.object3D.rotateOnWorldAxis(axisX, distancey*speedy/1000);
+        }
+        else if(alienRotateActive) {
+          alien.pause();
+          alien.object3D.rotateOnWorldAxis(axisY, distancex*speedx/1000);
+          alien.object3D.rotateOnWorldAxis(axisX, distancey*speedy/1000);
+        }
+        else if(pebbleRotateActive) {
+          pebble.pause();
+          pebble.object3D.rotateOnWorldAxis(axisY, distancex*speedx/1000);
+          pebble.object3D.rotateOnWorldAxis(axisX, distancey*speedy/1000);
+        }
+        else if(glassRotateActive) {
+          glass.pause();
+          glass.object3D.rotateOnWorldAxis(axisY, distancex*speedx/1000);
+          glass.object3D.rotateOnWorldAxis(axisX, distancey*speedy/1000);
+        }
+      }
+      function resetRotation(){
+        if(meRotateActive) {
+          me.play();
+          me.emit('resetrotationx');
+          animationFinished = true;
+        }
+        else if(alienRotateActive) {
+          alien.play();
+          alien.emit('resetrotationx');
+          animationFinished = true;
+        }
+        else if(pebbleRotateActive) {
+          pebble.play();
+          pebble.emit('resetrotationx');
+          animationFinished = true;
+        }
+        else if(glassRotateActive) {
+          glass.play();
+          glass.emit('resetrotationx');
+          animationFinished = true;
+        }
+        
+      }
+//enter VR
+      function startStereoView(){
+        var scene = document.querySelector('a-scene');
+           if (scene.hasLoaded) {
+               scene.enterVR();
+           }
+      }
+
+      function disableGazeInteraction(){
+        document.querySelector('#mebox').setAttribute('class','nonintersectable');
+        document.querySelector('#alienbox').setAttribute('class','nonintersectable');
+        document.querySelector('#pebblebox').setAttribute('class','nonintersectable');
+        document.querySelector('#glassbox').setAttribute('class','nonintersectable');
+      }
+      function enableGazeInteraction(){
+        document.querySelector('#mebox').setAttribute('class','intersectable');
+        document.querySelector('#alienbox').setAttribute('class','intersectable');
+        document.querySelector('#pebblebox').setAttribute('class','intersectable');
+        document.querySelector('#glassbox').setAttribute('class','intersectable');
+      }
+      function removeGaze(){
+        camera.removeChild(gaze);
+      }
+      function addGaze(){
+        camera.appendChild(gaze);
+      }
+    </script>
+
+      <script>
+        //get mouse coordinate
+
+    /*
+       (function () {
+           // switch to stereoscopic mode directly on page load, this needs to be after the a-scene loads.
+           var scene = document.querySelector('a-scene');
+           if (scene.hasLoaded) {
+               scene.enterVR();
+           } else {
+               scene.addEventListener('loaded', function () {
+                   setTimeout(function () {
+                       scene.enterVR();
+                   }, 1000);
+               });
+           };
+       })();*/
+       var pagebody = document.querySelector(".a-body");
+       function updateDisplay(event){
+        var x = event.pageX;
+        var y = event.pageY;
+        console.log("x:"+x+" y:"+y);
+       }
+       //pagebody.addEventListener("mousemove", updateDisplay, false);
+    </script>
+</html>
